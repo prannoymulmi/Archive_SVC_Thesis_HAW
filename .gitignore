@@ -16,3 +16,7 @@ thesis3.aux
 *.docx
 *.synctex.gz
 *.ind
+*.bbl
+*.fdb_latexmk
+*.fls
+*.ilg
