@@ -9,7 +9,6 @@
 *.nlo 
 *.out
 *.toc
-*.pdf
 *.xml
 thesis3.aux
 !literatur.bib
@@ -20,3 +19,4 @@ thesis3.aux
 *.fdb_latexmk
 *.fls
 *.ilg
+thesis3.pdf
