@@ -10,7 +10,8 @@
 
     \begin{figure}[htbp!]
         \centering \includegraphics[scale=0.94]{grafiken/distributedSystem.png}
-        \caption{A distributed system extended over multiple machine with same application interface \cite{DistributedSystems}}
+        \caption{A distributed system extended over multiple machine with same application 
+        interface \cite[p.~5]{DistributedSystems}}
         \label{fig:distributedSystem}
     \end{figure}
 
@@ -21,16 +22,32 @@
         is allowed to communicate via a common middleware whose main responsibility is to
         efficiently manage resources across the distributed applications. This kind of system
         makes most sense for deployment which require high performance computing with fairly
-        large number of domains\footnotemark[\value{footnote}].
-        \footnotetext {domain: A subject area to which the user applies the program in a 
-        software \cite{DDD}.}
+        large number of domains\footnote{domain: A subject area to which the user applies the program in a 
+        software \cite{DDD}.}.
 
     \par
-        Distributed systems can be utilized to realize a complex application with smaller
-        autonomous independent entities which communicates via a network protocol. The 
+        Distributed systems can be utilized to realize a complex application dispersed across
+        multiple machines which communicates via a network protocol. The 
         components interacts with each other to achieve a common goal. It also provides
         more reliability than a non-distributed system because there is no single point
         of failure. 
+
+    \begin{figure}[htbp!]
+        \centering \includegraphics[scale=0.94]{grafiken/objectBasedDS.png}
+        \caption{An service oriented architecture in a distributed system 
+            \cite[p.~62]{DistributedSystems}}
+        \label{fig:objectBasedDS}
+    \end{figure}
+
+    \par
+        Figure \ref{fig:objectBasedDS} illustrates an example of service oriented architecture 
+        (SOA) in a distributed system. The objects/services encapsulates its state and 
+        the operations that are performed on the data. This is achieve by exposing an 
+        interface to the client/caller to handle any requested operations
+        \cite{DistributedSystems}. This architecture allows the objects to be
+        completely independent of its environment, thus accomplishing a loosely
+        coupled system which is a desired aspect in software engineering.
+        
         
 
         
