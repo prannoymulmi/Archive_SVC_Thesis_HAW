@@ -12,7 +12,6 @@
 *.xml
 thesis3.aux
 !literatur.bib
-*.docx
 *.synctex.gz
 *.ind
 *.bbl
