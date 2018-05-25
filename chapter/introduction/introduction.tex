@@ -4,58 +4,66 @@
 \newpage
 %\part{start}
 \chapter{Introduction}
-
-The MARS\footnotemark Group  is a simulation framework developed 
-in HAW Hamburg as a  part of the student research project. The project is a complex 
-distributed system designed to carry  out the simulation of any given model. 
-\cite{HAWHamburgMARS}
-    \section{Motivation}
-    The MARS\footnotemark[\value{footnote}] system produces simulation results of 
-    different models i.e. simulation of wolves eating sheep. Depending upon the 
-    configuration and the model a random output is generated. The size of the produced
-    output can vary from kilobytes to terabytes of data. As the system grows older the 
-    number of simulation runs and the output produced are going to increase. The increase
-    of the number of resources in the active entity causes performance to hinder. 
-    A very high level of correlation has been observed between the operating cost of a software 
-    system and its data volume. 
-    
-    
-    \par
-
-    At the time of writing this thesis, the output data and the project data are stored in a
-    SEV file system \cite{SEV}. This provides a faster and efficient method for data
-    access but this storage is rather expensive to get more volume. Due to the financial cost 
-    factor the primary storage volume available is very limited. Since the simulation 
-    results are random in nature, it is a point of interest to keep the data for future
-    research purposes with its configurations. With archiving service in hand to the system, 
-    it would be possible to move the inactive or selected projects to the secondary storage. 
-    The secondary storage is larger in volume and cheaper. 
-    
-    \par
-
-    For the MARS\footnotemark[\value{footnote}] project, this serves as enormous
-    motivation to introduce a service which would archive the chosen project
-    into another cheaper storage component available, in this case NAS synology 
-    \cite{Synology}. Having such a service included would maintain a positive impact 
-    towards the reliability and robustness of the system by having less data in the 
-    active system and thus have fewer operations to be executed.
-    
-    \footnotetext{Multi Agent Research and Simulation}    
-
+    \section{Multi Agent Resource And Simulation}
+        
+        The MARS\footnotemark Group is a simulation framework developed 
+        in HAW Hamburg as a  part of the student research project. The project is a complex 
+        distributed system designed to carry out the simulation of a given simulation model 
+        \cite{HAWHamburgMARS}. 
+        A model describes a digital prototype of a physical agents i.e wolves, sheep, grass etc 
+        which can be simulated to predict a real world scenario. An example of a simple model would
+        be the wolves and sheep model, which could be able to predict the 
 
     \section{Problem Statement}
 
-    The main aim of this thesis is to design, test and integrate an archive service
-    to the existing MARS system. The service will be used to move selected project with all of its
-    owned data to a secondary storage which is more cost efficent. The archived data is intented 
-    to be used for future research purposes.
-    The MARS ecosystem is a complex distributed network having an
-    hierarchal dependency with the co-existing microservices. The system being designed
-    in such an architecture entails one service to be tightly coupled with one other. It is 
-    a big challenge, since great amount of care should be taken into consideration of how the 
-    data are being stored and the order for retrieval of the data back into the active system.
-    This service will be a supporting tool for further development of the system to become more 
-    efficient and compliant. 
+        The main aim of this thesis is to design and test an archive service
+        to the existing MARS system. This service's responsibility is to move the related resources.The archived data is intended 
+        to be used for future research purposes.
+        The MARS is a complex distributed network having an
+        hierarchal dependency with the co-existing microservices. The system being designed
+        in such an architecture entails one service to be tightly coupled with one other. It is 
+        a big challenge, since great amount of care should be taken into consideration of how the 
+        data are being stored and the order for retrieval of the data back into the active system.
+        This service will be a supporting tool for further development of the system to become more 
+        efficient and compliant. 
+        \footnotetext{Multi Agent Research and Simulation}   
+    
+    \section{Motivation}
+    
+        The MARS\footnotemark[\value{footnote}] system produces simulation results of 
+        different models i.e. simulation of wolves eating sheep. Depending upon the 
+        configuration and the model a random output is generated. The size of the produced
+        output can vary from kilobytes to terabytes of data. As the system grows older the 
+        number of simulation runs and the output produced are going to increase. The increase
+        of the number of resources in the active entity causes performance to hinder. 
+        A very high level of correlation has been observed between the operating cost of a software 
+        system and its data volume. 
+        
+   
+        \par
+
+        At the time of writing this thesis, the output data and the project data are stored in a
+        SEV file system \cite{SEV}. This provides a faster and efficient method for data
+        access but this storage is rather expensive to get more volume. Due to the financial cost 
+        factor the primary storage volume available is very limited. Since the simulation 
+        results are random in nature, it is a point of interest to keep the data for future
+        research purposes with its configurations. With archiving service in hand to the system, 
+        it would be possible to move the inactive or selected projects to the secondary storage. 
+        The secondary storage is larger in volume and cheaper. 
+        
+        \par
+
+        For the MARS\footnotemark[\value{footnote}] project, this serves as enormous
+        motivation to introduce a service which would archive the chosen project
+        into another cheaper storage component available, in this case NAS synology 
+        \cite{Synology}. Having such a service included would maintain a positive impact 
+        towards the reliability and robustness of the system by having less data in the 
+        active system and thus have fewer operations to be executed.
+        
+        \footnotetext{Multi Agent Research and Simulation}    
+
+
+    
 
     \section{Thesis Overview}
         Here is a brief description of the thesis, providing a short overview on what each
