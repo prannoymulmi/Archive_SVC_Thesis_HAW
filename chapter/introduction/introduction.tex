@@ -5,14 +5,43 @@
 %\part{start}
 \chapter{Introduction}
     \section{Multi Agent Resource And Simulation}
-        
+
         The MARS\footnotemark Group is a simulation framework developed 
-        in HAW Hamburg as a  part of the student research project. The project is a complex 
-        distributed system designed to carry out the simulation of a given simulation model 
+        in HAW Hamburg as a  part of the student research project. The project can be classified 
+        Distributed Systems \cite{DistributedSystems} designed to carry out simulations of a given model 
         \cite{HAWHamburgMARS}. 
         A model describes a digital prototype of a physical agents i.e wolves, sheep, grass etc 
-        which can be simulated to predict a real world scenario. An example of a simple model would
-        be the wolves and sheep model, which could be able to predict the 
+        which can be simulated to predict a real world scenario. A simple model would
+        be the wolves and sheep, using this prototype one can simulate the interaction between the agents. 
+        As a result one can analyze the population change between them for this model. 
+
+        \par
+        To leverage the MARS framework in executing a simulation, specific steps have to be 
+        carried out in a chronological manner which are as follows. 
+        \begin{enumerate}
+            \item 
+                \textbf{Create a project}: In a nutshell a project can be defined as a collection of all the resources
+                and the simulation. The resources includes models,  scenario description, result configurations, simulation plans,
+                simulation runs, simulation results and different files required by the model
+                like GIS Layers \cite[p.~1]{{GIS}} and many other layers.
+            \item
+                \textbf{Upload models and corresponding files}:  The models upload are the first step which is required
+                for a simulation to take place. The model contains information about how the agents are to behave
+                during a simulation run. It can be the case that a model is also dependent upon other files such as 
+                GIS Layers \cite[p.~1]{{GIS}} , Time series \cite{Timeseries} Layer etc. 
+
+
+            \item 
+                \textbf{Create a scenario description}: This is the user interface where the graphical units area
+                placed like buttons, text etc.
+
+            \item 
+                \textbf{The Controller} : This layer takes the inputs and changes the two other
+                layer accordingly.
+        \end{enumerate} 
+        \footnotetext{Multi Agent Research and Simulation} 
+        The MARS being a Distributed System \cite{DistributedSystems} is 
+        designed applying an Microservice \cite{MicroserviceNewMan} architecture. This 
 
     \section{Problem Statement}
 
@@ -26,11 +55,11 @@
         data are being stored and the order for retrieval of the data back into the active system.
         This service will be a supporting tool for further development of the system to become more 
         efficient and compliant. 
-        \footnotetext{Multi Agent Research and Simulation}   
+         
     
     \section{Motivation}
     
-        The MARS\footnotemark[\value{footnote}] system produces simulation results of 
+        The MARS\footnotemark system produces simulation results of 
         different models i.e. simulation of wolves eating sheep. Depending upon the 
         configuration and the model a random output is generated. The size of the produced
         output can vary from kilobytes to terabytes of data. As the system grows older the 
