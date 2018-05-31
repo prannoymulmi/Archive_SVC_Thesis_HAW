@@ -8,61 +8,72 @@
             
             The MARS\footnote{MARS: Multi Agent Research and Simulation} provides a platform to simulate
             different scenarios as described by the model (Section \ref{section:MARS}). The Agent-Based Model \cite{agentModeling} simulation
-            can be utilized to reproduce various real life scenarios. Since the simulations analyzes real life situations, 
+            can be utilized to reproduce various real life scenarios. Since the simulations evaluates real life situations, 
             an enormous amount of agents are involved. Therefore producing substantial size of data which varies from kilobytes to terabytes
-            depending on the number of agents and the complexity of the model. A very high level of correlation has been observed between 
-            the operating cost of a software system and its data volume. 
-
+            depending on the number of agents and the complexity of the model. 
 
             \par
 
             At the time of writing this thesis, the output data and the project data are stored in a
-            Ceph distributed file system \cite{Ceph}. 
-            
-            This provides a faster and efficient method for data
-            access but this storage is rather expensive to get more volume. Due to the financial cost 
-            factor the primary storage volume available is very limited. Since the simulation 
-            results are random in nature, it is a point of interest to keep the data for future
-            research purposes with its configurations. With archiving service in hand to the system, 
-            it would be possible to move the inactive or selected projects to the secondary storage. 
-            The secondary storage is larger in volume and cheaper. 
+            Ceph distributed file system \cite{Ceph}. It provides more efficiency, reliability, and
+            scalability by separating data and metadata using a pseudo-random data distribution function\cite[p.~307]{{Ceph}} to store data in 
+            an Distributed System \cite{DistributedSystems}. Although
+            efficiency and scalability comes at a price, it is financially more expensive to posses such a system in larger volumes.
+            In contrast to its continuous data production, the primary storage volume available to the system is very limited.
+            A very high level of correlation has been observed between the operating cost of a software system and its data volume. 
+            Also, it is a point of interest to archive the result data and its resources for future analysis and research purposes. In addition,
+            the MARS system also possess a slower but cheaper storage component called synology 
+            \cite{Synology}.
 
             \par
 
-            For the MARS project, this serves as enormous
-            motivation to introduce a service which would archive the chosen project
-            into another cheaper storage component available, in this case NAS synology 
-            \cite{Synology}. Having such a service included would maintain a positive impact 
-            towards the reliability and robustness of the system by having less data in the 
-            active system and thus have fewer operations to be executed.
+            For the system, this serves as a big
+            motivation to introduce a service which would archive  project resources with its
+            simulation results in the synology drive. This service being available would provide a user a possibility
+            to move inactive data away from the more expensive Ceph storage to the cheaper storage volume.
+            It can be considered as a promising approach towards maintaining a reliable and robust system by not having unrequired data in the 
+            active system. As a result, the active system can be released with additional strain of inactive data consuming valuable resources.
+
  
 
     \newpage        
     \section{Problem Statement}
 
-        The main aim of this thesis is to design and test an archive service
-        to the existing MARS\footnote{MARS: Multi Agent Research and Simulation} system. This service's responsibility is to move the related resources.The archived data is intended 
-        to be used for future research purposes.
-        The MARS is a complex distributed network having an
-        hierarchal dependency with the co-existing microservices. The system being designed
-        in such an architecture entails one service to be tightly coupled with one other. It is 
-        a big challenge, since great amount of care should be taken into consideration of how the 
-        data are being stored and the order for retrieval of the data back into the active system.
-        This service will be a supporting tool for further development of the system to become more 
-        efficient and compliant. 
-         
-    
-    
+        The main aim of this thesis is to design, implement and test an Archive service
+        to the existing MARS\footnote{MARS: Multi Agent Research and Simulation} system. This service's responsibility is to archive a project's resources,
+        its simulation results, and restore it back to the active system on request. 
+        
+        The MARS is a complex Distributed System designed using an Microservice \cite{MicroserviceNewMan} architecture. This brings upon different levels of 
+        complexities for this thesis. The problems being dealt within the thesis are as follows:
+        \begin{enumerate}
+            \item 
+            In contrast to the monolithic application \cite[p.~94]{{softwareDesign}} where there is only one database for the whole system, 
+            every Microservice in the MARS System owns its personal database which should be accessed only by itself in order for it to be able to scale independently.
+            As a result, the archive service is coupled with the other services 
+            to get and post data into their respective databases creating more risk to failures.
+            
+            \item 
+            The design of MARS system for communication is only via remote network call like HTTP\footnote{HTTP: Hyper Text Transfer Protocol} 
+            or RPC\footnote{RPC: Remote Procedure Calls}. This makes it extremely difficult to maintain a strong data consistency and coherence as the
+            change in data one database is unknown to the other service since an ACID transaction does not existing, which can lead to archive of false data.
 
+            \item
+            Also, for the archive to function as expected some changes have to be made in the other Microservices in the system which are written in different
+            programming languages having their own level of complexities. 
 
-    
+            \item
+            The system in addition also has operational complexities due to the fact a lot of services have to be managed and it gets very hard to run all the services
+            in a local enviroment to run tests i.e. integration, end-to-end tests.    
+            
+        \end{enumerate}
+
 
     \section{Thesis Overview}
         Here is a brief description of the thesis, providing a short overview on what each
         chapter contains.
         
         \par
-        \textbf{Chapter 2: "Theory"}, this chapter describes about the design
+        \textbf{Chapter 2: "Background"}, this chapter describes about the design
         of the MARS system, the hierarchal structure of the services and the technologies used to
         deploy it.
 
