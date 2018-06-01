@@ -47,31 +47,31 @@
         complexities for this thesis. The problems being dealt within the thesis are as follows:
         \begin{enumerate}
             \item
-            \textbf{Data Distribution}, In contrast to a monolithic application \cite[p.~94]{{softwareDesign}} where there is only one database for the whole system, 
+            \textbf{Data distribution}, In contrast to a monolithic application \cite[p.~94]{{softwareDesign}} where there is only one database for the whole system, 
             every Microservice in the MARS System owns its personal database which should be accessed only by itself in order to be scale independently
             \cite[p.~27]{{Torre2017}}.
             As a result, the archive service is coupled with the other services 
             to get and post data into their respective databases creating more risk to failures.
             
             \item 
-            \textbf{Data Consistency And Coherence}, The design of MARS system for communication is only via remote network call like HTTP\footnote{HTTP: Hyper Text Transfer Protocol} 
+            \textbf{Data consistency and coherence}, The design of MARS system for communication is only via remote network call like HTTP\footnote{HTTP: Hyper Text Transfer Protocol} 
             or RPC\footnote{RPC: Remote Procedure Calls}. This makes it extremely difficult to maintain a strong data consistency and coherence as the
             change of data in one database is unknown to the other service since an ACID \cite[p.~290]{{Haerder1983}} transaction does not exist. Thus,
             it can lead to an unintended false state that is being archived.
 
             \item 
-            \textbf{Understanding MARS Resource Hierarchy}, The MARS Resource Hierarchy is the order how the assets in the system have to be created. Without the
+            \textbf{Understanding MARS resource hierarchy}, The MARS Resource Hierarchy is the order how the assets in the system have to be created. Without the
             proper understanding of this hierarchy restoring, archiving data will lead to corrupted states. Therefore, understanding this complex structure plays 
             a vital role (Section \ref{subsection:MARSResource}). 
 
             \item
-            \textbf{Additional Changes To MARS Services},
+            \textbf{Additional changes to MARS services},
             Also, for the Archive service to behave as intended, additional functionalities have to be added into the other services, Since the Archive service 
             is only allowed to communicate via API gate i.e. HTTP or RPC. As accessing another service's database is considered an Anti-pattern \cite[p.~27]{{Torre2017}}.
             It imposes another challenge in understanding the structure, and algorithms of services which are drafted in various technologies. 
 
             \item
-            \textbf{Operational Complexities}, Due to the diverse services that have to be managed, the system in addition has operational complexities. Thus, it is a challenge 
+            \textbf{Operational complexities}, Due to the diverse services that have to be managed, the system in addition has operational complexities. Thus, it is a challenge 
             to run all the services as well as tests (e.g. integration, end-to-end tests) in a local environment.   
             
         \end{enumerate}
