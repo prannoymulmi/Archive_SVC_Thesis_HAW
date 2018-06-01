@@ -8,14 +8,16 @@
         A model describes a digital prototype of a physical agents i.e wolves, sheep, grass etc 
         which can be simulated to predict a real world scenario. A simple model would
         be the wolves and sheep, using this prototype one can simulate the interaction between the agents. 
-        As a result one can analyze the population change between them for this model. 
+        As a result one can analyze the population change between them for this model. Also, Agent-Based Traffic
+        models have been developed, which simulates realistic traffic situations in a city scale with great accuracy 
+        using the MARS framework \cite{TrafficModel}.
 
         \par
         \subsection{MARS Resource Hierarchy}
         \label{subsection:MARSResource}
         To leverage the MARS framework in executing a simulation, specific steps that have to be 
-        carried out in a chronological manner. The order in which the resources are created have to follow a specific sequence and this is
-        the MARS resource Hierarchy. 
+        carried out in a chronological manner. The order in which the resources are created have to follow a specific sequence, which is
+        the MARS Resource Hierarchy. 
         \begin{enumerate}
             \item 
                 \textbf{Create a project}: A project can be defined as a collection of all the resources
@@ -67,34 +69,40 @@
             \label{fig:ERMars}
         \end{figure}
         
-        From Figure \ref{fig:marsDependency} a tight dependency between the resources can be witnessed,  
-        as one resource does not make sense to exist without the dependent resource. 
-        Hence, it can be argued that the entities, Model, result configurations, scenario, simulation plans, 
-        simulation runs and simulation results should be a weak entity in the Entity-Relation Diagram. This is not
-        the case here because except for the project all the other resources are stored in a NoSql database
-        called "Mongo DB" \cite{MongoDB}. Since NoSql technology has no tables and does not need to make joins,
-        the resources can exist independently. This is the reason why the coupled entities are not chosen to 
-        be a weak entity.
+        Figure \ref{fig:ERMars} intends to show the data flow of the MARS Resources. From this figure it becomes obvious 
+        how the resources are dependent upon each other. This follows the hierarchal structure seen in Figure \ref{fig:marsDependency},
+        where the project data is at the top and no other entity can persist without it. A pattern for the cardinality of the entities can be observed.
+        The lower level entity can only have a reference to one of its parent entity, where as the parent can have multiple children. An exception to this
+        pattern is between Simulation Run and Simulation results. A Simulation run may not have multiple results because it represents a job which will produce
+        the output i.e. Simulation Results. It is also to be mentioned that every entity expect the project is identified as a weak entity because they cease not 
+        to exist without its parent entity. 
 
-        \newpage
-        test 
-
+        Furthermore, the different data flow mentioned in Figure \ref{fig:ERMars} are handled by various services in the MARS framework. 
+        Table \ref{table:MARS Resource Hierarchy Service Overview} gives an overview of the elementary services which are responsible for 
+        creating and running simulations.For simplicity reason, only the services
+        which has direct dependency with Archive service is mentioned.
         \begin{table}[h!]
             \centering
-            \begin{tabular}{|p{3cm}|p{11cm}|}
+            \begin{tabular}{|p{4cm}|p{11cm}|}
                 \hline
                     \textbf{Service Name}  & \textbf{Description}\\
                 \hline
                     Project Service & 
-                    A mature team must be present to maintain large number of services \\
+                    Handles Project resources. \\
                 \hline
                     File Service
-                    & All the services must manage eventual consistency which is
-                    harder to manage in a large distributed system.\\
+                    & Handles the import and export of different File resources i.e. models, GIS\footnote{\label{footnote:GIS}GIS: Geographic Information System}, 
+                    Time series etc.\\
                 \hline
-                    Scenario Service  & Harder to program since remote calls must be made.\\
+                    Metadata Service  & Manages all the Metadata resources.\\
+                \hline
+                    Resultcfg Service  & The Result configurations which holds the mapping of the models are handled.\\
+                \hline
+                    Scenario Service  & The Scenario resources management is handled with this service.\\
+                \hline
+                    Sim-runner Service  & Handles Simulation plans and Simulation run .\\
                 \hline
             \end{tabular}
-            \caption{Advantages and disadvantages of microservices \cite{FowlerMartin}}
-            \label{table:Advantages and disadvantages of microservices}     
+            \caption{MARS Resource Hierarchy Elementary Services Overview}
+            \label{table:MARS Resource Hierarchy Service Overview}     
         \end{table}    
