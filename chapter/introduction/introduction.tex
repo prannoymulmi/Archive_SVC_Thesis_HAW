@@ -39,36 +39,38 @@
     \newpage        
     \section{Problem Statement}
 
-        The main aim of this thesis is to design, implement and test an Archive service
+        The main aim of this thesis is to design, implement, and test an Archive service
         to the existing MARS\footnote{MARS: Multi Agent Research and Simulation} system. This service's responsibility is to archive a project's resources,
         its simulation results, and restore it back to the active system on request. 
         
         The MARS is a complex Distributed System designed using an Microservice \cite{MicroserviceNewMan} architecture. This brings upon different levels of 
         complexities for this thesis. The problems being dealt within the thesis are as follows:
         \begin{enumerate}
-            \item 
-            In contrast to the monolithic application \cite[p.~94]{{softwareDesign}} where there is only one database for the whole system, 
-            every Microservice in the MARS System owns its personal database which should be accessed only by itself in order for it to be able to scale independently.
+            \item
+            \textbf{Data Distribution}, In contrast to a monolithic application \cite[p.~94]{{softwareDesign}} where there is only one database for the whole system, 
+            every Microservice in the MARS System owns its personal database which should be accessed only by itself in order to be scale independently
+            \cite[p.~27]{{Torre2017}}.
             As a result, the archive service is coupled with the other services 
             to get and post data into their respective databases creating more risk to failures.
             
             \item 
-            The design of MARS system for communication is only via remote network call like HTTP\footnote{HTTP: Hyper Text Transfer Protocol} 
+            \textbf{Data Consistency And Coherence}, The design of MARS system for communication is only via remote network call like HTTP\footnote{HTTP: Hyper Text Transfer Protocol} 
             or RPC\footnote{RPC: Remote Procedure Calls}. This makes it extremely difficult to maintain a strong data consistency and coherence as the
-            change in data one database is unknown to the other service since an ACID transaction does not existing, which can lead to archive of false data.
+            change of data in one database is unknown to the other service since an ACID transaction does not exist, which can lead to archive of false data.
 
             \item
+            \textbf{},
             Also, for the archive to function as expected some changes have to be made in the other Microservices in the system which are written in different
             programming languages having their own level of complexities. 
 
             \item
-            The system in addition also has operational complexities due to the fact a lot of services have to be managed and it gets very hard to run all the services
-            in a local enviroment to run tests i.e. integration, end-to-end tests.    
+            \textbf{Operational Complexities},The system in addition also has operational complexities due to the fact a lot of services have to be managed and it gets very hard to run all the services
+            in a local environment to run tests i.e. integration, end-to-end tests.    
             
         \end{enumerate}
 
-
-    \section{Thesis Overview}
+    \newpage
+    \section{Thesis Overview} 
         Here is a brief description of the thesis, providing a short overview on what each
         chapter contains.
         
