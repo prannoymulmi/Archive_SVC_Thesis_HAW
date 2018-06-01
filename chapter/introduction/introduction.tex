@@ -56,16 +56,23 @@
             \item 
             \textbf{Data Consistency And Coherence}, The design of MARS system for communication is only via remote network call like HTTP\footnote{HTTP: Hyper Text Transfer Protocol} 
             or RPC\footnote{RPC: Remote Procedure Calls}. This makes it extremely difficult to maintain a strong data consistency and coherence as the
-            change of data in one database is unknown to the other service since an ACID transaction does not exist, which can lead to archive of false data.
+            change of data in one database is unknown to the other service since an ACID \cite[p.~290]{{Haerder1983}} transaction does not exist. Thus,
+            it can lead to an unintended false state that is being archived.
+
+            \item 
+            \textbf{Understanding MARS Resource Hierarchy}, The MARS Resource Hierarchy is the order how the assets in the system have to be created. Without the
+            proper understanding of this hierarchy restoring, archiving data will lead to corrupted states. Therefore, understanding this complex structure plays 
+            a vital role (Section \ref{subsection:MARSResource}). 
 
             \item
-            \textbf{},
-            Also, for the archive to function as expected some changes have to be made in the other Microservices in the system which are written in different
-            programming languages having their own level of complexities. 
+            \textbf{Additional Changes To MARS Services},
+            Also, for the Archive service to behave as intended, additional functionalities have to be added into the other services, Since the Archive service 
+            is only allowed to communicate via API gate i.e. HTTP or RPC. As accessing another service's database is considered an Anti-pattern \cite[p.~27]{{Torre2017}}.
+            It imposes another challenge in understanding the structure, and algorithms of services which are drafted in various technologies. 
 
             \item
-            \textbf{Operational Complexities},The system in addition also has operational complexities due to the fact a lot of services have to be managed and it gets very hard to run all the services
-            in a local environment to run tests i.e. integration, end-to-end tests.    
+            \textbf{Operational Complexities}, Due to the diverse services that have to be managed, the system in addition has operational complexities. Thus, it is a challenge 
+            to run all the services as well as tests (e.g. integration, end-to-end tests) in a local environment.   
             
         \end{enumerate}
 
