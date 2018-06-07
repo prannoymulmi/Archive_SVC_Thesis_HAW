@@ -56,7 +56,7 @@
             \item 
             \textbf{Data consistency and coherence}, The design of MARS system for communication is only via remote network call like HTTP\footnote{HTTP: Hyper Text Transfer Protocol} 
             or RPC\footnote{RPC: Remote Procedure Calls}. This makes it extremely difficult to maintain a strong data consistency and coherence as the
-            change of data in one database is unknown to the other service since an ACID \cite[p.~290]{{Haerder1983}} transaction does not exist. Thus,
+            change of data in one database is unknown to the other service since an ACID \cite[p.~290]{{Haerder1983}} transaction between the databases does not exist. Thus,
             it can lead to an unintended false state that is being archived.
 
             \item 

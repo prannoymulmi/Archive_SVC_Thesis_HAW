@@ -55,7 +55,7 @@
         completely independent of its environment, thus accomplishing a loosely
         coupled system which is a desired aspect in software engineering.
         
-    \subsection{Characteristics of Distributed Systems} 
+    \subsection{Goals of Distributed Systems} 
         \subsubsection{Reliable and Available}
         One of the main reasons for building a Distributed system is to make the application have no single point of failure.
         Since the application is generally spread across different nodes connected via a network, failure of a single node will not 
@@ -69,13 +69,21 @@
         Since the application in a distributed system they are able to communicate via network. Therefore, it is easier to scale and add more resources and 
         also scale down if required. 
 
-        \subsubsection{Increased performance for a complex system}
+        \subsubsection{Increased performance}
         It is desired for a system to have a very good performance metrics which provides the desired results in as less time as possible.
         Distributed Systems provides a possibility to increase the systems performance metrics since more resources can be added to the system,
         the application has more availability of resources it can use. If used properly the application can benefit with an increased performance, 
-        which is rather harder to achieve in a single application system.
+        which is rather harder to achieve in a single application system. The increased performance comes at the price of its complexity, thus 
+        may not provide an increased performance in smaller systems.
     
     \subsection{Challenges}    
+
+        \subsubsection{Data coherency}
+        In a Distributed System it is common for a node in an application to function independently of each other. This brings up the problem that
+        one node is not aware of the changes that is done by another. Even though this can be solved by sending messages between the nodes, the complexity
+        level increase by a great amount when the number of nodes being used increases. This is because it becomes a cumbersome tasks to communicate with
+        multiple services to ensure the right state of the data, that is being persisted by the service. This is also mentioned by the CAP theorem, that it is
+        impossible to achieve both consistency, and availability in the presence of a network partition \cite[p.~59]{CAP}.
 
         \subsubsection{Network issues}
         Generally in a Distributed System different applications communicate via a network protocols i.e. HTTP, GRPC. It is to be noted that
@@ -83,10 +91,11 @@
         external reasons the communication can break leading to loss of messages leading the parts of application not work. This phenomena would not be
         seen in a single system.
 
-        \subsubsection{Data Coherency}
-        In a Distributed System it is common for a node in an application to function independently of each other. This brings up the problem that
-        one node is unknown of the changes that is done by another. Even though this can be solved by sending messages between the nodes, the complexity
-        level increase by a great amount when the number of nodes being used increases.
+        \subsubsection{Error Handling}
+        Errors are imminent in any kind of application and to continue working normally again it is necessary to detect and recover from failures.
+        Detecting errors in a Distributed System has a different approach since the application is spread across multiple system and there is no 
+        single point of failure. It is not enough that each service ensures its own correctness because the system is interconnected via some kind of
+        network connection. Due to the fact that also network is involved in a Distributed System there is additional error detection methods that have
+        to be implemented. This brings up more complications in comparison to a single system where an error is contained only in a single system.
 
-        \subsubsection{}
          
