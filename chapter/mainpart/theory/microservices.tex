@@ -2,11 +2,30 @@
 \section{Microservices}
 
 Microservice is an approach to distributed system to build an application
-as a set of smaller services. Each service is encapsulated with their own
-life cycles, which communicate with each other using protocols like HTTP, 
-websockets etc. Figure \ref{fig:serviceExample} shows an example of how 
+as a set of smaller autonomous services. In this architecture, services (SOA\footnote{SOA: Service Oriented Architecture}) \cite[chapter ~3]{SOA}
+are lightweight and Domain Driven \cite{DDD} that makes the application simple to understand, develop and test. The smaller set of services
+can be developed autonomously by different teams and be deployed independently. This brings loose coupling within a system, 
+since the application is decentralized.
+
+Figure \ref{fig:monolithVsMicro} shows the core difference for deployment between a Monolithic and a Microservice architecture. 
+It is clear that from the figure that in a Monolithic application, if a small change is made, the whole application has to be deployed again completely as 
+opposed to the Microservice architecture. The Microservice approach allows a rapid development, since only the desired services
+can be changed and deployed independently. This way the developing teams also have an hand on advantage to carry out different
+continuous integration practices in isolation.
+
+
+\begin{figure}[htbp!]
+    \centering \includegraphics[scale=0.6]{grafiken/monolithVsMicro.png}
+    \caption{ Monolithic vs Microservice deployment approach \cite{FowlerMartin}}
+    \label{fig:monolithVsMicro}
+\end{figure}
+
+\newpage
+Figure \ref{fig:serviceExample} shows an example of how 
 a service is domain bounded and there is a flexibility of choosing different
-technologies for each one. \cite{MicroserviceNewMan}
+technologies for the isolated services \cite{MicroserviceNewMan}. 
+Each service is encapsulated with their own life cycles, which communicate with each other using protocols 
+(e.g. HTTP \cite{HTTP}, websockets \cite{WebSockets}, GRPC \cite{grpc}). 
 
 \begin{figure}[htbp!]
     \centering \includegraphics[scale=0.3]{grafiken/microservices.png}
@@ -49,9 +68,23 @@ technologies for each one. \cite{MicroserviceNewMan}
 
     \newpage
     \subsection{Data Sovereignty In Microservice}
-    It is an important rule for a microservice architecture to own its domain data and 
-    logic. A high cohesion and loose coupling would be an end goal for a microservice.
-    It becomes easier to achieve them when 
+    It is an important guideline for a Microservice architecture to own its domain data and 
+    logic \cite[p.~29]{Torre2017}. Decentralized Data would assist a single Microservice
+    to become solely independent and help them evolved individually. The approach of each Microservice owning its own database is also
+    know as \textbf{Polyglot Persistence} \cite{Polyglot}. Applying this pattern would imply that the
+    data belonging to one service is available to the others only via the API of the Microservice.
+
+    \begin{figure}[H]
+        \centering \includegraphics[scale=0.5]{grafiken/polyglot.png}
+        \caption{Data management approach in a Monolithic application vs Microservice \cite{FowlerMartin}}
+        \label{fig:polyglot}
+    \end{figure}
+    
+   In Figure \ref{fig:polyglot}, it can be observed how a Monolithic application owns only a single database for the whole application. Meaning,
+   the application is sharing all data across multiple domains and has tight coupling with each other. Whereas, in Microservices each service owns
+   a single database which is easier to manage. Having said that data sovereignty is very beneficial, it also brings various difficulties
+   i.e. coordinations between services, which are very challenging to tackle and creates data coherency issues in the system. 
+
 
 
 
