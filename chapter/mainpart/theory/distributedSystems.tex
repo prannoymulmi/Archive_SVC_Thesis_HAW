@@ -77,11 +77,11 @@
         may not provide an increased performance in smaller systems.
     
     \subsection{Challenges}    
-
+        \label{subsection: distriChallenges}
         \subsubsection{Data coherency}
-        In a Distributed System it is common for a node in an application to function independently of each other. This brings up the problem that
-        one node is not aware of the changes that is done by another. Even though this can be solved by sending messages between the nodes, the complexity
-        level increase by a great amount when the number of nodes being used increases. This is because it becomes a cumbersome tasks to communicate with
+        In a Distributed System it is common for a service in an application to function independently of each other. This brings up the problem that
+        one service is not aware of the changes that is done by another. Even though this can be solved by sending messages between the services, the complexity
+        level increase by a great amount when the number of services being used increases. This is because it becomes a cumbersome tasks to communicate with
         multiple services to ensure the right state of the data, that is being persisted by the service. This is also mentioned by the CAP theorem, that it is
         impossible to achieve both consistency, and availability in the presence of a network partition \cite[p.~59]{CAP}.
 
