@@ -72,8 +72,15 @@
             service has to be requested via an API to the relevant service for read/write purposes. The figure generalizes the services it communicates with
             as "Relevant Services" because this diagram only intends to show an abstraction for the communication between them.
 
+
+        \subsection{Archive and retrieve process status}  
+            The archive and retrieve processes are a long running tasks. The designed software must run these processes in the background to avoid 
+            long waiting time for another request. Given this, a API endpoint should be made available which gives the current status of the archive 
+            or retrieve job. Using the status a user can determine whether the job is being executed or is finished.
+
+
         \subsection{Download archived data as a compressed file}
-            It is of great importance for a Domain Expert i.e. ecologist to have a graphical interface in hand. In this interface
+            It is of great importance for a Domain Expert i.e. ecologist who are not technical experts to have a graphical interface in hand. In this interface
             it should be possible to navigate to the project of interest and easily download the project as a zip file. There could be cases where the
             MARS system is out of order and the data is required which could then be accessible by anyone with basic knowledge of the system.
         
