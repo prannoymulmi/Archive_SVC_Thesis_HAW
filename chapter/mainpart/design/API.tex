@@ -1,0 +1,52 @@
+\section{API Design}
+    The Archive service must expose its web APIs to its client so that an interaction between the application can occur.
+    The Representational State Transfer (REST) \cite[Chapter.~5]{REST} architectural approach is chosen for this thesis
+    to design its API. This approach is a 
+    common approach to build a distributed system as it is independent of any system. Therefore using this architecture the system can later 
+    evolve for any kind of system which could be used in the future providing a broader layer of flexibility to the Archive service. 
+    Also, the standardized aspects of RESTful service enables a software to create a reusable elements \cite{RESTThesis}. A combination of HTTP with REST to carry out
+    CURD operations is more preferred since HTTP is widely supported by most clients and programming languages (e.g. web browsers).
+    The CURD over HTTP consists of few uniform noun based interaction that can be executed by the client \cite[p.~13]{RESTThesis}. The
+    HTTP CURD operations which are going to be implemented are described in Table \ref{table:curdHttp}.
+
+    \begin{table}[h!]
+        \centering
+        \begin{tabular}{|p{2cm}|p{4cm}|p{7cm}|}
+            \hline
+                \textbf{HTTP Verb}  & \textbf{Description} & \textbf{Application}\\
+            \hline
+                POST & 
+                Creates a new resources and dependent resources.
+                & The POST request will be used to archive and retrieve the projects because new resources are being created for these requests.\\
+            \hline
+                GET & Reads the resource. & The GET request will be used to check the status of the archive and retrieve process. \\
+            \hline
+                DELETE & Deletes the resource. & The DELETE request will be used to delete a running archive or retrieve process. \\                
+            \hline
+        \end{tabular}
+        \caption{CURD interaction over HTTP in Archive service}
+        \label{table:curdHttp}     
+    \end{table}   
+    
+    Table \ref{table:archiveEndpoints} mentions the API endpoint for archive, retrieve and job status with brief description.
+    \begin{table}[H]
+        \centering
+        \begin{tabular}{|p{6cm}|}
+            \hline
+                \textbf{API Endpoint}\\
+            \hline
+                archive/archiveProject/{{projectId}} \\
+            \hline
+                retrieve/retrieveProject/{{projectId}} \\
+            \hline
+                job/status/{{projectId}} \\
+            \hline
+                job/status/{{jobId}} \\
+            \hline
+        \end{tabular}
+        \caption{API Endpoints description for Archive service}
+        \label{table:archiveEndpoints}     
+    \end{table}   
+
+
+    
