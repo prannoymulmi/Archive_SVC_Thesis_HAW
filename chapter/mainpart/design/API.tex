@@ -28,25 +28,77 @@
         \label{table:curdHttp}     
     \end{table}   
     
-    Table \ref{table:archiveEndpoints} mentions the API endpoint for archive, retrieve and job status with brief description.
+    Table \ref{table:archiveEndpoints} mentions the API endpoint for archive, retrieve, and job status with brief description.
     \begin{table}[H]
         \centering
-        \begin{tabular}{|p{6cm}|}
+        \begin{tabular}{|p{6cm}|p{8cm}|}
             \hline
-                \textbf{API Endpoint}\\
+                \textbf{API Endpoint}&\textbf{Description}\\
             \hline
-                archive/archiveProject/{{projectId}} \\
+                archive/archiveProject/{{projectId}} & Archives a project given id. This is an HTTP post method.\\
             \hline
-                retrieve/retrieveProject/{{projectId}} \\
+                retrieve/retrieveProject/{{projectId}} & Restores a project given an id. This is an HTTP post method.\\
             \hline
-                job/status/{{projectId}} \\
+                job/status/{{projectId}} & Gets the status of the archive or retrieve process, given an project id. This is an HTTP GET method.\\
             \hline
-                job/status/{{jobId}} \\
+                job/status/{{jobId}} & Gets the status of the archive or retrieve process, given an job id. This is an HTTP GET method.\\
+            \hline
+                delete/project/{{projectId}} & Deletes the archived project from the synology drive, given an job id. This is an HTTP DELETE method.\\
             \hline
         \end{tabular}
         \caption{API Endpoints description for Archive service}
         \label{table:archiveEndpoints}     
-    \end{table}   
+    \end{table}  
+    \begin{figure}[H]
+        \centering \includegraphics[scale=0.3]{grafiken/archiveSwagger.png}
+        \caption{Archive endpoint shown in a swagger interface}
+        \label{fig:archiveSwagger}
+    \end{figure}
+
+    \begin{figure}[H]
+        \centering \includegraphics[scale=0.3]{grafiken/retrieveSwagger.png}
+        \caption{Retrieve endpoint shown in a swagger interface}
+        \label{fig:retrieveSwagger}
+    \end{figure}
+
+    \begin{figure}[H]
+        \centering \includegraphics[scale=0.3]{grafiken/deleteSwagger.png}
+        \caption{Delete endpoint shown in a swagger interface}
+        \label{fig:deleteSwagger}
+    \end{figure}
+    
+    \begin{figure}[H]
+        \centering \includegraphics[scale=0.3]{grafiken/jobSwagger.png}
+        \caption{Job status acknowledgment endpoint shown in a swagger interface}
+        \label{fig:jobSwagger}
+    \end{figure}
+
+    Figure \ref{fig:archiveSwagger} to \ref{fig:jobSwagger} illustrates the endpoints which are going to be implemented for the Archive service. It also includes the HTTP 
+    status responses the API could return depending upon the current situation i.e. 201 created when an archive process is accepted for processing by the server.
+    Additionally, the API end points are designed considering the fact that more functionality could be added to the archive service without big changes needed in the client. 
+    For example, the endpoint \textbf{"archive/archiveProject/{{projectId}}"} is designed thinking an archive could be also extended for other resources except the project. If later,
+    the Archive service would like to support, archiving of MARS metadata resource, the endpoint would be \textbf{"archive/archiveMetadata/{{MetadataId}}"}.
+    Hence, it would make it more flexible for the client to add the functionality without much effort. Also, to avoid multiple API call and
+    increase the performance of the server, the get status (Figure \ref{fig:jobSwagger}) endpoint combines vital information needed for the client in one 
+    request (See Listing \ref{lst:status}). 
+    
+\newpage
+\begin{lstlisting}[caption={Sucessful GET request for a archive status}, language=json,firstnumber=1, captionpos=b, label={lst:status}]
+{
+    "status": "PROCESSING",
+    "projectId": "70C961b7-89bf-4bd5-bf61-31b6a17a15d9",
+    "error": "NO ERROR",
+    "lastUpdate": "2018-06-17T10:05:50.216Z",
+    "archiveName": "NONE",
+    "markSessionId": "AK5961b7-89bf-4bd5-bf61-31b67a15d88",
+    "jobId": "855961b7-89bf-4bd5-bf61-31b6a17a15d3"
+}
+\end{lstlisting}
+
+
+
+
+
 
 
     
