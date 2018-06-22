@@ -36,7 +36,8 @@ The following file systems are analzyed for this thesis:
 \end{enumerate}
 
 HDFS\footnote{https://hortonworks.com/apache/hdfs/} is a very popular file system used to store big data in an efficient and fast manner. 
-Although, having its benefits it was not compared because of the complexity to configure a Hadoop server for the MARS system.
+Although, having its benefits it was not compared because of the complexity to configure a Hadoop server for the MARS system. This is mentioned in this thesis since it would be
+a point of interest in the future to add this file format in the Archive service to utilize the benefits that it provides.
 
 \subsubsection{HDF5}
 HDF5 is a file format for storing and managing data which has support for various data types designed for
@@ -86,12 +87,13 @@ This file format can be used to store different kinds of web crawl data with its
     HDF5 file format is not suitable for our use case because this format is highly optimized to work with
     numeric data for fast access and storing variable length string is inefficient as it creates a large overhead to store them. 
     Additionally, it also requires additionally 3rd party application for viewing and extracting its data which 
-    adds more complexity for the user if one just wants to download the archive and analyze it.
+    adds more complexity for the user if one just wants to download the archive and analyze it. 
 
-    The WARC is found not suitable because it has a big bottle neck that a WARC file cannot handle file sizes more than 1GB properly \cite[Appendix B]{WARC}. 
-    In contrast to MARS simulation results where a single results could be larger than 1GB. 
+    The WARC is found not suitable because the WARC cannot handle file sizes more than 1GB properly \cite[Appendix B]{WARC}. 
+    In contrast to MARS simulation results where a single results could be larger than 1GB. This would results in scalability issues in the future. To 
+    avoid this circumstance this file format was also excluded.
 
-    Lastly the file format for archive is planned to be json for the metadata files i.e. simulation runs, simulation plans, scenarios and, result configuration and 
+    Lastly, the file format for archive is planned to be json for the metadata files i.e. simulation runs, simulation plans, scenarios and, result configuration and 
     the simulation results would be stored as a gzip file. All the project resources will be packed inside a folder in the Synology (See Figure \ref{fig:synology})
      which is easily accessible via the MARS network.
     The folder can be downloaded as a zip file as the synology provides an graphical UI to work with.   
@@ -102,3 +104,25 @@ This file format can be used to store different kinds of web crawl data with its
     \label{fig:archiveActivity}
 \end{figure}
 
+Figure \ref{fig:archiveActivity} illustrates an activity diagram of archiving an entire archive process. As mentioned in Table \ref{table:preconditionsArchive},
+marking the resources for the project for the archive service is the first requirement needed to start the process. If the project resources are marked successfully
+than the archive would be initialized as a background job and the job id would be send to the client. In case the marking would fail the error message will be 
+sent to the client and the archive process will halt. The archiving process is visioned to be an background job due to the fact that a single process could take
+a long period of time and would block the server for additional requests. Following the successful job creation action, the process checks if an archive already
+exists. A check for an existing project is made to ensure that if the archive process failed caused by an transient error, the incomplete data can be removed. After
+the archive folder creation the metadata, files, scenarios, result configurations, simulation plans, simulation runs and the simulation results are retrieved respectively.
+After a successful archive process the  resources are deleted from the Ceph cluster. Lastly, in case of some failures during archiving the exception will be logged 
+which can be later analyzed for maintenance.
+
+\begin{figure}[H]
+    \centering \includegraphics[scale=0.45]{grafiken/stateArchive.png}
+    \caption{State Diagram of MARS project Archive process considering empty states}
+    \label{fig:stateArchive}
+\end{figure}
+
+Figure \ref{fig:stateArchive} illustrates the transitions that can occur during the archive process. The idle refers to the state where no archive process
+is being executed. Additionally, the state digram also considers
+how the state would change if one of the resources is empty. In the case of an empty resource (e.g. no scenarios available for the project) the archive
+process stops gracefully without any errors goes to the idle state. 
+
+ 
