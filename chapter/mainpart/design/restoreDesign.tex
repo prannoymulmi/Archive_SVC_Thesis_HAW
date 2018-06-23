@@ -5,12 +5,13 @@ so that it can be used again using the MARS UI.
 \subsection{Decision of File upload via File-svc}
 
 \begin{figure}[H]
-    \centering \includegraphics[scale=0.45]{grafiken/mars-cloud.png}
-    \caption{MARS Cloud \cite{MARSCLoud}}
+    \centering \includegraphics[scale=0.6]{grafiken/mars-cloud.png}
+    \caption{File Upload in MARS Cloud \cite{MARSCLoud}}
     \label{fig:MARSCloud}
 \end{figure}
 
-Figure \ref{fig:MARSCloud} illustrates the MARS cloud at the time of writing this thesis. The MARS cloud is a complex Distributed System consisting of many 
+Figure \ref{fig:MARSCloud} illustrates the how a file upload in the MARS cloud is done at the time of writing this thesis. 
+The MARS cloud is a complex Distributed System consisting of many 
 Microservices and databases at its disposal. It is a point of interest how the project would be restored back as there are different possibilities for it. 
 Although, it is a requirement for the archive service
 to call the corresponding service to access add or modify the resources (Chapter \ref{chap:ReqAnalysis}). As mentioned earlier chapters the MARS system
@@ -49,8 +50,8 @@ provide a roll back function.
 
 \subsection{Addition of functionalities in other services}
 The restoring requires a lot of end points to be called to upload the respective resources. After analyzing the MARS cloud and their available endpoints, it is
-seen that some functionality are not present in the current system which are required for restoring the complete system. These functionality have to be additionally
-added to the services in order avoid a direct access of the database by the Archive service. Table \ref{table:funcRestore} describes the functionalities that  must be
+seen that some functionality are not present in the current system which are required for restoring the complete system. These functionality have to be
+added to the services in order for the complete project restore. Table \ref{table:funcRestore} describes the functionalities that  must be
 added in the required services.
 
 %\begin{table}[]
@@ -91,7 +92,7 @@ added in the required services.
     Figure \ref{fig:stateRestore} illustrates the transitions that can occur in the retrieval process. The state digram has a very similar procedure as for the
     archive (Figure \ref{fig:stateArchive}) as they both execute their actions in the same order. 
     Also, marking of the resources is not done before the start process, in contrast to the archive because Data Coherency issues are not present as the archived
-    data is store in a centralized storage i.e. Synology accessed only by archive service. 
+    data is store in a centralized storage i.e. Synology accessed only by archive service.   
 
     
 %\end{table} 
