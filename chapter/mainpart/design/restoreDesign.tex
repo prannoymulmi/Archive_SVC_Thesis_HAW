@@ -1,4 +1,4 @@
-\section{Retrieve Behaviour}
+\section{Retrieve Process Design}
 This section describes the design and behaviour for restoring the archived project from the Synology back to the system
 so that it can be used again using the MARS UI.   
 
@@ -46,3 +46,52 @@ It is always not possible for all the transactions to occur and this would lead 
 incomplete data since the resources are dependent upon each other. Having an atomic transaction for the retrieve process would be a simple mechanism to overcome
 this issue. In case of any failure during retrieval the successfully restored resources would be deleted to make the retrieve process as an atomic action and
 provide a roll back function. 
+
+\subsection{Addition of functionalities in other services}
+The restoring requires a lot of end points to be called to upload the respective resources. After analyzing the MARS cloud and their available endpoints, it is
+seen that some functionality are not present in the current system which are required for restoring the complete system. These functionality have to be additionally
+added to the services in order avoid a direct access of the database by the Archive service. Table \ref{table:funcRestore} describes the functionalities that  must be
+added in the required services.
+
+%\begin{table}[]
+    %\centering
+    \begin{longtable}{|p{2cm}|p{6cm}|p{7cm}|}
+        \hline
+            \textbf{Service}  & \textbf{Functionality} & \textbf{Description}\\
+        \hline
+            Project service & Add archived and is being archived mark in the project &  The archived mark is necessary because
+            it would provide a user information if the project being queried is already archived or is in the process of archiving. This has to be
+            implemented using a GRPC communication since this is the implemented protocol compared to the other services.  \\
+        \hline
+            Scenario service & Return scenario id with the full scenarios & It is the case, that when a full scenarios is requested the scenario id is
+            not returned. The id is required by the archive while retrieval because it needs to map the old scenario id with the new one. If the mapping
+            cant be done the simulation plans cannot be created since they are dependent upon scenarios.\\
+        \hline
+            Sim-runner service & Upload a simulation run without running a simulation & Currently, the Sim-runner service executes the simulation run producing an
+            output. This is not desired by the archive service because an output is already available and it just needs to be restored. Therefore, an added 
+            functionality which just uploads the simulation runs without running a simulation is required.\\
+        \hline
+            DB-util service & Dump and restore for result database & The simulation results are normally big and it takes a longer and it is faster to
+            perform a dump for this. The dump and restore functionality must be added, so that the archive service can restore and archive the simulation results.\\
+        \hline
+            DB-util service & Make the dump and restore a background job & It is important that the dumping and resorting process is implemented as a background task
+            because it usually takes longer time.\\
+
+        \hline
+        \caption{Functionality required to be integrated in other services for retrieve process}
+        \label{table:funcRestore} 
+    \end{longtable}
+
+    \begin{figure}[H]
+        \centering \includegraphics[scale=0.45]{grafiken/stateRestore.png}
+        \caption{State Diagram of MARS project retrieval process considering empty states}
+        \label{fig:stateRestore}
+    \end{figure}
+
+    Figure \ref{fig:stateRestore} illustrates the transitions that can occur in the retrieval process. The state digram has a very similar procedure as for the
+    archive (Figure \ref{fig:stateArchive}) as they both execute their actions in the same order. 
+    Also, marking of the resources is not done before the start process, in contrast to the archive because Data Coherency issues are not present as the archived
+    data is store in a centralized storage i.e. Synology accessed only by archive service. 
+
+    
+%\end{table} 
