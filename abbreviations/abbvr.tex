@@ -1,0 +1,18 @@
+%\documentclass{article}
+    \newcommand{\abbrlabel}[1]{\makebox[3cm][l]{\textbf{#1}\ }}
+\newenvironment{abbreviations}{\begin{list}{}{\renewcommand{\makelabel}{\abbrlabel}}}{\end{list}}
+%\begin{document}
+
+\newpage
+\section*{Abbreviations}
+\begin{abbreviations}
+\item[API] Application Programming Interface
+\item[HTTP] Hyper Text Transfer Protocol
+\item[UI] User Interface
+\item[MARS] Multi Agent Research And Simulation
+\item[NAS] Network Attached Storage
+\item[RPC] Remote Procedure Call
+\item[SOA] Service Oriented Architecture
+\item[CI] Continuous Integration
+\end{abbreviations}
+%\end{document}
