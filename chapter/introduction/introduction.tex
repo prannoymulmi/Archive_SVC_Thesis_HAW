@@ -20,9 +20,9 @@
             an Distributed System \cite{DistributedSystems}. Although
             efficiency and scalability comes at a price, it is financially more expensive to posses such a system in larger volumes.
             In contrast to its continuous data production, the primary storage volume available to the system is very limited.
-            A very high level of correlation has been observed between the operating cost of a software system and its data volume. 
+            A high level of correlation has been observed between the operating cost of a software system and its data volume. 
             Also, it is a point of interest to archive the result data and its resources for future analysis and research purposes. In addition,
-            the MARS system also possess a slower but cheaper storage component called synology 
+            the MARS system also possess a slower but cheaper storage component called Synology 
             \cite{Synology}.
 
             \par
@@ -48,7 +48,7 @@
         \begin{enumerate}
             \item
             \textbf{Data distribution}, In contrast to a monolithic application \cite[p.~94]{{softwareDesign}} where there is only one database for the whole system, 
-            every Microservice in the MARS System owns its personal database which should be accessed only by itself in order to be scale independently
+            every Microservice in the MARS System owns its personal database which should be accessed only by itself in order to be scaled independently
             \cite[p.~27]{{Torre2017}}.
             As a result, the archive service is coupled with the other services 
             to get and post data into their respective databases creating more risk to failures.
@@ -56,11 +56,11 @@
             \item 
             \textbf{Data consistency and coherence}, The design of MARS system for communication is only via remote network call like HTTP\footnote{HTTP: Hyper Text Transfer Protocol} 
             or RPC\footnote{RPC: Remote Procedure Calls}. This makes it extremely difficult to maintain a strong data consistency and coherence as the
-            change of data in one database is unknown to the other service since an ACID \cite[p.~290]{{Haerder1983}} transaction between the databases does not exist. Thus,
-            it can lead to an unintended false state that is being archived.
+            change of data in one database is unknown to the other service since an ACID \cite[p.~290]{{Haerder1983}} transaction between the databases does not exist. Thus, the archiving 
+            process can unintentionally be led in to a false state. 
 
             \item 
-            \textbf{Understanding MARS resource hierarchy}, The MARS Resource Hierarchy is the order how the assets in the system have to be created. Without the
+            \textbf{Understanding MARS resource hierarchy}, The MARS Resource Hierarchy is the order how the assets in the system has to be created. Without the
             proper understanding of this hierarchy restoring, archiving data will lead to corrupted states. Therefore, understanding this complex structure plays 
             a vital role (Section \ref{subsection:MARSResource}). 
 
@@ -68,7 +68,7 @@
             \textbf{Additional changes to MARS services},
             Also, for the Archive service to behave as intended, additional functionalities have to be added into the other services, Since the Archive service 
             is only allowed to communicate via API gate i.e. HTTP or RPC. As accessing another service's database is considered an Anti-pattern \cite[p.~27]{{Torre2017}}.
-            It imposes another challenge in understanding the structure, and algorithms of services which are drafted in various technologies. 
+            It imposes another challenge in understanding the structure and algorithms of services which are drafted in various technologies. 
 
             \item
             \textbf{Operational complexities}, Due to the diverse services that have to be managed, the system in addition has operational complexities. Thus, it is a challenge 
@@ -91,7 +91,7 @@
         non-functional objectives of the archive service.
 
         \par
-        \textbf{Chapter 4: "Design Of The Solution"}, this chapter explains in detail, the 
+        \textbf{Chapter 4: "Planning and Software Design"}, this chapter explains in detail, the 
         methodologies for data storage, archive process and the software design.
 
         \par

@@ -1,14 +1,14 @@
 \newpage
 \section{Microservices}
 
-Microservice is an approach to distributed system to build an application
+Microservice is an approach to Distributed Systems to build an application
 as a set of smaller autonomous services. In this architecture, services (SOA\footnote{SOA: Service Oriented Architecture}) \cite[chapter ~3]{SOA}
 are lightweight and Domain Driven \cite{DDD} that makes the application simple to understand, develop and test. The smaller set of services
 can be developed autonomously by different teams and be deployed independently. This brings loose coupling within a system, 
 since the application is decentralized.
 
 Figure \ref{fig:monolithVsMicro} shows the core difference for deployment between a Monolithic and a Microservice architecture. 
-It is clear that from the figure that in a Monolithic application, if a small change is made, the whole application has to be deployed again completely as 
+It is clear that from the figure, in a Monolithic application, if a small change is made, the whole application has to be deployed again completely as 
 opposed to the Microservice architecture. The Microservice approach allows a rapid development, since only the desired services
 can be changed and deployed independently. This way the developing teams also have an hand on advantage to carry out different
 continuous integration practices in isolation.
@@ -24,7 +24,7 @@ continuous integration practices in isolation.
 Figure \ref{fig:serviceExample} shows an example of how 
 a service is domain bounded and there is a flexibility of choosing different
 technologies for the isolated services \cite{MicroserviceNewMan}. 
-Each service is encapsulated with their own life cycles, which communicate with each other using protocols 
+Each service is encapsulated with their own life cycles, which communicates with each other using protocols 
 (e.g. HTTP \cite{HTTP}, websockets \cite{WebSockets}, GRPC \cite{grpc}). 
 
 \begin{figure}[htbp!]

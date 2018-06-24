@@ -7,7 +7,7 @@
         \cite{HAWHamburgMARS}. 
         A model describes a digital prototype of a physical agents i.e. wolves, sheep, grass 
         which can be simulated to predict a real world scenario. A simple model would
-        be the Wolves and Sheep, using this prototype one can simulate the interaction between the agents. 
+        be the Wolves and Sheep; using this prototype one can simulate the interaction between the agents. 
         As a result one can analyze the population change between them. As a second example, an Agent-Based Traffic
         models has been developed, which simulates realistic traffic situations in a city scale with great accuracy 
         using the MARS framework \cite{TrafficModel}.
@@ -23,18 +23,18 @@
                 \textbf{Create a project}: A project can be defined as a collection of all the resources
                 and the simulation results. The resources include models,  scenario description, result configurations, simulation plans,
                 simulation runs, simulation results, and different layers required by the model.
-                Different layers are available for use with the models from a generic basic layers to additional layers. At the Time
+                Different layers are available for use of the models from a generic basic layers to additional layers. At the Time
                 of writing, the available layers to the MARS\footnote{MARS: Multi Agent Research and Simulation} framework are as follows \cite[p.~8]{{Grundmann2018}} :
                 \begin{itemize}
                     \item GIS\footnote{\label{footnote:GIS}GIS: Geographic Information System} Layer \cite[p.~1]{{GIS}} provides geospatial data to the agents
-                    \item Time series layers enables the agents to get a data point relative with a time point (e.g. Expansion of a human population over 50 years)
+                    \item Time series layers enables the agents to get a data point relative to a time point (e.g. Expansion of a human population over 50 years)
                     \cite{Timeseries}. 
                     \item Obstacle layer provides the definition of the geographical/spatial boundaries (e.g. Fish agents having a watershed boundaries).
                     \item Potential field layer provides the agents to find the spatial boundaries.
                 \end{itemize}   
             
             \item
-                \textbf{Upload models and corresponding layers}:  The model upload is the first step required
+                \textbf{Upload models and its corresponding layers}:  The model upload is the first step required
                 for a simulation to take place. The model contains information about how the agents behave
                 during a simulation run. A model can also be dependent upon other layers, where they are 
                 uploaded separately. 
@@ -51,7 +51,7 @@
                 configuration, one can turn off the 'wolves' output in the Wolves and Sheep models.
             \item  
                 \textbf{Create simulation plan and run}: A simulation plan is a complete description of the
-                 simulation which includes, scenario, and result configuration. For the execution of a simulation
+                 simulation which includes, scenario and result configuration. For the execution of a simulation
                  one must run the simulation plan, which creates
                  a simulation run. A simulation run contains all the metadata i.e. simulation id, simulation 
                  job status. Using the simulation run, one can analyze the 
@@ -100,7 +100,7 @@
                 \hline
                     File Service
                     & Handles the import and export of different file resources i.e. models, GIS\footnote{\label{footnote:GIS}GIS: Geographic Information System}, 
-                    Time series etc.\\
+                    Time series.\\
                 \hline
                     Metadata Service  & Manages all the Metadata resources.\\
                 \hline
@@ -108,7 +108,7 @@
                 \hline
                     Scenario Service  & The Scenario resources management is handled with this service.\\
                 \hline
-                    Sim-runner Service  & Handles Simulation plans and Simulation run .\\
+                    Sim-runner Service  & Handles Simulation plans and Simulation run.\\
                 \hline
                     DB-util Service  & Handles all the simulation results and backup to synology.\\
                 \hline
