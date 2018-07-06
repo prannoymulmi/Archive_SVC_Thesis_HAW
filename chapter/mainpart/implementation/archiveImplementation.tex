@@ -12,6 +12,7 @@ is responsible for marking all the resources. Also, the metadata, file, scenario
 their respective services get the corresponding data which would be stored in the Synology using the interface provided by the Synology component.
 
 \subsubsection{Performance optimization for simulation results}
+\label{subsubsec:performanceSim}
 For better performance
 the simulation results are archived  using a database dump provided by the interface that will be triggered using the archive simulation result component. 
 Dumping the result data directly to the Synology increases the throughput of the Archive service by reducing the network calls and decreases the total data processing
@@ -29,7 +30,7 @@ connection interface must only be changed in inside the Archive service instead 
 
 
 \begin{figure}[H]
-    \centering \includegraphics[height=6.5cm, angle=90, origin=c, width=11cm]{grafiken/archiveClassDiagram.png}
+    \centering \includegraphics[height=6.5cm, angle=90, origin=c, width=11cm]{grafiken/archiveClass.png}
     \caption{Class Diagram for the Archive process (Component level)}
     \label{fig:archiveClassDiagram}
 \end{figure}
@@ -76,3 +77,18 @@ It can be noticed from the sequence diagram that the resources are being persist
 is implemented considering a possibility that in the near future the archive service would archive the project as a snapshot. In case of archive failure the process
 could be resumed from the snapshot in contrast to the current atomic implementation of the process.
 
+\section{Archive problem}
+There were couple of issues faced during the implementation phase for the archive. The huge size of the simulation results brought upon an issue for larger
+performance drop while getting the data from the Mongo database. In general the data has to be extracted first from the database in order for for the process
+to save it in the other storage. Due to the enormous size of the result data reading the result data from the Mongo database took a long time. The proper duration
+metrics was not taken because the data reading rate was in an unacceptable speed. As an approximation, a file with an approx size of 500 Mb took more than one hour 
+for a complete read excluding the data transfer to the Synology. This posed the threat of hindering the performance of the archive process in an unacceptable margin.
+After careful consideration, it was seen that each simulation result was stored as a separate collection in the Mongo database. This provided an opportunity to use
+the highly optimized dumping and restore tool by Mongo DB. With the help of the dumping tool the performance of simulation results became considerably fast i.e.
+500 Mb took around 2 min.
+
+Secondly, this dump feature has to be integrated in the Database util service, given that the service could handle multiple requests. It is a mandatory requirement that the Database
+utility service could process more than one process at once. An endpoint was needed for the which could be later called by the archive service for multiple Mongo dump
+requests. To solve this problem, it is decided that the API requests would be executed as a long running job and the API request would be stored in a very efficient 
+Redis\footnote{https://redis.io} Database. In addition, the complexity of the Database utility service also has to be taken into consideration, as it 
+is written in GO lang a different programming language than the Archive service.

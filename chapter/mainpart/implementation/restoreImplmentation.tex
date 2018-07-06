@@ -1,0 +1,74 @@
+\section{Retrieve process implementation}
+This section gives an overview for the architecture of the retrieve process which would restore the data back to the running
+system from the Synology so that it can be used and analyzed as before.
+
+\subsection{Components for the retrieve process}
+ Figure \ref{fig:restore} illustrates the component diagram of the retrieve process. An retrieve interface is offered by the retrieve component which can be used by
+ the client for restoring the project back into the MARS system. The metadata component offers an interface which gets the its data from the synology which 
+ would give vital information about the files (e.g. file name, file description). This information is required so that the file could be restored as before it was
+ archived. The Retrievefile component provides interface IRetrievefile which would get the corresponding files and make a post it to the file service component. The
+ retrieve result configurations, retrieve scenario, retrieve sim plans, retrieve simulation results are responsible to process their respective data and post it to the
+ system. Also, the delete project component provides and interface IDeleteProject which the retrieve component requires in case the restore fails as this operation
+ is intended to be an atomic operation.
+
+\begin{figure}[H]
+    \centering \includegraphics[scale=0.4]{grafiken/restoreComponent.png}
+    \caption{Component Diagram for the Retrieve process (Component level)}
+    \label{fig:restore}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering \includegraphics[height=6cm, angle=90, origin=c, width=10.5cm]{grafiken/restoreClass.png}
+    \caption{Class Diagram for the Restore process (Component level)}
+    \label{fig:restoreClass}
+\end{figure}
+
+
+Figure \ref{fig:restoreClass} illustrates the class digram for the retrieve process. The structure for the order of retrieve is very similar to the archive process
+since it has to follow the MARS resource hierarchy (Section \ref{subsection:MARSResource}). All the dependencies for the retrieve project class are injected
+using the Dependency Injection Container of .NET framework. The restoring is done by getting the data from the Synology and then posting it back to the system
+using the respective service. 
+
+\subsection{Restore problem}
+Although, restoring the data back to the system needs some additional work rather than just posting it back to the system. The problem
+arises from the fact that the archived data has attributes that are may not be existing in the system. For more clarification, Listing \ref{lst:marsMetadata} 
+presents and example of an archived metadata. This resource is needed so that the restore process can determine the different attributes of the file
+before restoring to make sure it will be restored as it was before the archive. After posting the file during the restore the file named KNPGIS.zip will 
+be uploaded but the id i.e. DataId of the file would change. This is a big problem because the other resources such as scenarios, result configuration would now
+depend on this new DataId. This is only one example as there are many attributes that must be taken care of. In oder to solve this the classes which are responsible
+to post the corresponding data have a method which swaps these attributes. Listing \ref{lst:swapCode} shows an example of a method inside the RetrieveScenarios class.
+This task of this method is to dynamically get the contents of the scenarios as the scenarios are different for a particular model and then look for the new data id
+that is assigned to a file after upload in the IDictionary map i.e. fileIds and replace the dataId in the archived scenario. In conclusion, the mentioned problem
+has been solved making a map of the old attribute and the new attribute and passing it to the child resource manager. The child searches for the new id using the 
+old id as the key. Leading the attributes to be replaced with the correct new one, which allows a successful restore.
+
+\par
+
+\begin{lstlisting}[caption={Archived MARS metadata resource}, language=json,firstnumber=1, captionpos=b, label={lst:marsMetadata}]
+{
+    "DataId":"7cae6055-d7fd-418e-9ba0-bdc2980ffb4c",
+    "Title":"KNPGIS.zip",
+    "Description":null,
+    "ProjectId":"c5deed87-dd03-45c3-a0c4-fdf9f1a307a0",
+    "UserId":"af7e045f-edf4-4df5-a9c8-6327186e6ddb",
+    "Privacy":"PROJECT_PRIVATE",
+    "State":"TO_BE_DELETED"
+}
+\end{lstlisting}
+
+\newpage
+\begin{lstlisting}[language={[Sharp]C}, caption={A method in RetrieveScenarios to swap Attributes}, captionpos=b,label={lst:swapCode}]
+private async Task<ScenarioModel> ItereateThroughLayersAndSwapOldFileIdsWithNew(IDictionary<string, string> fileIds, ScenarioModel dataScenarioModel)
+{
+    fileIds.TryGetValue(dataScenarioModel.ModelMetaData, out var newModelId);
+    dataScenarioModel.ModelMetaData = newModelId;
+    dataScenarioModel.ScenarioId = string.Empty;
+    
+    foreach (dynamic initializationDescriptionGeoPotentialFieldLayer in dataScenarioModel.InitializationDescription.GeoPotentialFieldLayers)
+    {
+        fileIds.TryGetValue((string)initializationDescriptionGeoPotentialFieldLayer["MetaDataId"], out var newGeoPotentialId);
+        initializationDescriptionGeoPotentialFieldLayer["MetaDataId"] = newGeoPotentialId;
+    }
+}
+\end{lstlisting}
