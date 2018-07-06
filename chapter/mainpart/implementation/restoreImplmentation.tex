@@ -31,6 +31,7 @@ using the Dependency Injection Container of .NET framework. The restoring is don
 using the respective service. 
 
 \subsection{Restore problem}
+\label{subsec:restoreProb}
 Although, restoring the data back to the system needs some additional work rather than just posting it back to the system. The problem
 arises from the fact that the archived data has attributes that are may not be existing in the system. For more clarification, Listing \ref{lst:marsMetadata} 
 presents and example of an archived metadata. This resource is needed so that the restore process can determine the different attributes of the file
@@ -72,3 +73,22 @@ private async Task<ScenarioModel> ItereateThroughLayersAndSwapOldFileIdsWithNew(
     }
 }
 \end{lstlisting}
+
+Figure \ref{fig:sequenceRestore} illustrates the sequence diagram for the retrieve process. The starting step is similar to the archive process where a
+check is made if a process for the project is running or not. If a process is found running then the restore process will be denied. The first after a
+successful job creation the metadata are fetched from the archives. Using the metadata the corresponding files are uploaded. After the file upload 
+they need some more time to be processed. Therefore, the retrieve
+also waits for the completion for the processing of all files.  This is an important step as it is required for the files to be in the FINISHED state
+in order to create an scenario and result configurations.  As mentioned in
+\ref{subsec:restoreProb} the necessary attributes would be swapped using the new model. Similarly, the simulation plan would be then uploaded followed
+by the simulation runs. Lastly, the restore for the simulation results will be made. The retrieve process will come to halt after a finished
+status of restore is received. 
+
+
+
+\begin{figure}[H]
+    \centering \includegraphics[scale=0.5, angle=90, origin=c]{grafiken/sequenceRestore.png}
+    \caption{Sequence Diagram for the restore process}
+    \label{fig:sequenceRestore}
+\end{figure}
+
