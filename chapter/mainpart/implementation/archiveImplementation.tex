@@ -77,7 +77,7 @@ It can be noticed from the sequence diagram that the resources are being persist
 is implemented considering a possibility that in the near future the archive service would archive the project as a snapshot. In case of archive failure the process
 could be resumed from the snapshot in contrast to the current atomic implementation of the process.
 
-\section{Archive problem}
+\subsection{Challenges}
 There were couple of issues faced during the implementation phase for the archive. The huge size of the simulation results brought upon an issue for larger
 performance drop while getting the data from the Mongo database. In general the data has to be extracted first from the database in order for for the process
 to save it in the other storage. Due to the enormous size of the result data reading the result data from the Mongo database took a long time. The proper duration
