@@ -1,0 +1,84 @@
+\section{Integration Test}
+The main aim of this test is to test the communication between the different services that the Archive service is dependent upon. This test is designed in 
+such a way that it calls all the endpoints that is used in order to create a simulation run from adding files to running the simulation. As a result of checking
+these endpoints it gives an additional benefit of detecting errors introduced from other services in the area of resource creation. As an example, assuming a service
+(excluding the Project, User, Marking, and Deletion service)
+made some changes which has some bug with resource creation then if the Archive service integration test are executed it would try to recreate the mock resource
+and would result in a fail which could then be detected.
+
+\subsection{Challenges}
+The Integration Tests are very beneficial to have a more stable system but realizing this test posed really big challenges which took considerably long time with
+some constraints. Due to the Microservice architecture of the MARS framework the services are deployed as an independent entity which have their own database.
+It was an enormous task to figure out how to combine all these independent services and have them running in a testing environment. The solution to this issue
+was to create a multi-container Docker application using Docker-compose. Here, the images of the services required are loaded and the Mongo db database for each
+service is seeded. It is also very important for the order for the services and the seeding to loaded in a specific order since the services are dependent upon
+each other.  
+
+\begin{lstlisting}[language=docker-compose,caption={Docker compose configuration snippet for Archive service Integration Test}, captionpos=b, breaklines=true,label={code:integCompose}]
+archive_svc_tests:
+    image: nexus.informatik.haw-hamburg.de/microsoft/dotnet:2.0.0-sdk
+    volumes:
+      - ../:/mars-archive-svc
+    entrypoint:
+      - sh
+    command:
+      - ./mars-archive-svc/IntegrationTests/run_tests.sh
+    links:
+      - mongodb
+      - metadata-svc
+      - scenario-svc
+      - file-svc
+      - reflection-svc
+      - resultcfg-svc
+      - sim-runner-svc
+      - sim-runner
+      - mongo-seed
+      - result-mongodb
+      - result-mongo-seed
+      - database-utility-svc
+      - marking-svc
+    depends_on:
+      - mongodb
+      - metadata-svc
+      - scenario-svc
+      - file-svc
+      - reflection-svc
+      - resultcfg-svc
+      - sim-runner-svc
+      - sim-runner
+      - mongo-seed
+      - result-mongodb
+      - result-mongo-seed
+      - database-utility-svc
+      - marking-svc
+\end{lstlisting}      
+
+Listing~\ref{code:integCompose} shows a snippet of the docker compose file for running the Integration Test. The depends\_on attribute for the archive service
+has many services in it. This means the archive\_svc\_test is waiting for the other services to load and the mongodb to be seeded with mock data. Unfortunately,
+since the Project service does not use Mongodb but instead Postgres Sql as a database for some unknown reason the synchronization of the seeding of the data
+did not succeed and therefore the tests could not be ran. The
+Marking service and Deletion service endpoints that the Archive service uses have a dependency with the Project service  which resulted as a unsuccessful test
+for them. Although, it is a point of interest in the future to investigate to figure out the reason for this and complete the whole test.
+
+\subsection{File service test}
+For this test, the endpoints which would get the files, post files are tested. Different cases were tested to this endpoints i.e. posting a correct file,
+getting the correct file, posting a corrupted file, requesting an non existing file. 
+
+\begin{lstlisting}[language={[Sharp]C}, caption={Example of Integration test with the file service expecting an exception}, captionpos=b,label={lst:integFile}]
+[Fact]
+public async Task GetFileAsync_WrongMetadataId_ReturnsClientFailException()
+{
+    // Arrange
+    var httpService = new HttpClientProvider(new HttpClient());
+    var fileClient = new FileClient(
+        httpService
+    );
+    var nonExsistingDataId = "374b064d-0a9b-42ca-840e-b11e81d11773";
+
+    // Act && Assert
+    await Assert.ThrowsAnyAsync<ClientFailException>(async () =>
+        await fileClient.GetFileAsync(nonExsistingDataId));
+}
+\end{lstlisting} 
+Listing \ref{lst:integFile} shows an exmple of an Integration test with the File service. A non existing data id is requested to the service and the Archive service 
+is expects an exception. 
