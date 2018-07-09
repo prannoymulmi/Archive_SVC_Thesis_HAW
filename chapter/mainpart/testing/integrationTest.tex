@@ -60,25 +60,14 @@ did not succeed and therefore the tests could not be ran. The
 Marking service and Deletion service endpoints that the Archive service uses have a dependency with the Project service  which resulted as a unsuccessful test
 for them. Although, it is a point of interest in the future to investigate to figure out the reason for this and complete the whole test.
 
-\subsection{File service test}
-For this test, the endpoints which would get the files, post files are tested. Different cases were tested to this endpoints i.e. posting a correct file,
-getting the correct file, posting a corrupted file, requesting an non existing file. 
+\subsection{Correctness of received data}
+For this test, the GET endpoints of the services were tested. A dummy model for the data which the Archive service expects is compared to the result
+form the GET endpoints. This test would aid to verify if the services return a data model which the service. If any changes to the other services
+related to the data model is made this test would detect it. 
 
-\begin{lstlisting}[language={[Sharp]C}, caption={Example of Integration test with the file service expecting an exception}, captionpos=b,label={lst:integFile}]
-[Fact]
-public async Task GetFileAsync_WrongMetadataId_ReturnsClientFailException()
-{
-    // Arrange
-    var httpService = new HttpClientProvider(new HttpClient());
-    var fileClient = new FileClient(
-        httpService
-    );
-    var nonExsistingDataId = "374b064d-0a9b-42ca-840e-b11e81d11773";
+\subsection{Posting of new data}
+For this test, the POST, PUT and PATCH endpoints were tested. This test is designed to verify during the restoring process if the expected data model 
+is still compatible with the services or if there is some error introduced after a new change. The process is conducted by uploading the 
+data models using the mentioned endpoints and in return expecting a success status.
 
-    // Act && Assert
-    await Assert.ThrowsAnyAsync<ClientFailException>(async () =>
-        await fileClient.GetFileAsync(nonExsistingDataId));
-}
-\end{lstlisting} 
-Listing \ref{lst:integFile} shows an exmple of an Integration test with the File service. A non existing data id is requested to the service and the Archive service 
-is expects an exception. 
+
