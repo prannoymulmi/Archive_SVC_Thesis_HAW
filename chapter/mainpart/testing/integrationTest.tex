@@ -62,12 +62,28 @@ for them. Although, it is a point of interest in the future to investigate to fi
 
 \subsection{Correctness of received data}
 For this test, the GET endpoints of the services were tested. A dummy model for the data which the Archive service expects is compared to the result
-form the GET endpoints. This test would aid to verify if the services return a data model which the service. If any changes to the other services
+form the GET endpoints. This check would aid to verify if the services return a data model which the service. If any changes to the other services
 related to the data model is made this test would detect it. 
 
-\subsection{Posting of new data}
-For this test, the POST, PUT and PATCH endpoints were tested. This test is designed to verify during the restoring process if the expected data model 
+\subsection{Correctness for uploading data}
+For this test, the POST, PUT and PATCH endpoints were tested. It is designed to verify during the restoring process if the expected data model 
 is still compatible with the services or if there is some error introduced after a new change. The process is conducted by uploading the 
 data models using the mentioned endpoints and in return expecting a success status.
 
+\subsection{Correctness of response}
+This test is designed to check the interface of the API provided by the other services. This check would aid to validate if the API of the
+service returns a correct status as described by their Swagger interface. As an example, while posting a scenario in the scenario service if the
+name and the data id of the model is already existing an conflict status code will be returned by the request. Therefore, for this example an existing
+model would be uploaded and the test would verify if an conflict status is returned. Likewise, the other responses are verified by this test. 
 
+\subsection{Integration with the Database}
+This test is designed to test if a proper integration between the Mongodb and Archive service is maintained. The Archive service stores vital metadata
+which gives the client information about the status of the job and many other data that it needs. This check verifies the correctness of the read and write 
+operations done with the Database. 
+
+\subsection{Test Coverage}
+A total of 81 tests were made which would aid in verifying the integration of the Archive service with the dependent services and the database. The 
+total time for running the test measured at the time of writing the thesis is on average 7m38s. Table \ref{table:MARS Resource Hierarchy Service Overview}
+mentions the services that the archive service has dependency towards and 6 out of 9 services are being tested for the integration test. Among the total services 
+which were supposed to be tested only 67\%  were carried out. It is a point of interest in the future to complete fulfill these requirements which would boost the
+reliability of the Archive service. 
