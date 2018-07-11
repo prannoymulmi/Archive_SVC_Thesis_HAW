@@ -1,0 +1,31 @@
+\section{System Test}
+This test verifies the requirements mentioned in Section \ref{section:functionalReq} by performing manual GUI tests. System test are manual tests
+which ensure the correct behavior of the system.
+
+\subsection{Successful archive process start}
+For this test, it is verified whether the archive process can be started from the MARS Teaching GUI with the precondition that no other process
+for this project is running. One Wolves and Sheep model is uploaded with other resources i.e. scenario, result configuration,
+simulation plan, simulation run and simulation result. As this test is is to verify the successful execution of the process only one of each resources
+were uploaded and checked.
+
+\subsection{Archive with a more complex model}
+For this test, the Kruger National Park (KNP) model is used to test instead of the Wolves and Sheep because the KNP is more complex because it requires more layers
+i.e. GIS, Timeseries, Geopotential layers. The successful archive of this model with all its resources i.e. scenario, result configuration, simulation plan, simulation run
+and simulation results were verified. 
+
+\subsection{Successful data archive in Synology}
+For this test, the Synology drive where the archives were supposed to be uploaded were verified. The successful archive process of the Wolves and Sheep model
+was correctly stored in the archive folder inside the drive.
+
+\subsection{Successful retrieve process start}
+For this test, it is verified if the retrieve process could be successfully started from the MARS Teaching GUI when no process for the project is running.
+Both the KNP and Wolves and Sheep models with its resources were restored back to the system with all its resources. 
+
+\subsection{Correctness of the restored project}
+for this test, it is verified if the retrieved data are the same as from the archive. Also, a check is done whether the restored files can be used in the active system
+to produce further results (e.g. a simulation was ran from the restored simulation plan, a new scenario is created from the model).
+
+\subsection{Fault tolerance retry test}
+For this test, a intentionally error is created to verify if the implemented strategy for fault tolerance is executed. A successful verification for this
+strategy was checked. Also a check was done by removing the server from the cluster while a jobs are being processed. This checked verified that the Archive service
+would restart the job in case of sudden failure after the server has be revived. This is the case only if the defined number of retires are not exceeded.
