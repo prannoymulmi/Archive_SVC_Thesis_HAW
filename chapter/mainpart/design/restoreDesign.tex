@@ -10,7 +10,7 @@ so that it can be used again using the MARS UI.
     \label{fig:MARSCloud}
 \end{figure}
 
-Figure \ref{fig:MARSCloud} illustrates the how a file upload in the MARS cloud is done at the time of writing this thesis. 
+Figure \ref{fig:MARSCloud} illustrates how a file upload in the MARS cloud is done at the time of writing this thesis. 
 The MARS cloud is a complex Distributed System consisting of many 
 Microservices and databases at its disposal. It is a point of interest how the project would be restored back as there are different possibilities for it. 
 Although, it is a requirement for the archive service
@@ -39,18 +39,18 @@ Figure \ref{fig:activityRestore} depicts the activity diagram of restoring an pr
 as for the archive i.e. long running times. The first step after creating the retrieve job is to get the metadata from the Synology and then upload all the files.
 All the files have to be finished uploading and being processed, otherwise the sequential steps would not have the files to use. After all the uploads are complete
 the scenarios are compared with the file id for being uploaded. Following the scenarios, the result configurations are also uploaded for the corresponding models.
-As the simulation plans is dependent upn the scenarios and the result configurations this is the next resource which will be uploaded. Lastly, the simulation runs
+As the simulation plans is dependent upon the scenarios and the result configurations this is the next resource which will be uploaded. Lastly, the simulation runs
 and the simulation results would be uploaded respectively. 
 
 In case an error occurs a Two phase commit protocol strategy is adopted. This strategy is taken into consideration to bring atomicity on decentralized data.
-It is always not possible for all the transactions to occur and this would lead to incomplete data restore. In the MARS system one cannot work with having
+Due to chances of failure an incomplete data restore process could occur. In the MARS system one cannot work with having
 incomplete data since the resources are dependent upon each other. Having an atomic transaction for the retrieve process would be a simple mechanism to overcome
 this issue. In case of any failure during retrieval the successfully restored resources would be deleted to make the retrieve process as an atomic action and
 provide a roll back function. 
 
 \subsection{Addition of functionalities in other services}
 The restoring requires a lot of end points to be called to upload the respective resources. After analyzing the MARS cloud and their available endpoints, it is
-seen that some functionality are not present in the current system which are required for restoring the complete system. These functionality have to be
+seen that some functionalities are not present in the current system which are required for restoring the complete system. These functionalities have to be
 added to the services in order for the complete project restore. Table \ref{table:funcRestore} describes the functionalities that  must be
 added in the required services.
 

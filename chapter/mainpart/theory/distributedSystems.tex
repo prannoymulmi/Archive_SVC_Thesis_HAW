@@ -6,11 +6,11 @@
     \par
     A distributed system can be defined as a number of autonomous computing elements which 
     appear to a user as a single coherent system. 
-    This definition states that a complex system is split into a meaningful domains which makes them to behave independent from each other.
+    This definition states that a complex system is split into meaningful domains which makes them to behave independent from each other.
     These individual elements mentioned could be either a hardware device or possibly a software process known as nodes. A node can
     be classified from a very high-performance computers with lots of processing power to a simple and cheap computer owned by an average individual. 
     In practice, the nodes must communicate with one another via exchanging messages to achieve certain objective \cite[p.~2]{DistributedSystems}.
-    A main characteristics of Distributed Systems are to make the user believe that the system is a single coherent application by supporting 
+    A main characteristics of Distributed Systems is to make the user believe that the system is a single coherent application by supporting 
     resource sharing.
 
     \begin{figure}[htbp!]
@@ -28,7 +28,7 @@
         efficiently manage resources across the distributed applications. This kind of system
         makes most sense for deployment which require high performance computing with fairly
         large number of domains\footnote{domain: A subject area to which the user applies the program in a 
-        software \cite{DDD}.}.
+        software \cite{DDD}}.
 
     \par
         Distributed Systems can be utilized to realize a complex application dispersed across
@@ -36,7 +36,7 @@
         GRPC \cite{grpc}). The 
         components interacts with each other to achieve a common goal. It also provides
         more reliability than a non-distributed system because there is no single point
-        of failure. 
+        of failure when a system is designed properly. 
 
     \begin{figure}[H]
         \centering \includegraphics[scale=0.7]{grafiken/objectBasedDS.png}
@@ -70,7 +70,7 @@
         also scale down if required. 
 
         \subsubsection{Increased performance}
-        It is desired for a system to have a very good performance metrics which provides the desired results in as less time as possible.
+        It is desired for a system to have a very good performance metrics which provides the desired results in as short time as possible.
         Distributed Systems provides a possibility to increase the systems performance metrics since more resources can be added to the system,
         the application has more availability of resources it can use. If used properly the application can benefit with an increased performance, 
         which is rather harder to achieve in a single application system. The increased performance comes at the price of its complexity to operate and understand.
@@ -79,7 +79,7 @@
     \subsection{Challenges}    
         \label{subsection: distriChallenges}
         \subsubsection{Data coherency}
-        In a Distributed System, it is common for a service or a node to function independently free in relations from each other. This brings up the problem that
+        In a Distributed System, it is common for a service or a node to function independently from each other. This brings up the problem that
         one service is not aware of the changes that is done by another. Even though this can be solved by sending messages between the services, the complexity
         level is increased by a great amount when the number of services being used scales up. This is because it becomes cumbersome tasks to communicate with
         multiple services to ensure the right state of the data that is being persisted by the service. This is also mentioned by the CAP theorem, that it is
@@ -88,7 +88,7 @@
         \subsubsection{Network issues}
         Generally in a Distributed System different applications communicate via network protocols i.e. HTTP, GRPC. It is to be noted that
         communication via a network is not always reliable. This is because managing a distributed network is rather complex and due to
-        external reasons the communication can break leading to loss of messages leading to loss of messages which disables some parts of the application. 
+        external reasons the communication can break leading to loss of messages which disables some parts of the application. 
         Also, this phenomena would not be seen in a single system.
 
         \subsubsection{Error Handling}

@@ -53,27 +53,26 @@ This file format can be used to store different kinds of web crawl data with its
 
  \begin{table}[H]
     \centering
-    \begin{tabular}{|p{7.5cm}|p{7.5cm}|}
+    \begin{tabular}{|p{5cm}|p{5cm}|p{5cm}|}
         \hline
-            \textbf{HDF5}  & \textbf{WARC}\\
+            \textbf{HDF5}  & \textbf{WARC}&\textbf{Json}\\
         \hline
             It is used mostly for scientific purposes (Efficient
             for simulation data \cite[p.~11]{Savic2007}. & 
             Ability to store both the payload content and control information from mainstream Internet application layer protocols, such as
-            HTTP, DNS, and FTP. \\
+            HTTP, DNS, and FTP. & A simple file format which can be easily understood by Mongo DB.\\
         \hline
             It enables efficient data storage on lookup.
             &  
             Support for data compression and maintenance of
-             data record integrity.\\
+             data record integrity. & It is more readable so a user can easily see the contents.\\
         \hline
         Can be utilized with different programming languages with fast access (i.e. java, matlab, python etc.) &  
                 Ability to be extended without disruption
-                to existing functionality.\\
+                to existing functionality. & This can be utilized with almost every programming languages\\
         \hline
-        Separates raw data with its metadata. & Support handling of overly long records by. \\        
-        \hline
-        
+        Separates raw data with its metadata. & Support handling of overly long records by.& The files are easily convertible to a csv format which is used in the MARS
+        for data analysis purposes. \\        
         \hline
     \end{tabular}
     \caption{Comparison between HDF5 and WARC}
@@ -85,7 +84,7 @@ This file format can be used to store different kinds of web crawl data with its
     it seems so that both of the file formats are not suitable for the archive and retrieve process. 
 
     HDF5 file format is not suitable for our use case because this format is highly optimized to work with
-    numeric data for fast access and storing variable length string is inefficient as it creates a large overhead to store them. 
+    numeric data for fast access and storing string is inefficient as it creates a large overhead to store them. 
     Additionally, it also requires additionally 3rd party application for viewing and extracting its data which 
     adds more complexity for the user if one just wants to download the archive and analyze it. 
 
@@ -106,8 +105,8 @@ This file format can be used to store different kinds of web crawl data with its
 
 Figure \ref{fig:archiveActivity} illustrates an activity diagram of archiving an entire archive process. As mentioned in Table \ref{table:preconditionsArchive},
 marking the resources for the project for the archive service is the first requirement needed to start the process. If the project resources are marked successfully
-than the archive would be initialized as a background job and the job id would be send to the client. In case the marking would fail the error message will be 
-sent to the client and the archive process will halt. The archiving process is visioned to be an background job due to the fact that a single process could take
+then the archive would be initialized as a background job and the job id would be send to the client. In case the marking would fail the error message will be 
+sent to the client and the archive process will halt. The archiving process is visioned to be a background job due to the fact that a single process could take
 a long period of time and would block the server for additional requests. Following the successful job creation action, the process checks if an archive already
 exists. A check for an existing project is made to ensure that if the archive process failed caused by an transient error, the incomplete data can be removed. After
 the archive folder creation the metadata, files, scenarios, result configurations, simulation plans, simulation runs and the simulation results are retrieved respectively.
@@ -123,6 +122,6 @@ which can be later analyzed for maintenance.
 Figure \ref{fig:stateArchive} illustrates the transitions that can occur during the archive process. The idle refers to the state where no archive process
 is being executed. Additionally, the state digram also considers
 how the state would change if one of the resources is empty. In the case of an empty resource (e.g. no scenarios available for the project) the archive
-process stops gracefully without any errors goes to the idle state. 
+process stops gracefully and transitions to the idle state. 
 
  
