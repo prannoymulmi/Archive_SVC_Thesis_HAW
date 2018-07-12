@@ -1,13 +1,11 @@
-\section{Technical Requirements}
+\section{Non functional Requirements}
 \label{section:technicalReq}
-The requirements specified in this section present us the technical aspects of the Archive service. A tabular description 
+The requirements specified in this section present us the technical/non-functional aspects of the Archive service. A tabular description 
 (Table \ref{table: Technical Requirements}) is presented below.
 The detailed description depicts the benchmarks of how the system should be designed to meet the needs for a better sustainable prototype.
 The result from this work delivered must comply with the following technical requirements.
 
-    \begin{table}[h!]
-        \centering
-        \begin{tabular}{|p{3cm}|p{12cm}|}
+    \begin{longtable}{|p{3cm}|p{12cm}|}
             \hline
                 \textbf{Requirement}  & \textbf{Description}\\
             \hline
@@ -26,6 +24,11 @@ The result from this work delivered must comply with the following technical req
                  Robustness & The system should be tested against multiple cases to ensure correct functionality of the service using unit tests and
                  integration tests.\\    
             \hline
+                 Performance & The duration of the archive and retrieve process should be measurable. So that a close watch on the performance of the system is 
+                 possible. \\    
+            \hline
+                 Usability & The system should be integrated in the MARS UI so that it is easily usable by all end users.\\    
+            \hline
                  Connection to Synology & The Archive service should be able to make a connection to the Synology drive and store desired data successfully.\\ 
             \hline
                  Make a Swagger API interface & The Archive service should have a Swagger \cite{swagger} interface available so that other 
@@ -37,10 +40,9 @@ The result from this work delivered must comply with the following technical req
                 Responsiveness & The API should give some kind of feedback to the user never the less if request cannot be made an 
                 error message should be returned instead of no result. \\      
             \hline
-        \end{tabular}
         \caption{Technical requirements for the Archive service}
         \label{table: Technical Requirements}     
-    \end{table}    
+    \end{longtable} 
   
     \begin{figure}[H]
         \centering \includegraphics[scale=0.5]{grafiken/CIbuild.png}

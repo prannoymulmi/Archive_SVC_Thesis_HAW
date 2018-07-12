@@ -7,20 +7,6 @@ are lightweight and Domain Driven \cite{DDD} that makes the application simple t
 can be developed autonomously by different teams and be deployed independently. This brings loose coupling within a system, 
 since the application is decentralized.
 
-Figure \ref{fig:monolithVsMicro} shows the core difference for deployment between a Monolithic and a Microservice architecture. 
-It is clear that from the figure, in a Monolithic application, if a small change is made, the whole application has to be deployed again completely as 
-opposed to the Microservice architecture. The Microservice approach allows a rapid development, since only the desired services
-can be changed and deployed independently. This way the developing teams also have an hand on advantage to carry out different
-continuous integration practices in isolation.
-
-
-\begin{figure}[htbp!]
-    \centering \includegraphics[scale=0.6]{grafiken/monolithVsMicro.png}
-    \caption{ Monolithic vs Microservice deployment approach \cite{FowlerMartin}}
-    \label{fig:monolithVsMicro}
-\end{figure}
-
-\newpage
 Figure \ref{fig:serviceExample} shows an example of how 
 a service is domain bounded and there is a flexibility of choosing different
 technologies for the isolated services \cite{MicroserviceNewMan}. 
@@ -28,8 +14,8 @@ Each service is encapsulated with their own life cycles, which communicates with
 (e.g. HTTP \cite{HTTP}, websockets \cite{WebSockets}, GRPC \cite{grpc}). 
 
 \begin{figure}[htbp!]
-    \centering \includegraphics[scale=0.3]{grafiken/microservices.png}
-    \caption{ Illustration of services as independent entities \cite{MicroserviceNewMan}}
+    \centering \includegraphics[scale=0.6]{grafiken/microservices.png}
+    \caption{ Illustration of services as independent entities}
     \label{fig:serviceExample}
 \end{figure}
 
@@ -76,7 +62,7 @@ Each service is encapsulated with their own life cycles, which communicates with
     data belonging to one service is available to the others only via the API of the Microservice.
 
     \begin{figure}[H]
-        \centering \includegraphics[scale=0.5]{grafiken/polyglot.png}
+        \centering \includegraphics[scale=0.4]{grafiken/polyglot.png}
         \caption{Data management approach in a Monolithic application vs Microservice \cite{FowlerMartin}}
         \label{fig:polyglot}
     \end{figure}
