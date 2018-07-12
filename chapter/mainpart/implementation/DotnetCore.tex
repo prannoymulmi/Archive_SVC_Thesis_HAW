@@ -1,14 +1,14 @@
 \section{Decision for .NET Core framework}
 \label{sec:dotnet}
-A detailed discussion with the MARS team was done to determine the programming language to use for realizing the Archive service. The MARS developer community 
-have enforced some default languages for the system with an intention of making the code understandable by others if the creator of the service is absent.
+A detailed discussion with the MARS team was done to determine the programming language to use for realizing the Archive service. Also, the MARS developer community 
+has enforced some default languages for the system with an intention of making the code understandable by others if the creator of the service is absent.
 The MARS default programming languages(backend development) that are accepted with a brief description are as follows:
 \begin{itemize}
     \item \textbf{GO Lang}, It is a statically typed language very similar to C which is very easy to read, learn. It also ensures memory safety and has
     a small memory footprint.
     \item \textbf{.NET Core}, It is a open source framework used mainly to develop web applications i.e. Web services using the powerful C\# language. This framework 
     claims to be a light-weight and modular for HTTP pipelines providing a cross platform support on Windows, Mac, and Linux.
-    \item \textbf{Python}, It is a interpreted programming language which has provides a possibility for fast prototyping to a programmer which supports many 
+    \item \textbf{Python}, It is a interpreted programming language which provides a possibility for fast prototyping to a programmer and supports many 
     programming paradigms (e.g. Object Oriented, Functional, Procedural).
     \item \textbf{Java}, It is an statically typed high-level object oriented programming language which handles complex details such as memory management using the
     garbage collector which is created to prevent memory leaks. Also, it guarantees to run in every platform with a JVM\footnote{JVM: Java Virtual Machine} which 
@@ -16,9 +16,9 @@ The MARS default programming languages(backend development) that are accepted wi
 \end{itemize}
  
 It was found that the many services written with Java Spring in the MARS system had a very bad performance metrics i.e. 500Mb+ memory footprint and >30 sec boot time.
-The critical performance issues which Java spring demonstrated contributed as an important factor for the abandonment of this programming language for the Archive service. After careful 
+The critical performance issues which Java spring demonstrated, contributed as an important factor for the abandonment of this programming language for the Archive service. After careful 
 consideration .NET Core framework deemed to be a good alternative, as it is extensively used in the MARS project i.e. MARS LIFE. C\# 7.0 will be used as it provides
 several benefits. An increase of performance is made compared to the previous version of C\# has been made focused on reducing copying of data between memory locations.
 In addition, the framework provides an easy platforms to build a Web API with a built in dependency injection system which aids to build a system with
 SOLID \cite{Hotop2015} principles. Also, considering future maintenance of the system this framework is a good choice as the team has gained good expertise with it in comparison
-to python and GO. Therefore, the .NET Core framework would be the platform used for implementing the Archive service.
+to python and GO. Therefore, the .NET Core framework is the platform used for implementing the Archive service.
