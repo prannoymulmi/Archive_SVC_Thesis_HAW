@@ -11,10 +11,20 @@ complexity of maintaining the service which includes multiple point failure and 
 to its best using the mentioned strategies in Chapter \ref{chap:design}.
 
 Finally, in the process of developing this system a deep understanding of Distributed System, Microservice together with the state-of-the-art technological stacks
-such as Kubernetes, Docker etc has been established. Together with the knowledge an Archive service for the MARS framework has been implemented and integrated which
+such as Kubernetes \cite{kubernetes}, Docker etc has been established. Together with the knowledge an Archive service for the MARS framework has been implemented and integrated which
 would aid in improving the performance of the MARS system by moving inactive data into the Synology storage.
 
 \section{Further Work}
-It is a point of interest, 
+It is a point of interest that the Archive service would be further enhanced. Firstly, it is seen that the current UI design of the archive process is not very convenient
+for the users as the archived and unarchived projects are grouped together which may produce some confusion. One proposal would be to design a separate section
+where the archived projects could be shown. To aid this process the implementation of the mark showing if the project is archived or not is already included which is
+changed via the Archive service. 
+
+Secondly, improving the performance of the archive and retrieve would also be a factor to be considered next. The archive and retrieve process are implemented as
+an atomic operation. Therefore, in case of failure the process is repeated from the starting causing big performance loss in larger projects. More research and effort
+has to be put forward to obtain a solution for this issue. 
+
+Lastly, to strengthen the stability when deploying this service the test i.e. Unit, Integration tests must increase the test coverage so that some potential
+errors could be avoided. 
 
 

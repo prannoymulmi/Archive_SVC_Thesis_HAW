@@ -1,0 +1,37 @@
+\chapter{Appendix}
+This appendix shows one how to build the archive service locally. 
+
+\textbf{Build Archive service}
+\begin{itemize}
+    \item Clone the mars-archive-svc from the MARS gitlab repository.
+    \item Install Kubernetes command line tool using the guide \url{https://kubernetes.io/docs/tasks/tools/install-kubectl/} 
+    \item Install Docker.
+    \item Login to docker and nexus see MARS Confluence documentation.
+    \item Make sure to check the Kubernetes deployment file to check the image name i.e. it should be with the dev tag (See Listing \ref{code:dep})
+    \item Make changes and run the bash script called start.sh inside the archive folder
+\end{itemize}
+
+\begin{lstlisting}[language=bash,caption={Archive service local build script}, captionpos=b]
+    #!/usr/bin/env bash
+    GITLAB_REGISTRY="docker-hub.informatik.haw-hamburg.de"
+    PROJECT="mars/mars-archive-svc"
+    SERVICE_NAME="archive-svc"
+    
+    rm -rf out
+    
+    dotnet publish -o out
+    
+    cd ..
+    
+    docker build -t ${GITLAB_REGISTRY}/${PROJECT}/${SERVICE_NAME}:dev .
+    docker push ${GITLAB_REGISTRY}/${PROJECT}/${SERVICE_NAME}:dev
+    
+    kubectl -n mars-mars-beta delete pod -l service=${SERVICE_NAME} --force
+\end{lstlisting}
+
+\begin{lstlisting}[language=bash,caption={Archive service deployment file snippet},label={code:dep}, captionpos=b]
+spec:
+      serviceAccount: mars-group-serviceaccount
+      containers:
+      - image: docker-hub.informatik.haw-hamburg.de/mars/mars-archive-svc/archive-svc:dev
+\end{lstlisting}
