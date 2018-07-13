@@ -1,4 +1,4 @@
-\section{System Test}
+\section{System test}
 This test verifies the requirements mentioned in Section \ref{section:functionalReq} by performing manual GUI tests. System test are manual tests
 which ensure the correct behavior of the system.
 
@@ -25,7 +25,7 @@ Both the KNP and Wolves and Sheep models with its resources were restored back t
 For this test, it is verified if the retrieved data are the same as from the archive. Also, a check is done whether the restored files can be used in the active system
 to produce further results (e.g. a simulation was ran from the restored simulation plan, a new scenario is created from the model).
 
-\subsection{Fault tolerance retry test}
+\subsection{Fault tolerance test}
 For this test, a intentionally error is created to verify if the implemented strategy for fault tolerance is executed. A successful verification for this
 strategy was checked. Also a check was done by removing the server from the cluster while a jobs are being processed. This checked verified that the Archive service
 would restart the job in case of sudden failure after the server has be revived. This is the case only if the defined number of retires are not exceeded.
