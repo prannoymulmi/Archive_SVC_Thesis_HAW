@@ -32,15 +32,16 @@ connection interface must only be changed in inside the Archive service instead 
 
 \begin{figure}[H]
     \centering \includegraphics[height=6.5cm, angle=90, origin=c, width=11cm]{grafiken/archiveClass.png}
-    \caption{Class Diagram for the Archive process (Component level)}
+    \caption{Class Diagram for the Archive process (Top level)}
     \label{fig:archiveClassDiagram}
 \end{figure}
 
-Figure \ref{fig:archiveClassDiagram} illustrates the class diagram for the archive process. This diagram attempts to depict only the top level components
-which perform a certain action (e.g. archiving files, archiving simulation result). The archive process is is a complex 
-task, thus involves a lot of operations and communications. The operations include HTTP Get request to an external service, a repository storing the received
+Figure \ref{fig:archiveClassDiagram} illustrates the class diagram for the archive process. This diagram attempts to depict only the top level classes
+which performs action mentioned in the component diagram (e.g. archiving files, archiving simulation result). The archive process is is a complex 
+task, thus involves a many operations and communications. The operations include HTTP Get request to an external service, storing of received
 data in to the Synology and forwarding the received data to the next component which requires it. This involves more classes than the number depicted
-and cannot be illustrated in a single diagram. 
+and cannot be illustrated in a single diagram. This diagram is shown to point out the order of complexity that the archive process undergoes and how it is being
+implemented.
 
 \subsubsection{Repository Pattern implementation}
 It is seen that many components require access to the Synology storage to archive their respective data, that presents a problem of having data
@@ -94,3 +95,47 @@ utility service could process more than one process at once. Therefore, an endpo
 requests. To solve this problem, it is decided that the API requests would be executed as a long running job and persisting the jobs in a very efficient 
 Redis\footnote{https://redis.io} Database to include failure tolerance. In addition, the complexity of the Database utility service also has to be taken into consideration, as it 
 is written in GO lang a different programming language than the Archive service.
+
+Lastly, a major issue to be discussed is when the archive process fails which requires a rollback by unmarking the project. As mentioned earlier the project is
+marked as "TO\_BE\_ARCHIVED" so that no other processes can modify the contents during the archive process. This is a great strategy if everything goes as planned but 
+often enough this is not the case and it is mandatory that an unmarking of the project is done otherwise the project would be unusable. It also happens that since the
+marking service is dependent upon many services it has a very high rate of failure as well. This brings upon the problem how would the archive service behave if the
+unmarking of the project fails. It seems very natural to just repeat the process until the unmarking request would succeed. Translating this in terms of computer 
+language an Infinite loop until success. If this happens only with a single process it does not make a huge difference but thinking of the bigger picture if this 
+occurs with 100 different processes at the same time, it would use valuable processing resources as it may be stuck in a deadlock condition until a outside interruption
+is made. To avoid this condition of deadlock the number of retires for unmarking the project is restrained to a fixed number with certain time interval for the request 
+calls. Currently 5400 retires with an interval of 16 seconds is chosen which means it tries to retry for at least a day and if it still fails the process would stop 
+(See Listing \ref{lst:unmarkRetry}). 
+Although, this solves the issue of using up resources but the problem that the project is unusable is still there. No other way except a manual unmarking is seen so 
+it is decided that the archive process would also persist the marking session id which can be used to call the unmarking endpoint. With the use of this id a manual 
+trigger is possible as soon as the error is fixed. The marking session id can be easily retrieved also from the GUI as it will be included in the status request of
+the archive job.
+
+\newpage
+\begin{lstlisting}[language={[Sharp]C}, caption={Unmarking retry implementation}, captionpos=b,label={lst:unmarkRetry}]
+private async Task OnArchiveFail(string projectId)
+{
+    var timeInterval = 16;
+    var restartCount = 0;
+    var sessionId = await _iMarkProject.GetMarkSessionIdByProjectId(projectId);
+    restartCount = 0;
+    while (true)
+    {
+        try
+        {
+            Console.WriteLine($"Unmarking id {sessionId}");
+            _iMarkProject.UnMarkAllResources(sessionId).Wait();
+            await _iMarkProject.RemoveSessionMarkFromArchiveStatus(projectId);
+            break;
+        }
+        catch (Exception e)
+        {
+            restartCount++;
+            Console.WriteLine($"Unmarking restart {restartCount} and will start in {timeInterval}s");
+            Task.Delay(TimeSpan.FromSeconds(timeInterval)).Wait();
+            Console.WriteLine(e);
+            if (restartCount == 5400) break;
+        }
+    }
+}
+\end{lstlisting}

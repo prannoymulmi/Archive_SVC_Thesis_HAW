@@ -3,15 +3,15 @@ The main aim of this test is to test the communication between the different ser
 such a way that it calls all the endpoints that is used in order to create a simulation run from adding files to running the simulation. As a result of checking
 these endpoints it gives an additional benefit of detecting errors introduced from other services in the area of resource creation. As an example, assuming a service
 (excluding the Project, User, Marking, and Deletion service)
-made some changes which has some bug with resource creation then if the Archive service integration test are executed it would try to recreate the mock resource
-and would result in a fail which could then be detected.
+made some changes which has some bug with resource creation and then if the Archive service integration test are executed it would try to recreate the mock resource
+and would result in a fail which could be detected.
 
 \subsection{Challenges}
-The Integration Tests are very beneficial to have a more stable system but realizing this test posed really big challenges which took considerably long time with
-some constraints. Due to the Microservice architecture of the MARS framework the services are deployed as an independent entity which have their own database.
+The Integration Tests are very beneficial to have a more stable system but realizing this test posed really big challenges which took considerably long time followed 
+with some constraints. Due to the Microservice architecture of the MARS framework the services are deployed as an independent entity which have their own databases.
 It was an enormous task to figure out how to combine all these independent services and have them running in a testing environment. The solution to this issue
 was to create a multi-container Docker application using Docker-compose. Here, the images of the services required are loaded and the Mongo db database for each
-service is seeded. It is also very important for the order for the services and the seeding to loaded in a specific order since the services are dependent upon
+service are seeded with mock data. It is also very important for the order for the services and the seeding to loaded in a specific order since the services are dependent upon
 each other.  
 
 \begin{lstlisting}[language=docker-compose,caption={Docker compose configuration snippet for Archive service Integration Test}, captionpos=b, breaklines=true,label={code:integCompose}]
@@ -62,7 +62,7 @@ for them. Although, it is a point of interest in the future to investigate to fi
 
 \subsection{Correctness of received data}
 For this test, the GET endpoints of the services were tested. A dummy model for the data which the Archive service expects is compared to the result
-form the GET endpoints. This check would aid to verify if the services return a data model which the service. If any changes to the other services
+form the GET endpoints. This check would aid to verify if the services return a data model which the service expects. If any changes to the other services
 related to the data model is made this test would detect it. 
 
 \subsection{Correctness for uploading data}
@@ -79,11 +79,11 @@ model would be uploaded and the test would verify if an conflict status is retur
 \subsection{Integration with the Database}
 This test is designed to test if a proper integration between the Mongodb and Archive service is maintained. The Archive service stores vital metadata
 which gives the client information about the status of the job and many other data that it needs. This check verifies the correctness of the read and write 
-operations done with the Database. 
+operations is done with the Database. 
 
 \subsection{Test Coverage}
 A total of 81 tests were made which would aid in verifying the integration of the Archive service with the dependent services and the database. The 
-total time for running the test measured at the time of writing the thesis is on average 7m38s. Table \ref{table:MARS Resource Hierarchy Service Overview}
-mentions the services that the archive service has dependency towards and 6 out of 9 services are being tested for the integration test. Among the total services 
+total time for running the test measured at the time of writing the thesis is on average 7m38s at the time of writing. Table \ref{table:MARS Resource Hierarchy Service Overview}
+mentions the services that the archive service has dependency towards and 6 out of 9 services are successfully tested. Among the total services 
 which were supposed to be tested only 67\%  were carried out. It is a point of interest in the future to complete these requirements which would boost the
-reliability of the Archive service. 
+reliability of the Archive service by investigating the issue. 

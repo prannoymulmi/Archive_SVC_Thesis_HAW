@@ -17,10 +17,10 @@ private IServiceCollection BuildServices(IServiceCollection services)
 \subsubsection{AOP Logging}
 Logging is very important part of the service as it gives the maintainers key information of what has happened to the system. This makes logging important
 in each part of the system which leads to copying of the logging logic to the different components in the archive service violating the SOLID principles. 
-To solve this issue the interceptor pattern is used in this here. Using this pattern a decorator would be put in the class which wants to have the common
+To solve this issue the interceptor pattern is used in here. Using this pattern a decorator would be added in the class which wants to include the common
 logging logic. Listing \ref{lst:interceptor} shows the implementation of the decorator "Intercept("logger")" which is injected in the class. The 
 classes decorated with attribute would have a logging logic triggered. Listing \ref{lst:interceptor} shows the main logic for the logging where a success message
-with all the method arugments, time elapsed would be printed in case of a successful run and will log the exception in case of failure. This aids in the maintenance
+with all the method arguments, time elapsed would be printed in case of a successful run and will log the exception in case of failure. This aids in the maintenance
 of the system as new feature are added only the decorator must be added to log the start, success or exception of the method.
 
 \newpage

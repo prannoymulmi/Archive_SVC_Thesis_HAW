@@ -8,7 +8,7 @@ Figure \ref{fig:CIbuild} in the Chapter Requirement Analysis depicts
 Unit Testing as an mandatory step for deployment of the Archive service. Running this test with every build process will boost the confidence 
 in changing and maintaining the code for the Archive service. The .NET platform offers a lot of unit-testing frameworks 
 (e.g. XUnit, Nunit, MSTest/Visual Studio). Nunit is choosen as the preferred the testing framework for this service as it has a good reputation for
-fast testing and it is readily integrated the IDE i.e. Rider (JetBrains) used. 
+fast testing and it is readily integrated the IDE i.e. Rider (JetBrains) used for this work. 
 
 \par
 Making stubs, and mocks/fake objects are one of the important steps to do a proper unit testing. This statement can be backed up saying that unit tests are
@@ -51,8 +51,7 @@ public async Task Archive_CorrectDataId_NoExceptions()
 \end{lstlisting}
 
 Listing~\ref{lst:moqEg} illustrates an example of unit test done on the Archive method for a file. The Moq framework injects the dependencies and in the setup method
-one can return the desired output from the methods. This unit tests if all the dependent methods work as expected not exception from the Archive file method should be
-thrown. 
+one can return the desired output from the methods. This unit tests verifies if all the dependent methods work as expected.
 Following the functional requirements mentioned in Section \ref{section:functionalReq} the unit tests are designed to test if the core logic functions as expected which includes error handling as well.
 
 \subsection{Archive and Retrieve process test}
@@ -95,8 +94,8 @@ public async Task ArchiveProject_SucessfulRun_ShouldBeEnqueued()
 \end{lstlisting}
 
 \subsubsection{Return conflict message in case a process for the project is running}
-For this test, it checks the denial of a job archive or retrieve job creation when a process is in running state. It is of high priority that this check
-for conflict work as expected otherwise there could be cases of unwanted data loss. 
+For this test, it checks the denial of a archive or retrieve job creation when a it is in "PROCESSING" state. It is of high priority that this check
+for conflict works as expected otherwise there could be cases of unwanted data loss. 
 
 \subsubsection{Exception catch}
 For this test, different checks are made in many modules if the expected Exception is caught, in case of an error. Also included is a check for the general
@@ -129,7 +128,7 @@ These tests would aid the build to discover a faulty implementation according to
 
 \subsubsection{Null or empty checks}
 For this test, the different modules are tested against the most famous Null pointer exception in the different modules and how it is handled. This is an important
-test case as the archive/retrieve process should still run and terminate accordingly if some resources are null. As an example, this test if the result received from
+test case as the archive/retrieve process should still run and terminate accordingly if some resources are null. As an example, during a normal archive run if the result received from
 the scenario service  is empty i.e. no scenarios in the project the archive process should not fail due to a null pointer exception rather finish the archive process
 as there are no children resources (See Figure \ref{fig:marsDependency}). Listing \ref{lst:scenarisEmpty} shows an example if the scenario client returns a null 
 the process does not break but instead the method for archiving scenarios is not triggered. 
@@ -157,10 +156,10 @@ public async Task Archive_NoScenarios_ScenariosNotAdded()
 \end{lstlisting}
 
 \subsubsection{File read tests}
-For this test, the module for reading files from the Synology is tested. To do so dummy files were added (mocking the existence of Synology assuming without 
+For this test, the module for reading files from the Synology is tested. To do so dummy files were added (mocking the existence of Synology without 
 a network connection) in the build for the unit tests. This test reads the file
 and then compares to the expected result. This test is designed to check if the file reading algorithm works as expected. Unfortunately, the module to write the data
-could not be tested because the when the tests are build they are packed into a dll file and a write operation is not allowed.
+could not be tested because when the tests are built they are packed into a .dll file and a write operation is not allowed.
 
 \subsection{Test Coverage}
 A total of 174 unit test cases were made on the different modules existing in the Archive service at the time of writing this thesis. The total time for running all 
