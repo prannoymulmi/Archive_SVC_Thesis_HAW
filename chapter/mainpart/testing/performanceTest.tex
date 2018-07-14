@@ -9,13 +9,13 @@ compressing the simulation results and it can be seen that the file sizes for th
 process with file size on avg about 683 Mb and 43s processing time.
 
 \begin{figure}[H]
-    \centering \includegraphics[scale=0.5]{grafiken/archiveZip.png}
+    \centering \includegraphics[scale=0.45]{grafiken/archiveZip.png}
     \caption{Overall performance of the archive process (compressed simulation results)}
     \label{fig:archivePerformance}
 \end{figure}
 
 \begin{figure}[H]
-    \centering \includegraphics[scale=0.5]{grafiken/archiveUnzip.png}
+    \centering \includegraphics[scale=0.45]{grafiken/archiveUnzip.png}
     \caption{Overall performance of the archive process (uncompressed simulation results)}
     \label{fig:archivePerformanceUn}
 \end{figure}
@@ -31,13 +31,19 @@ results of the retrieve process using the uncompressed simulation results which 
 size similar to the analyzed one is benefited by using the compression feature.
 
 \begin{figure}[H]
-    \centering \includegraphics[scale=0.7]{grafiken/retrieveZip.png}
+    \centering \includegraphics[scale=0.5]{grafiken/retrieveZip.png}
     \caption{Overall performance of the retrieve process (compressed simulation results)}
     \label{fig:restorePerformance}
 \end{figure}
 
 \begin{figure}[H]
-    \centering \includegraphics[scale=0.7]{grafiken/retrieveUnzip.png}
+    \centering \includegraphics[scale=0.5]{grafiken/retrieveUnzip.png}
     \caption{Overall performance of the retrieve process (uncompressed simulation results)}
     \label{fig:restorePerformanceUn}
 \end{figure}
+
+Also, to verify the complexity of the processes the in the same project the number of simulations were doubled i.e. 24 simulation and the performance was recorded
+and an average of 55 sec for archive and 8.2 mins for archive was observed. As a result, the processing time was doubled which leads to a
+conclusion that the complexity of the algorithm is O(N). It has to be kept in mind that processing time of different kind of models (e.g. KNP, wolves and Sheep) 
+would have a different processing time even though the number of files are the same. This is because the processing time are different depending on the complexity of 
+the model and the simulation parameters. 

@@ -6,13 +6,13 @@
     \chapter{Introduction}
     Nowadays consumers and businesses are continuously growing aware of the value of archives. As the archived data has also proven
     to be valuable asset in the field of scientific research where an expert could archive their data for future reference. Having said that, the 
-    MARS\footnote{MARS: Multi Agent Research and Simulation} framework offers a easy interactive platform for a domain expert i.e. ecologist, biologist, 
+    MARS\footnote{MARS: Multi Agent Research and Simulation} framework offers an easy interactive platform for a domain expert i.e. ecologist, biologist, 
     chemist to simulate complex real life scenarios (e.g. reproduction of bacteria in a body) based on the concept of Agent-based modeling and simulation 
     (MAMS\footnote{MAMS: Multi Agent Management System}) \cite{agentModeling}. The data produced from these simulation also provides close to accurate 
-    results which can be leveraged getting vital information about the modeled system.
+    results which can be leveraged by getting vital information from the modeled system.
 
         \section{Motivation}
-        The inspiration for this work also comes from the fact that an archive adds great value to the existing system by allowing the experts to be
+        The inspiration for this work comes from the fact that an archive adds great value to the existing system by allowing the experts to be
         able to store their results and projects and use it in future. Additionally, the MARS system requires a large number computational resources and
         the archive would provide an opportunity for the MARS system to improve their
         performance because this service would move some part of data from the primary storage to the secondary storage. 
@@ -43,10 +43,8 @@
            
 
      
-    \section{Problem Statement}
+    \section{Problem statement}
         \label{sec:problemStatement}
-        The main aim of this thesis is to design, implement, and test an Archive service
-        to the existing MARS\footnote{MARS: Multi Agent Research and Simulation} system.
         The MARS is a complex Distributed System which brings upon different levels of 
         complexities for this thesis. The problems being dealt within the thesis are as follows:
         \begin{enumerate}
@@ -65,7 +63,7 @@
 
             \item 
             \textbf{Understanding MARS resource hierarchy}, The MARS Resource Hierarchy is the order how the assets in the system have to be created. Without the
-            proper understanding of this hierarchy restoring, archiving data will lead to corrupted states. Therefore, understanding this complex structure plays 
+            proper understanding of this hierarchy, restoring, archiving data may lead to corrupted states. Therefore, understanding this complex structure plays 
             a vital role (Section \ref{subsection:MARSResource}). 
 
             \item
@@ -74,12 +72,12 @@
             is only allowed to communicate via API gate i.e. HTTP or RPC. As accessing another service's database is considered an Anti-pattern \cite[p.~27]{{Torre2017}}.
             It imposes another challenge in understanding the structure and algorithms of services which are drafted in various technologies.
             \item
-            \textbf{Operational complexities}, Due to the diverse services that have to be managed, the system in addition has operational complexities. Thus, it is a challenge 
+            \textbf{Operational complexities}, Due to the diverse number of services that have to be managed, the system additionally has operational complexities. Thus, it is a challenge 
             to run all the services as well as tests (e.g. integration, end-to-end tests) in a local environment.   
         \end{enumerate}
 
     \newpage
-    \section{Thesis Overview} 
+    \section{Thesis overview} 
         Here is a brief description of the thesis, providing a short overview on what each
         chapter contains.
         
@@ -101,12 +99,12 @@
         implementation decision are explained.
 
         \par
-        \textbf{Chapter 6: "Result And Validation"}, this chapter explains in details about 
-        some test cases and result validation that were carried out.
+        \textbf{Chapter 6: "Testing"}, this chapter explains in detail about 
+        some test cases and result validation that were carried out to give more credibility to the designed system.
 
         \par
         \textbf{Chapter 7: "Conclusion"}, this chapter presents the outcomes and some 
-        suggestions for improvements which can be applied.
+        suggestions for improvements which can be applied in the future.
         
         \textbf{Appendix}, provides a brief description of how the archive service can be built and deployed locally for future development.
 

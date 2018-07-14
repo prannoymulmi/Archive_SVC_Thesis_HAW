@@ -17,7 +17,7 @@ def clean(file_name):
           print("error")  
 
 
-def build_pdf(name, times=2, clean_up_before=True, clean_up_after=True):
+def build_pdf(name, times=4, clean_up_before=True, clean_up_after=True):
   COMMANDS = ["pdflatex", "bibtex", "pdflatex", "pdflatex"]    
   if clean_up_before:
     clean(name)

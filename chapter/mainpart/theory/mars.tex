@@ -43,7 +43,7 @@
                 \textbf{Create a scenario}: A scenario of a project can be described as the initialization of the model.
                 In process of creating a scenario, attributes like number of agents i.e. wolves, sheep are specified. 
                 The uploaded layers like the GIS, Time series etc, if required, are assigned to the model. Also,
-                the execution duration parameters of the simulation run are configured.
+                the execution duration parameters of the simulation run are configured here as well.
 
             \item 
                 \textbf{Configure result configuration}: The result configuration enables the user to choose
@@ -80,7 +80,7 @@
         how the resources are dependent upon each other. This follows the hierarchal structure seen in Figure \ref{fig:marsDependency},
         where the project data is at the top and no other entity can persist without it. A pattern for the cardinality of the entities can be observed.
         The lower level entity can only have a reference to one of its parent entity, where as the parent can have multiple children. An exception to this
-        pattern is between Simulation Run and Simulation Results. A Simulation Run may not have multiple results because it represents a job which will produce
+        pattern is between Simulation run and Simulation results. A Simulation run will not have multiple results because it represents a job which will produce
         the output i.e. Simulation Results. It is also to be mentioned that every entity expect the project is identified as a weak entity because they cease not 
         to exist without its parent entity. 
 
@@ -91,18 +91,18 @@
         which has direct dependency with Archive service are mentioned.
         \begin{table}[h!]
             \centering
-            \begin{tabular}{|p{4cm}|p{11cm}|}
+            \begin{tabular}{|p{4cm}|p{10.5cm}|}
                 \hline
                     \textbf{Service Name}  & \textbf{Description}\\
                 \hline
                     Project Service & 
-                    Handles Project resources. \\
+                    Handles project resources. \\
                 \hline
                     File Service
                     & Handles the import and export of different file resources i.e. models, GIS\footnote{\label{footnote:GIS}GIS: Geographic Information System}, 
                     Time series.\\
                 \hline
-                    Metadata Service  & Manages all the Metadata resources.\\
+                    Metadata Service  & Manages all the meetadata resources.\\
                 \hline
                     Resultcfg Service  & The Result configurations which holds the mapping of the models are handled.\\
                 \hline
@@ -110,7 +110,7 @@
                 \hline
                     Sim-runner Service  & Handles Simulation plans and Simulation run.\\
                 \hline
-                    DB-util Service  & Handles all the simulation results and backup to synology.\\
+                    DB-util Service  & Handles all the Simulation results and backup to synology.\\
                 \hline
                     Marking Service  & Handles the Marking of the resources, so that when the resource is marked by one service it cannot be altered .\\
                 \hline

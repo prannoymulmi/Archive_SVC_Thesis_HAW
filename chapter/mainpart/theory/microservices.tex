@@ -20,19 +20,19 @@ Each service is encapsulated with their own life cycles, which communicates with
 \end{figure}
 
 \par
-    Comparing microservices to a single monolithic application \cite[p.~94]{{softwareDesign}} where the
+    Comparing Microservices to a single monolithic application \cite[p.~94]{{softwareDesign}} where the
     system is built as a large single unit and runs in a single process. 
     This is considered the most natural way to develop a server side 
     application. It is seen that as the application scales in size, it 
     gets harder to keep up with the changes. As scaling requires the whole
     application to be scaled as a whole. This is where microservices come very handy,
     as the only the required bounded module can be scaled up as needed. 
-    There are factors to be considered before going for a microservice
-    architecture.
+    There are different factors to be considered before going for a Microservice
+    architecture as improper planning could lead to an unstable system.
 
     \begin{table}[h!]
         \centering
-        \begin{tabular}{|p{9cm}|p{7.5cm}|}
+        \begin{tabular}{|p{7.3cm}|p{7.3cm}|}
             \hline
                 \textbf{Advantages}  & \textbf{Disadvantages}\\
             \hline
@@ -53,11 +53,11 @@ Each service is encapsulated with their own life cycles, which communicates with
     \end{table}    
 
     \newpage
-    \subsection{Data Sovereignty In Microservice}
+    \subsection{Data Sovereignty in Microservice}
     \label{subsection:dataSovereignty}
     It is an important guideline for a Microservice architecture to own its domain data and 
-    logic \cite[p.~29]{Torre2017}. Decentralized Data would assist a single Microservice
-    to become solely independent and help them evolved individually. The approach of each Microservice owning its own database is also
+    logic \cite[p.~29]{Torre2017}. Decentralized data would assist a single Microservice
+    to become solely independent and help them evolve individually. The approach of each Microservice owning its own database is also
     know as \textbf{Polyglot Persistence} \cite{Polyglot}. Applying this pattern would imply that the
     data belonging to one service is available to the others only via the API of the Microservice.
 
@@ -70,7 +70,7 @@ Each service is encapsulated with their own life cycles, which communicates with
    In Figure \ref{fig:polyglot}, it can be observed how a Monolithic application owns only a single database for the whole application. Meaning,
    the application is sharing all data across multiple domains and has tight coupling with each other. Whereas, in Microservices each service owns
    a single database which is easier to manage. Having said that data sovereignty is very beneficial, it also brings various difficulties
-   i.e. coordinations between services, which are very challenging to tackle and creates data coherency issues in the system. 
+   i.e. coordinations between services, which is very challenging to tackle and creates data coherency issues in the system. 
 
 
 

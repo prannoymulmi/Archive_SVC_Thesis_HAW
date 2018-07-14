@@ -10,7 +10,7 @@
 
  This service targets any user who desires to archive the MARS resources needed for a simulation including the existing simulation results, which would
  be analyzed in the future. The Archive service would expose its API, calling it, one can archive and restore the resources. The exposed
- API can later be integrated in the MARS graphical interface (MARS Teaching User Interface). The MARS Teaching API acts as proxy between the users 
+ API is also integrated in the MARS graphical interface (MARS Teaching User Interface). The MARS Teaching API acts as proxy between the users 
  and the MARS back-end Microservices, as it provides some level of abstraction by hiding unnecessary endpoints for the user in the graphical interface.
 
  Figure \ref{fig:archiveUseCase} presents the use case of the system with its expected behavior. The main intention of the diagram is to show the
@@ -23,7 +23,7 @@
  poses data synchronization issues. Therefore, if the marking fails the archive project will not occur, leading the archiving use case being extended from the marking
  use case. The second action which can be triggered by the user is to retrieve the archived project from the Synology back to active system. Lastly, since archiving 
  and retrieving could take from minutes to hours depending on the size of the project, these processes are visioned to be a background long running job. For the user
- it would be a point of interest to know if the job is completed or not. To fulfill this purpose, the use case Get job status is present in the system.
+ it would be a point of interest to know if the job is completed or not. To fulfill this purpose, the use case get job status is present in the system.
  
  \begin{figure}[H]
     \centering \includegraphics[scale=0.6, angle=90, origin=c]{grafiken/archiveUseCase.png}
@@ -32,7 +32,7 @@
 \end{figure}
  
 Different uses cases have been mentioned for the archive service in Figure \ref{fig:archiveUseCase}. Accomplishing them requires several requirements to be met
-which are divided into two different categories; technical and functional aspects. 
+which are divided into two different categories; non functional and functional aspects. 
 
 \input{chapter/mainpart/analysis/technical.tex}
 \input{chapter/mainpart/analysis/functional.tex}
