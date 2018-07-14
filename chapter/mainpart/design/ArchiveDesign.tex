@@ -33,6 +33,7 @@ The following file systems are analzyed for this thesis:
 \begin{enumerate}
     \item Web Archive (WARC file format)\footnote{https://www.iso.org/standard/44717.html}
     \item Hierarchical data format 5 (HDF5)\footnote{https://support.hdfgroup.org/HDF5/whatishdf5.html}
+    \item JavaScript Object Notation (JSON)\footnote{https://www.json.org}
 \end{enumerate}
 
 HDFS\footnote{https://hortonworks.com/apache/hdfs/} is a very popular file system used to store big data in an efficient and fast manner. 
@@ -51,16 +52,23 @@ The WARC (Web Archive) file format is used to archive web files by concatenating
 This file format can be used to store different kinds of web crawl data with its metadata. It is widely used
  to archive data from the World wide web i.e. images, texts, html \cite{WARC}.
 
+\subsubsection{JSON} 
+JSON is a lightweight data format which is very easy for humans and machines to read and write. Although, this format is a subset of the JavaScript
+programming language it is completely language independent which follows the conventions used in different programming languages i.e. C\#, Java, Python and more.
+It is built as a collection of key/value pairs which is similar to a hash table and is supported by almost all modern programming languages and databases like
+MongoDB.
+
+\vspace*{10pt}
  \begin{table}[H]
     \centering
     \begin{tabular}{|p{4.6cm}|p{4.6cm}|p{4.6cm}|}
         \hline
-            \textbf{HDF5}  & \textbf{WARC}&\textbf{Json}\\
+            \textbf{HDF5}  & \textbf{WARC}&\textbf{JSON}\\
         \hline
             It is used mostly for scientific purposes (Efficient
             for simulation data \cite[p.~11]{Savic2007}. & 
             Ability to store both the payload content and control information from mainstream Internet application layer protocols, such as
-            HTTP, DNS, and FTP. & A simple file format which can be easily understood by Mongo DB.\\
+            HTTP, DNS, and FTP. & A simple file format which can be easily understood by MongoDB.\\
         \hline
             It enables efficient data storage on lookup.
             &  
@@ -80,11 +88,11 @@ This file format can be used to store different kinds of web crawl data with its
 \end{table} 
 
 \subsubsection{Conclusion}
-    The two file formats are very powerful in their own domain and it can be utilized to archive a file very effectively. After careful consideration,  
-    it seems so that both of the file formats are not suitable for the archive and retrieve process. 
+    All the mentioned file formats are very powerful in their own domain and it can be utilized to archive a file very effectively. After careful consideration,  
+    it seems so that HDF5 and WARC file formats are not suitable for the archive and retrieve process. 
 
     HDF5 file format is not suitable for our use case because this format is highly optimized to work with
-    numeric data for fast access and storing string is inefficient as it creates a large overhead to store them. 
+    numeric data with fast access but storing string is inefficient as it creates a large overhead to store them. 
     Additionally, it also requires additionally 3rd party application for viewing and extracting its data which 
     adds more complexity for the user if one just wants to download the archive and analyze it. 
 
@@ -92,10 +100,11 @@ This file format can be used to store different kinds of web crawl data with its
     In contrast to MARS simulation results where a single results could be larger than 1GB. This would results in scalability issues in the future. To 
     avoid this circumstance this file format was also excluded.
 
-    Lastly, the file format for archive is planned to be json for the metadata files i.e. simulation runs, simulation plans, scenarios and, result configuration and 
+    Lastly, the file format for archive is planned to be JSON for the metadata files i.e. simulation runs, simulation plans, scenarios and, result configuration and 
     the simulation results would be stored as a gzip file. All the project resources will be packed inside a folder in the Synology (See Figure \ref{fig:synology})
      which is easily accessible via the MARS network.
-    The folder can be downloaded as a zip file as the synology provides an graphical UI to work with.   
+    The folder can be downloaded as a zip file as the synology provides an graphical UI to work with. As the reading and writing this file is very simple which
+    aids in reducing the complexity of the restore process as well.
 
 \begin{figure}[H]
     \centering \includegraphics[scale=0.45]{grafiken/archiveActivity.png}
@@ -104,12 +113,12 @@ This file format can be used to store different kinds of web crawl data with its
 \end{figure}
 
 Figure \ref{fig:archiveActivity} illustrates an activity diagram of archiving an entire archive process. As mentioned in Table \ref{table:preconditionsArchive},
-marking the resources for the project for the archive service is the first requirement needed to start the process. If the project resources are marked successfully
+marking the resources for the project is the first requirement needed to start the process. If the project resources are marked successfully
 then the archive would be initialized as a background job and the job id would be send to the client. In case the marking would fail the error message will be 
 sent to the client and the archive process will halt. The archiving process is visioned to be a background job due to the fact that a single process could take
-a long period of time and would block the server for additional requests. Following the successful job creation action, the process checks if an archive already
-exists. A check for an existing project is made to ensure that if the archive process failed caused by an transient error, the incomplete data can be removed. After
-the archive folder creation the metadata, files, scenarios, result configurations, simulation plans, simulation runs and the simulation results are retrieved respectively.
+a long period of time and would block the server for additional requests. Following the successful job creation, the process checks if an archive already
+exists. A check for an existing project is made to ensure that if the archive process failed is caused by an transient error, the incomplete data can be removed. After
+the archive folder creation, the metadata, files, scenarios, result configurations, simulation plans, simulation runs and the simulation results are retrieved respectively.
 After a successful archive process the  resources are deleted from the Ceph cluster. Lastly, in case of some failures during archiving the exception will be logged 
 which can be later analyzed for maintenance.
 
@@ -119,9 +128,9 @@ which can be later analyzed for maintenance.
     \label{fig:stateArchive}
 \end{figure}
 
-Figure \ref{fig:stateArchive} illustrates the transitions that can occur during the archive process. The idle refers to the state where no archive process
+Figure \ref{fig:stateArchive} illustrates the transitions that can occur during the archive process. The idle state refers to the state where no archive process
 is being executed. Additionally, the state digram also considers
-how the state would change if one of the resources is empty. In the case of an empty resource (e.g. no scenarios available for the project) the archive
+how the state would change if one of the resources are empty. In the case of an empty resource (e.g. no scenarios available for the project) the archive
 process stops gracefully and transitions to the idle state. 
 
  

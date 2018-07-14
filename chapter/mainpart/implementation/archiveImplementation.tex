@@ -3,7 +3,7 @@ This section gives an overview for the architecture of the archive process that 
 to move the project data to the Synology. 
 
 \subsection{Components for the archive process}
-An Archive in the MARS ecosystem is tedious due to its distributed architecture. The process requires communication between a many components for a 
+An archive in the MARS ecosystem is tedious due to its distributed architecture. The process requires communication between many components for a 
 successful run. Figure \ref{fig:archiveComponent} depicts the high level components and the interfaces that the archive requires. The Archive
 component exposes an API (Section \ref{section:APIDesign}) via an external port to the client. 
 
@@ -14,8 +14,8 @@ their respective services to get the corresponding data which would be stored in
 \subsubsection{Performance optimization for simulation results}
 \label{subsubsec:performanceSim}
 For better performance
-the simulation results are archived running a database dump in the Synology instead of the Archive service processing the data first and archiving it. Using the provided interface of
-the archive simulation result component the data dump can be executed. 
+the simulation results are archived running a database dump in the Synology instead of the Archive service processing the data first. Using the provided interface of
+the archive simulation result component, data dump call can be executed. 
 Dumping the result data directly to the Synology increases the throughput of the Archive service by reducing the network calls which decreases the total data processing
 time because as it has to be processed only at one end i.e. Database utility service. For this purpose a dumping API endpoint will be implemented which would trigger the data dump process in the 
 Synology. In addition, it can be argued why other external components (e.g. file service) do not have a direct dependency to the Synology as it would reduce more
@@ -38,7 +38,7 @@ connection interface must only be changed in inside the Archive service instead 
 
 Figure \ref{fig:archiveClassDiagram} illustrates the class diagram for the archive process. This diagram attempts to depict only the top level classes
 which performs action mentioned in the component diagram (e.g. archiving files, archiving simulation result). The archive process is is a complex 
-task, thus involves a many operations and communications. The operations include HTTP Get request to an external service, storing of received
+task, thus involves many operations and communications. The operations include HTTP GET request to an external service, storing of received
 data in to the Synology and forwarding the received data to the next component which requires it. This involves more classes than the number depicted
 and cannot be illustrated in a single diagram. This diagram is shown to point out the order of complexity that the archive process undergoes and how it is being
 implemented.
@@ -71,7 +71,7 @@ user with an conflict message. If no process with the project is running then an
 sent. Following the job creation the project will be marked so that during archive no changes to the project resources could be made. If this step fails the archive 
 process would stop by logging the error. After marking step completes the archive process receives a mark session id and the dependent resources which would allow the process to make
 changes to the resources. Using the dependent resources the process retrieves metadata, files, scenarios, result configurations, simulation plans, simulation runs 
-respectively and persists them in synology. Lastly, the simulation result dump action will be requested which will archive the result data. The process waits until
+respectively and persists them in synology. Lastly, the simulation result dump action will be called which will archive the result data. The process waits until
 all the result data is archived successfully. After a successful archive a request to delete the project data would be made so that the system memory can be freed.
 
 \subsubsection{Future possibility of failure recovery with snapshot}
@@ -82,13 +82,13 @@ could be resumed from the snapshot in contrast to the current atomic implementat
 
 \subsection{Challenges}
 There were couple of issues faced during the implementation phase for the archive. The huge size of the simulation results brought a large
-performance drop while getting the data from the Mongo database. In general the data has to be extracted first from the database in order for the archive job
-to save it in the secondary storage. Due to the enormous size of the result data reading the result data from the Mongo database took a long time. The proper duration
+performance drop while getting the data from the MongoDB. In general the data has to be extracted first from the database in order for the archive job
+to save it in the secondary storage. Due to the enormous size of the result data, reading the result data took a long time. The exact duration
 metrics was not taken because the data reading rate was unacceptable. As an approximation, a file with an approx size of 500 Mb took more than one hour 
 for a complete read excluding the data transfer to the Synology. This posed the threat of hindering the performance of the archive process by an unacceptable margin.
-After careful consideration, it was seen that each simulation result was stored as a separate collection in the Mongo database. This provided an opportunity to use
-the highly optimized dumping and restore tool provided by Mongo DB. With the help of the dumping tool the performance of simulation results became considerably fast i.e.
-500 Mb took around 3.5 min.
+After careful consideration, it was seen that each simulation result was stored as a separate collection in MongoDB. This provided an opportunity to use
+the highly optimized dumping and restore tool provided by MongoDB. With the help of the dumping tool the performance of simulation results became considerably fast i.e.
+500 Mb took around 30 sec with compression.
 
 Secondly, this dump feature has to be integrated in the Database util service, given that the service could handle multiple requests. It is a mandatory requirement that the Database
 utility service could process more than one process at once. Therefore, an endpoint was needed which could be called by the archive service for multiple Mongo dump

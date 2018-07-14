@@ -5,7 +5,7 @@ which ensure the correct behavior of the system.
 \subsection{Successful archive process start}
 For this test, it is verified whether the archive process can be started from the MARS Teaching GUI with the precondition that no other process
 for this project is running. One Wolves and Sheep model is uploaded with other resources i.e. scenario, result configuration,
-simulation plan, simulation run and simulation result. As this test is is to verify the successful execution of the process only one of each resources
+simulation plan, simulation run and simulation result. As this test is to verify the successful execution of the process only one of each resources
 were uploaded and checked.
 
 \subsection{Archive with a more complex model}
@@ -26,6 +26,6 @@ For this test, it is verified if the retrieved data are the same as from the arc
 to produce further results (e.g. a simulation was ran from the restored simulation plan, a new scenario is created from the model).
 
 \subsection{Fault tolerance test}
-For this test, a intentionally error is created to verify if the implemented strategy for fault tolerance is executed. A successful verification for this
-strategy was checked. Also a check was done by removing the server from the cluster while a jobs are being processed. This checked verified that the Archive service
+For this test, a intentional error is created to verify if the implemented strategy for fault tolerance is executed. A successful verification for this
+strategy was checked. Also a check was done by removing the server from the cluster while a job are being processed. This checked verified that the Archive service
 would restart the job in case of sudden failure after the server has be revived. This is the case only if the defined number of retires are not exceeded.

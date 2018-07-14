@@ -21,7 +21,7 @@ process with file size on avg about 683 Mb and 43s processing time.
 \end{figure}
 
 Unfortunately simulation results with larger file sizes could not be tested as no such simulation results was available at the moment but with this metrics it can be said that
-for smaller file sizes it is a better choice to compress the simulation data while archiving it since there is a significant data volume save and the time taken for the
+for smaller file sizes it is a better choice to compress the simulation data while archiving it since there is a significant volume save and the time taken for the
 archive does not differ by much.   
 
 \subsection{Retrieve performance}
@@ -43,7 +43,7 @@ size similar to the analyzed one is benefited by using the compression feature.
 \end{figure}
 
 Also, to verify the complexity of the processes the in the same project the number of simulations were doubled i.e. 24 simulation and the performance was recorded
-and an average of 55 sec for archive and 8.2 mins for archive was observed. As a result, the processing time was doubled which leads to a
+and an average of 55 sec for archive and 8.2 mins for retrieve was observed. As a result, the processing time was doubled which leads to a
 conclusion that the complexity of the algorithm is O(N). It has to be kept in mind that processing time of different kind of models (e.g. KNP, wolves and Sheep) 
-would have a different processing time even though the number of files are the same. This is because the processing time are different depending on the complexity of 
+would have a different processing time even though the number of files are the same. This is because the processing time differ depending on the complexity of 
 the model and the simulation parameters. 

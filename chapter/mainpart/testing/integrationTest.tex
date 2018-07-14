@@ -1,16 +1,16 @@
 \section{Integration test}
 The main aim of this test is to test the communication between the different services that the Archive service is dependent upon. This test is designed in 
-such a way that it calls all the endpoints that is used in order to create a simulation run from adding files to running the simulation. As a result of checking
+such a way that it calls the endpoints that is used in order to create a simulation run from adding files to running the simulation. As a result of checking
 these endpoints it gives an additional benefit of detecting errors introduced from other services in the area of resource creation. As an example, assuming a service
 (excluding the Project, User, Marking, and Deletion service)
 made some changes which has some bug with resource creation and then if the Archive service integration test are executed it would try to recreate the mock resource
-and would result in a fail which could be detected.
+and would result in a fail.
 
 \subsection{Challenges}
 The Integration Tests are very beneficial to have a more stable system but realizing this test posed really big challenges which took considerably long time followed 
 with some constraints. Due to the Microservice architecture of the MARS framework the services are deployed as an independent entity which have their own databases.
 It was an enormous task to figure out how to combine all these independent services and have them running in a testing environment. The solution to this issue
-was to create a multi-container Docker application using Docker-compose. Here, the images of the services required are loaded and the Mongo db database for each
+was to create a multi-container Docker application using Docker-compose. Here, the images of the services required are loaded and the MongoDB database for each
 service are seeded with mock data. It is also very important for the order for the services and the seeding to loaded in a specific order since the services are dependent upon
 each other.  
 
@@ -54,9 +54,9 @@ archive_svc_tests:
 \end{lstlisting}      
 
 Listing~\ref{code:integCompose} shows a snippet of the docker compose file for running the Integration Test. The depends\_on attribute for the archive service
-has many services in it. This means the archive\_svc\_test is waiting for the other services to load and the mongodb to be seeded with mock data. Unfortunately,
-since the Project service does not use Mongodb but instead Postgres Sql as a database for some unknown reason the synchronization of the seeding of the data
-did not succeed and therefore the tests could not be ran. The
+has many services in it. This means the archive\_svc\_test is waiting for the other services to load and the MongoDB to be seeded with mock data. Unfortunately,
+since the Project service does not use MongoDB but instead Postgres Sql as a database for some unknown reason the synchronization of the seeding of the data
+did not succeed and therefore the tests could not be executed. The
 Marking service and Deletion service endpoints that the Archive service uses have a dependency with the Project service  which resulted as a unsuccessful test
 for them. Although, it is a point of interest in the future to investigate to figure out the reason for this and complete the whole test.
 
@@ -77,7 +77,7 @@ name and the data id of the model is already existing an conflict status code wi
 model would be uploaded and the test would verify if an conflict status is returned. Likewise, the other responses are verified by this test. 
 
 \subsection{Integration with the Database}
-This test is designed to test if a proper integration between the Mongodb and Archive service is maintained. The Archive service stores vital metadata
+This test is designed to test if a proper integration between the MongoDB and Archive service is maintained. The Archive service stores vital metadata
 which gives the client information about the status of the job and many other data that it needs. This check verifies the correctness of the read and write 
 operations is done with the Database. 
 
@@ -85,5 +85,5 @@ operations is done with the Database.
 A total of 81 tests were made which would aid in verifying the integration of the Archive service with the dependent services and the database. The 
 total time for running the test measured at the time of writing the thesis is on average 7m38s at the time of writing. Table \ref{table:MARS Resource Hierarchy Service Overview}
 mentions the services that the archive service has dependency towards and 6 out of 9 services are successfully tested. Among the total services 
-which were supposed to be tested only 67\%  were carried out. It is a point of interest in the future to complete these requirements which would boost the
+which were supposed to be tested only 67\%  were carried out. It is also a point of interest in the future to complete these requirements which would boost the
 reliability of the Archive service by investigating the issue. 

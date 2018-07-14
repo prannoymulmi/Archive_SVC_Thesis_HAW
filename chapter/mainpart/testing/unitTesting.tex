@@ -61,8 +61,8 @@ but when one sees the attributes that a class is using it will give an good idea
 
 \subsubsection{Test if an background job is enqueued}
 For this test, after a successful API request for archiving a project the module should create a background job using Hangfire. This test would check if the
-background tasks were created or not. As it is a requirement for the archive process to as a background job it must be ensured that a background job is created 
-for a successful request. Listing\ref{lst:hangfireCreate} shows how the test was written to verify the creation of the background job. This process to do this unit
+background tasks were created or not. As it is a requirement for the archive process to run a background job so it must be ensured that a background job is created 
+after a successful request. Listing\ref{lst:hangfireCreate} shows how the test was written to verify the creation of the background job. This process to do this unit
 test is mentioned in the Hangfire documentation.
 
 \begin{lstlisting}[language={[Sharp]C}, caption={Hangfire Job creation test}, captionpos=b,label={lst:hangfireCreate}]
@@ -94,7 +94,7 @@ public async Task ArchiveProject_SucessfulRun_ShouldBeEnqueued()
 \end{lstlisting}
 
 \subsubsection{Return conflict message in case a process for the project is running}
-For this test, it checks the denial of a archive or retrieve job creation when a it is in "PROCESSING" state. It is of high priority that this check
+For this test, it checks the denial of a archive or retrieve job creation when it is in "PROCESSING" state. It is of high priority that this check
 for conflict works as expected otherwise there could be cases of unwanted data loss. 
 
 \subsubsection{Exception catch}
@@ -124,7 +124,7 @@ public async Task MarkAllResourceAndGetSessionId_MarkingSvcClientReturnEmpty_Thr
 \subsubsection{Expected value checks}
 For this test, different modules are tested with a mock inputs (e.g. data id, mock models) are made and then the method under test is ran with an 
 expected value. These tests are designed to ensure that the methods deliver correct results when a correct input from other modules are received.
-These tests would aid the build to discover a faulty implementation according to the requirements mentioned for this work.
+These tests would aid to discover a faulty implementation according to the requirements mentioned for this work.
 
 \subsubsection{Null or empty checks}
 For this test, the different modules are tested against the most famous Null pointer exception in the different modules and how it is handled. This is an important
@@ -156,10 +156,10 @@ public async Task Archive_NoScenarios_ScenariosNotAdded()
 \end{lstlisting}
 
 \subsubsection{File read tests}
-For this test, the module for reading files from the Synology is tested. To do so dummy files were added (mocking the existence of Synology without 
+For this test, the module for reading files from the Synology is tested. To do so, dummy files were added (mocking the existence of Synology without 
 a network connection) in the build for the unit tests. This test reads the file
-and then compares to the expected result. This test is designed to check if the file reading algorithm works as expected. Unfortunately, the module to write the data
-could not be tested because when the tests are built they are packed into a .dll file and a write operation is not allowed.
+and then compares it with the expected result. This test is designed to check if the file reading algorithm works as expected. Unfortunately, the module to write the data
+could not be verified because when the tests are built they are packed into a .dll file where a write operation is not allowed.
 
 \subsection{Test coverage}
 A total of 174 unit test cases were made on the different modules existing in the Archive service at the time of writing this thesis. The total time for running all 
@@ -170,8 +170,8 @@ overview of the type of module and the different features available.
     \hline
         \textbf{Modules} & \textbf{Features}\\
     \hline
-        Http communication client & File service client, Metadata service client , Scenario service client , Result configuration client, simulation plans client
-        , simulation runs client  and simulation results client.\\    
+        Http communication client & File service client, Metadata service client, Scenario service client, Result configuration client, simulation plans client, 
+        simulation runs client and simulation results client.\\    
     \hline
         API controller & Archive, Retrieve and background jobs.\\    
     \hline
@@ -187,5 +187,5 @@ overview of the type of module and the different features available.
     \label{table:unitTestCov} 
 \end{longtable}
 
-Out of the 28 different features of the given modules the unit tests were made for 26 of them. This gives a testing coverage for the unit test for about
+Out of the 28 different features of the given modules the unit tests were made for 26 of them. This gives a testing coverage of about
 92\%. Some Test cases could not be carried out due to the complexity of making the tests i.e. AOP\footnote{AOP: Aspect Oriented Programming} loggers, HTTP helpers, File Writers.
