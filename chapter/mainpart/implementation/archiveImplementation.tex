@@ -71,7 +71,7 @@ user with an conflict message. If no process with the project is running then an
 sent. Following the job creation the project will be marked so that during archive no changes to the project resources could be made. If this step fails the archive 
 process would stop by logging the error. After marking step completes the archive process receives a mark session id and the dependent resources which would allow the process to make
 changes to the resources. Using the dependent resources the process retrieves metadata, files, scenarios, result configurations, simulation plans, simulation runs 
-respectively and persists them in synology. Lastly, the simulation result dump action will be called which will archive the result data. The process waits until
+respectively and persists them in Synology. Lastly, the simulation result dump action will be called which will archive the result data. The process waits until
 all the result data is archived successfully. After a successful archive a request to delete the project data would be made so that the system memory can be freed.
 
 \subsubsection{Future possibility of failure recovery with snapshot}
@@ -91,7 +91,7 @@ the highly optimized dumping and restore tool provided by MongoDB. With the help
 500 Mb took around 30 sec with compression.
 
 Secondly, this dump feature has to be integrated in the Database util service, given that the service could handle multiple requests. It is a mandatory requirement that the Database
-utility service could process more than one process at once. Therefore, an endpoint was needed which could be called by the archive service for multiple Mongo dump
+utility service could process more than one job at once. Therefore, an endpoint was needed which could be called by the archive service for multiple Mongo dump
 requests. To solve this problem, it is decided that the API requests would be executed as a long running job and persisting the jobs in a very efficient 
 Redis\footnote{https://redis.io} Database to include failure tolerance. In addition, the complexity of the Database utility service also has to be taken into consideration, as it 
 is written in GO lang a different programming language than the Archive service.

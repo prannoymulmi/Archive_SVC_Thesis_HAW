@@ -3,7 +3,7 @@
 The MARS system is very susceptible to different kinds of errors due to the architectural factors mentioned in the previous chapters. Therefore, a fault tolerant
 system is needed which would try to recover in case of any transient errors. For the Archive service after some research an open source framework
 named Hangfire\footnote{https://www.hangfire.io} seemed to be a good choice. This framework allows one to easily repeat a a background job if an failure
-occurs. It is backed up with a persistent storage where the job parameters are stored which has very easy to configure parameters. Listing \ref{lst:hangfire}
+occurs. It is backed up with a persistent storage where the job parameters are stored. It is very easy to configure and to maintain. Listing \ref{lst:hangfire}
 shows the simplicity of how a job retry can be configured in case of an exception is made. 
 
 \begin{lstlisting}[language={[Sharp]C}, caption={Hangfire retry attempt configuration}, captionpos=b,label={lst:hangfire}]

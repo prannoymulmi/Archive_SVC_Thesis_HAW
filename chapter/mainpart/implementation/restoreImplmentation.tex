@@ -6,7 +6,7 @@ system from the Synology so that it can be used for running more simulations and
  Figure \ref{fig:restore} illustrates the component diagram of the retrieve process. An retrieve interface is offered by the retrieve component which can be used by
  the client for restoring the project back into the MARS system. The metadata component offers an interface which gets its data from the Synology 
  providing vital information about the files (e.g. file name, file description). This information is required so that the file could be restored exactly like before the
- archive. The Retrievefile component provides interface IRetrievefile which would get the corresponding files and make upload it to the file service component for further
+ archive. The Retrievefile component provides interface IRetrievefile which would get the corresponding files and make an upload to the file service component for further
 processing. Also, the retrieve result configurations, retrieve scenario, retrieve sim plans, retrieve simulation results are responsible to process their respective data and upload 
 it to the system. Additionally, a delete project component is also available which provides an interface IDeleteProject. This interface plays a vital role for a rollback step
 in case of any errors as it ensures a guaranteed deletion of the resources.
@@ -35,11 +35,11 @@ using the respective service.
 \subsection{Challenges}
 \label{subsec:restoreProb}
 Restoring the data back to the system is not so simple because it needs some additional work rather than just posting the data back to the system. 
-The problem arises from the fact that the archived data has attributes like data id changed as a new resource is uploaded. For more clarification, 
+The problem arises from the fact that the archived data has attributes like the resource id which is changed as a new resource is uploaded. For more clarification, 
 Listing \ref{lst:marsMetadata} presents and example of an archived metadata. This resource is needed so that the restore process can determine the different 
 attributes (e.g. title, project id) to ensure the contents of the resource would be the same as the archived data. During the file restore 
 the file named KNPGIS.zip will 
-be uploaded but the id i.e. data id of the file would change as a new identifier is automatically assigned by the file service (See Listing \ref{lst:marsNewMetadata}). 
+be uploaded but the data id of the file would change as a new identifier is automatically assigned by the file service (See Listing \ref{lst:marsNewMetadata}). 
 This is a big problem because the other 
 resources such as scenarios, result configuration would now
 depend on this new data id as the old data id is non existent in the MARS system. Listing \ref{lst:marsScenario} shows the archived scenario which has a reference 
