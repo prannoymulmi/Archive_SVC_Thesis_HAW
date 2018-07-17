@@ -8,21 +8,19 @@
     to be valuable asset in the field of scientific research where an expert could archive their data for future reference. Having said that, the 
     MARS\footnote{MARS: Multi Agent Research and Simulation} framework offers an easy interactive platform for a domain expert i.e. ecologist, biologist, 
     chemist to simulate complex real life scenarios (e.g. reproduction of bacteria in a body) based on the concept of Agent-based modeling and simulation 
-    (MAMS\footnote{MAMS: Multi Agent Management System}) \cite{agentModeling}. The data produced from these simulation also provides close to accurate 
-    results which can be leveraged by getting vital information from the modeled system.
+    (MAMS\footnote{MAMS: Multi Agent Management System}) \cite{agentModeling}.
 
         \section{Motivation}
         The inspiration for this work comes from the fact that an archive adds great value to the existing system by allowing the experts to be
         able to store their results and projects and use it in future. Additionally, the MARS system requires a large number computational resources and
         the archive would provide an opportunity for the MARS system to improve their
-        performance because this service would move some part of data from the primary storage to the secondary storage. 
+        performance because this service would move some part of data from the primary storage (Ceph cluster \cite{Ceph}) to the secondary storage (NAS synology \cite{Synology}). 
 
         The MARS system is designed based on a Microservice architecture \cite{MicroserviceNewMan} having a decentralized data \cite{atomic} access structure. 
         Due to this underlying structure of the system it is quite challenging to archive a given simulation with its resources. The MARS has a hierarchal
-        structure (Section \ref{subsection:MARSResource}) which has to be followed so that a successful simulation can occur. As per the design of MARS these resources
-        are stored separately in different storages/databases which should be accessed only by a certain API. This brings upon certain challenges 
-        this thesis would deal with mentioned in Section 
-        \ref{sec:problemStatement}.  
+        structure (Section \ref{subsection:MARSResource}) which has to be followed so a successful simulation can occur. As per the design of MARS these resources
+        are stored separately in different storages/databases which should be accessed only by a certain API. Section
+        \ref{sec:problemStatement} describes in detail the challenges dealt in this thesis.  
 
         
         
@@ -35,45 +33,44 @@
         Ceph distributed file system \cite{Ceph}. It provides more efficiency, reliability, and
         scalability by separating data and metadata using a pseudo-random data distribution function\cite[p.~307]{{Ceph}} to store data in 
         an Distributed System \cite{DistributedSystems}. Although
-        efficiency and scalability comes at a price, it is financially more expensive to posses such a system in larger volumes.
+        efficiency and scalability comes at a price, it is financially more expensive to possess such a system in larger volumes.
         In contrast to its continuous data production, the primary storage volume available to the system is very limited.
         Additionally, a high level of correlation has been observed between the operating cost of a software system and its data volume. 
-         Therefore, the Archive service would move the requested data from the CEPH storge to the slower NAS\footnote{NAS: Network Attached Storage} Synology
+         Therefore, the Archive service would move the requested data from the Ceph storage to the slower NAS\footnote{NAS: Network Attached Storage} Synology
         \cite{Synology}. This cloud storage is owned by the MARS for backup and archive purpose.
            
 
      
     \section{Problem statement}
         \label{sec:problemStatement}
-        The MARS is a complex Distributed System which brings upon different levels of 
+        MARS is a complex Distributed System which brings upon different levels of 
         complexities for this thesis. The problems being dealt within the thesis are as follows:
         \begin{enumerate}
             \item
-            \textbf{Data distribution}, In contrast to a monolithic application \cite[p.~94]{{softwareDesign}} where there is only one database for the whole system, 
-            every Microservice in the MARS System owns its personal database which should be accessed only by itself in order to be scaled independently
+            \textbf{Data distribution:} In contrast to a monolithic application \cite[p.~94]{{softwareDesign}} where there is only one database for the whole system, 
+            every Microservice in the MARS System owns a separate database which should be accessed only by itself in order to be scaled independently
             \cite[p.~27]{{Torre2017}}.
             As a result, the archive service is coupled with the other services 
             to get and post data into their respective databases creating more risk to failures.
             
             \item 
-            \textbf{Data consistency and coherence}, The design of MARS system for communication is only via remote network call like HTTP\footnote{HTTP: Hyper Text Transfer Protocol} 
-            or RPC\footnote{RPC: Remote Procedure Calls}. This makes it extremely difficult to maintain a strong data consistency and coherence as the
+            \textbf{Data inconsistency and incoherence:} The design for communication in the MARS system is only via remote network call like HTTP\footnote{HTTP: Hyper Text Transfer Protocol} 
+            or RPC\footnote{RPC: Remote Procedure Calls} making the transactions span over multiple systems. 
+            Therefore it is extremely difficult to maintain a strong data consistency and coherence as the
             change of data in one database is unknown to the other service since an ACID \cite[p.~290]{{Haerder1983}} transaction between the databases does not exist. Thus, the archiving 
-            process can unintentionally be led in to a false state. 
+            process can unintentionally be led in to a false state in case of failure during communication. The presence  
 
             \item 
-            \textbf{Understanding MARS resource hierarchy}, The MARS Resource Hierarchy is the order how the assets in the system have to be created. Without the
+            \textbf{Understanding MARS resource hierarchy:} The MARS Resource Hierarchy is the order how the assets in the system have to be created. Without the
             proper understanding of this hierarchy, restoring, archiving data may lead to corrupted states. Therefore, understanding this complex structure plays 
             a vital role (Section \ref{subsection:MARSResource}). 
 
             \item
-            \textbf{Additional changes to MARS services},
+            \textbf{Additional changes to MARS services:}
             Also, for the Archive service to behave as intended, additional functionalities have to be added into the other services. Since the Archive service 
-            is only allowed to communicate via API gate i.e. HTTP or RPC. As accessing another service's database is considered an Anti-pattern \cite[p.~27]{{Torre2017}}.
+            is only allowed to communicate via API gate i.e. HTTP or RPC. As accessing another service's database directly is considered an Anti-pattern \cite[p.~27]{{Torre2017}}.
             It imposes another challenge in understanding the structure and algorithms of services which are drafted in various technologies.
-            \item
-            \textbf{Operational complexities}, Due to the diverse number of services that have to be managed, the system additionally has operational complexities. Thus, it is a challenge 
-            to run all the services as well as tests (e.g. integration, end-to-end tests) in a local environment.   
+         
         \end{enumerate}
 
     \newpage
@@ -82,16 +79,16 @@
         chapter contains.
         
         \par
-        \textbf{Chapter 2: "Background"}, this chapter describes about the design
+        \textbf{Chapter 2: "Background"}, this chapter describes the design
         of the MARS system, the hierarchal structure of the services and the technologies used to
-        deploy it.
+        run it.
 
         \par
         \textbf{Chapter 3: "Requirement Analysis"}, this chapter describes the functional and
         non-functional objectives of the archive service.
 
         \par
-        \textbf{Chapter 4: "Planning and Software Design"}, this chapter explains in detail, the 
+        \textbf{Chapter 4: "Planning and Software Design"}, this chapter explains, the 
         methodologies for data storage, archive process and the software design.
 
         \par
@@ -99,7 +96,7 @@
         implementation decision are explained.
 
         \par
-        \textbf{Chapter 6: "Testing"}, this chapter explains in detail about 
+        \textbf{Chapter 6: "Testing"}, this chapter explains about 
         some test cases and result validation that were carried out to give more credibility to the designed system.
 
         \par

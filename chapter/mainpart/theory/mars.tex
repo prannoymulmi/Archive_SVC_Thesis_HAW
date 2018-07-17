@@ -1,8 +1,8 @@
 
-\section{Multi Agent Research and Simulation}
+\section{Multi-Agent Research and Simulation}
         \label{section:MARS}
-        The MARS Group is a simulation framework developed 
-        in HAW Hamburg as a  part of the student research project. The project can be classified as a
+        The MARS is a simulation framework developed 
+        in HAW Hamburg as a part of the student research project. The project can be classified as a
         Distributed System \cite{DistributedSystems} designed to carry out simulations of a given model 
         \cite{HAWHamburgMARS}. 
         A model describes a digital prototype of a physical agents i.e. wolves, sheep, grass 
@@ -15,7 +15,7 @@
         \par
         \subsection{MARS Resource Hierarchy}
         \label{subsection:MARSResource}
-        To leverage the MARS framework in executing a simulation, specific steps have to be 
+        To leverage the MARS framework, specific steps have to be 
         carried out in a chronological manner. It has to follow a specific sequence, which is
         the MARS Resource Hierarchy. 
         \begin{enumerate}
@@ -26,29 +26,30 @@
                 Different layers are available for use of the models from a generic basic layers to additional layers. At the time
                 of writing, the available layers to the MARS\footnote{MARS: Multi Agent Research and Simulation} framework are as follows \cite[p.~8]{{Grundmann2018}} :
                 \begin{itemize}
-                    \item GIS\footnote{\label{footnote:GIS}GIS: Geographic Information System} Layer \cite[p.~1]{{GIS}} provides geospatial data to the agents
-                    \item Time series layers enables the agents to get a data point relative to a time point (e.g. Expansion of a human population over 50 years)
+                    \item GIS\footnote{\label{footnote:GIS}GIS: Geographic Information System} Layer \cite[p.~1]{{GIS}} provides geospatial data to the agents.
+                    \item The Time series Layer enables the agents to get a data point relative to a time point (e.g. Weather data of Hamburg over 50 years)
                     \cite{Timeseries}. 
-                    \item Obstacle layer provides the definition of the geographical/spatial boundaries (e.g. fish agents having a watershed boundaries).
-                    \item Potential field layer provides the agents to find the spatial boundaries.
+                    \item The Obstacle Layer provides the definition of the geographical/spatial boundaries (e.g. fish agents having a watershed boundaries).
+                    \item The Potential Field Layer provides the agents to find and follow a defined potential. This can be used to depict an agents spatial 
+                    boundaries.
                 \end{itemize}   
             
             \item
                 \textbf{Upload models and its corresponding layers}:  The model upload is the first step required
                 for a simulation to take place. The model contains information about how the agents behave
-                during a simulation run. A model can also be dependent upon other layers, where they are 
-                uploaded separately. 
+                during a simulation run. The input files containing initialization data of the layers i.e. GIS, Time series, Obstacle, Potential field are also uploaded
+                in this step. 
 
             \item 
                 \textbf{Create a scenario}: A scenario of a project can be described as the initialization of the model.
                 In process of creating a scenario, attributes like number of agents i.e. wolves, sheep are specified. 
-                The uploaded layers like the GIS, Time series etc, if required, are assigned to the model. Also,
-                the execution duration parameters of the simulation run are configured here as well.
+                The uploaded layer initialization data like the GIS, Time series etc, are assigned to the scenario when required. In addition,
+                the global parameters such as start date and end date of a simulation is specified.
 
             \item 
-                \textbf{Configure result configuration}: The result configuration enables the user to choose
-                the agents desired to be executed in the simulation. This means in the result 
-                configuration, one can turn off the 'wolves' output in the Wolves and Sheep models.
+                \textbf{Configure result configuration}: The result configuration represents the settings of a desired simulation result. In this step the desired parameters
+                i.e. agent properties are selected. As a result, only the enabled properties are stored in the database which could be used for further analysis.
+
             \item  
                 \textbf{Create simulation plan and run}: A simulation plan is a complete description of the
                  simulation which includes, scenario and result configuration. For the execution of a simulation
@@ -76,10 +77,10 @@
             \label{fig:ERMars}
         \end{figure}
         
-        Figure \ref{fig:ERMars} intends to show the data flow of the MARS Resources. From this figure it becomes obvious 
+        Figure \ref{fig:ERMars} shows the data flow of the MARS Resources. From this figure it is obvious 
         how the resources are dependent upon each other. This follows the hierarchal structure seen in Figure \ref{fig:marsDependency},
-        where the project data is at the top and no other entity can persist without it. A pattern for the cardinality of the entities can be observed.
-        The lower level entity can only have a reference to one of its parent entity, where as the parent can have multiple children. An exception to this
+        where the project data is at the top and no other entity can exist without it. A pattern for the cardinality of the entities can be observed.
+        The lower level entity can only have a reference to one parent entity, where as the parent can have multiple children. An exception to this
         pattern is between Simulation run and Simulation results. A Simulation run will not have multiple results because it represents a job which will produce
         the output i.e. Simulation Results. It is also to be mentioned that every entity expect the project is identified as a weak entity because they cease not 
         to exist without its parent entity. 
@@ -104,15 +105,15 @@
                 \hline
                     Metadata Service  & Manages all the meetadata resources.\\
                 \hline
-                    Resultcfg Service  & The Result configurations which holds the mapping of the models are handled.\\
+                    Resultcfg Service  & The Result configurations handles which properties of a model will be stored in the database for a simulation.\\
                 \hline
-                    Scenario Service  & The Scenario resources management is handled with this service.\\
+                    Scenario Service  & The Scenario services handles the mapping from the model constructor type to the imported files.\\
                 \hline
                     Sim-runner Service  & Handles Simulation plans and Simulation run.\\
                 \hline
-                    DB-util Service  & Handles all the Simulation results and backup to synology.\\
+                    DB-util Service  & Handles all the Simulation results and is responsible to backup the project data.\\
                 \hline
-                    Marking Service  & Handles the Marking of the resources, so that when the resource is marked by one service it cannot be altered .\\
+                    Marking Service  & Handles the Marking of the resources, so that when the resource is marked by one service it cannot be altered.\\
                 \hline
                     Deletion Service  & Handles Deletion of the resources.\\
                 \hline
