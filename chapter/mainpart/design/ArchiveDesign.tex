@@ -1,27 +1,20 @@
 \section{Archive process design}
-This section describes the design and behaviour of archiving a MARS complete project. Table \ref{table:preconditionsArchive} presents the preconditions with its 
-description which are required for the archiving process to occur. 
+This section describes the design and behaviour of archiving. Certain preconditions have to be met before an archive process could start 
+to ensure the correctness of the data.
 
-\begin{table}[H]
-    \centering
-    \begin{tabular}{|p{3cm}|p{11cm}|}
-        \hline
-            \textbf{Preconditions}  & \textbf{Description}\\
-        \hline
-            Mark resources & 
-            The resources must be marked using the MARS marking service. This is necessary to prevent the resources to be modified during the archive process. \\
-        \hline
-            Get Metadata for the project
-            & The metadata contains all necessary information about the files. The scenarios, files and the result configuration depends on these metadata getting 
-            the respective data.\\  
-        \hline
-            Get Simulation runs & The simulation runs contains the simulation id which is required to archive the correct simulation id. This dependency
-            with simulation run makes is necessary that the simulation runs are obtained before archiving simulation results. \\
-        \hline
-    \end{tabular}
-    \caption{Preconditions required for an archive process}
-    \label{table:preconditionsArchive}     
-\end{table}    
+\begin{enumerate}
+    \item \textbf{Mark resources:} The MARS framework is a multi user application meaning a project can be accessed by many users at the same time. 
+    As multiple users can modify the data at the same time it could be possible that someone modifies a resources during an archive. As the 
+    Archive service has no way to detect this modification. This would lead inconsistent data being archived.
+    Therefore, to avoid this situation the resources must be marked before the start of the archive. The marking would ensure that no other process except the Archive
+    service would have access to modify the marked contents during the archive process. 
+    \item \textbf{Get Metadata for the project:} The metadata contains all necessary information about the files. The scenarios, files and the result 
+    configuration depends on these metadata getting 
+    the respective data. If the metadata cannot be obtained the archive process will not continue.
+    \item \textbf{Get Simulation runs:} The simulation runs contains the simulation id which is required to archive the correct simulation id. This dependency
+    with simulation run makes it necessary that the simulation runs are obtained before archiving simulation results.
+\end{enumerate}
+
 
 \subsection{Data format}
 The first step for archiving is to decide the file format to store the archived data. This is
@@ -29,7 +22,7 @@ considered to be the initial step because it determines how the data can be acce
 the criteria mentioned in Section \ref{section:functionalReq}.
 
 \par
-The following file systems are analzyed for this thesis:
+The following file systems are analyzed for this thesis:
 \begin{enumerate}
     \item Web Archive (WARC file format)\footnote{https://www.iso.org/standard/44717.html}
     \item Hierarchical data format 5 (HDF5)\footnote{https://support.hdfgroup.org/HDF5/whatishdf5.html}

@@ -6,9 +6,9 @@
     common approach to build a distributed system as it is independent of any system. Therefore using this architecture the system can later 
     evolve for any kind of system which could be used in the future providing a broader layer of flexibility to the Archive service. 
     Also, the standardized aspects of RESTful service enables a software to create a reusable elements \cite{RESTThesis}. A combination of HTTP with REST to carry out
-    CURD operations is more preferred since HTTP is widely supported by most clients and programming languages (e.g. web browsers).
-    The CURD over HTTP consists of few uniform noun based interaction that can be executed by the client \cite[p.~13]{RESTThesis}. The
-    HTTP CURD operations which are going to be implemented are described in Table \ref{table:curdHttp}.
+    CRUD operations is more preferred since HTTP is widely supported by most clients and programming languages (e.g. web browsers).
+    The CRUD over HTTP consists of few uniform noun based interaction that can be executed by the client \cite[p.~13]{RESTThesis}. The
+    HTTP CRUD operations which are going to be implemented are described in Table \ref{table:curdHttp}.
 
     \begin{table}[h!]
         \centering
@@ -22,23 +22,25 @@
             \hline
                 GET & Reads the resource. & The GET request will be used to check the status of the archive and retrieve process. \\
             \hline
+            PUT & Updates the resource. & The PUT request will be used to check the status of the archive and retrieve process. \\
+            \hline
                 DELETE & Deletes the resource. & The DELETE request will be used to delete a running archive or retrieve process. \\                
             \hline
         \end{tabular}
-        \caption{CURD interaction over HTTP in Archive service}
+        \caption{CRUD interaction over HTTP in Archive service}
         \label{table:curdHttp}     
     \end{table}   
     
-    Table \ref{table:archiveEndpoints} mentions the API endpoint for archive, retrieve, and job status with brief description.
+    Table \ref{table:archiveEndpoints} describes the API endpoint for archive, retrieve, and job status with brief description.
     \begin{table}[H]
         \centering
         \begin{tabular}{|p{6cm}|p{8cm}|}
             \hline
                 \textbf{API Endpoint}&\textbf{Description}\\
             \hline
-                archive/archiveProject/{{projectId}} & Archives a project given id. This is an HTTP post method.\\
+                archive/archiveProject/{{projectId}} & Archives a project given id. This is an HTTP POST method.\\
             \hline
-                retrieve/retrieveProject/{{projectId}} & Restores a project given an id. This is an HTTP post method.\\
+                retrieve/retrieveProject/{{projectId}} & Restores a project given an id. This is an HTTP POST method.\\
             \hline
                 job/status/{{projectId}} & Gets the status of the archive or retrieve process, given an project id. This is an HTTP GET method.\\
             \hline
@@ -83,7 +85,6 @@
     increase the performance of the server, the get status (Figure \ref{fig:jobSwagger}) endpoint combines vital information needed for the client in one 
     request (See Listing \ref{lst:status}). 
     
-\newpage
 \begin{lstlisting}[caption={Sucessful GET request for a archive status}, language=json,firstnumber=1, captionpos=b, label={lst:status}]
 {
     "status": "PROCESSING",

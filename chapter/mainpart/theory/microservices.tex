@@ -1,16 +1,15 @@
 \newpage
 \section{Microservices}
 
-Microservice is built upon the paradigm style Service Oriented Architecture(SOA\footnote{SOA: Service Oriented Architecture}) \cite[chapter ~3]{SOA}. A service 
+Microservice is built using the software design Service Oriented Architecture(SOA\footnote{SOA: Service Oriented Architecture}) \cite[chapter ~3]{SOA}. A service 
 is the smallest functional unit that performs a specific business action (e.g. user authentication) that can be accessed via a network. 
 The services encapsulates its state and the operations that are performed on the data.  
 Figure \ref{fig:objectBasedDS} illustrates an example of Service Oriented Architecture (SOA) in a distributed system where different services call each others interface
 to perform a certain action. Although microservices are built using the SOA paradigm they have their differences. In a microservice, a service can be deployed and 
 operated independently unlike SOA.
 Also they are lightweight and Domain Driven \cite{DDD} that makes the application simple to understand, develop and test. The smaller set of services
-can be developed autonomously by different teams and be deployed quickly as they usually are lightweight nature. This architecture promises to bring loose coupling 
-by separating an big application into smaller logical units. It is very important that a microservice
-is encapsulated to only one business domain i.e. Archive service in the MARS framework otherwise the benefits of microservices would diminish.
+can be developed autonomously by different teams and be deployed quickly as they usually are lightweight in nature. This architecture promises to bring loose coupling 
+by separating a big application into smaller logical units. 
 
 
 \begin{figure}[H]

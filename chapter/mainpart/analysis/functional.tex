@@ -1,18 +1,16 @@
-\newpage
+
 \section{Functional requirements}
     \label{section:functionalReq}
     This section describes the functional requirements for the Archive service.
-    The requirements mentioned here are the expected benchmarks for the designed system which are also depicted in Figure \ref{fig:archiveUseCase}.
     The functional aspects which carves the Archive service are mentioned below.
 
     \subsection{Archive project resources}
-        The designed system should be able to archive the MARS resources from the active system (Ceph cluster at the time of writing) 
-        into the Synology \cite{Synology}. The application should
-        be able to archive a project even when there all the MARS resources are not present in the project (e.g. no simulation runs have been triggered).
-        This should be supported since it could be the case that the user wants to archive only some of the resources. The resources which are to be archived
-        are depicted in a tabular format (Table \ref{table: archivedMars}).
+        The designed system must be able to archive the MARS resources from the active system (Ceph cluster at the time of writing) 
+        into the Synology \cite{Synology}. The application must
+        be able to archive a project which does not have all the resources mentioned in Table \ref{table: archivedMars} (e.g. no simulation runs have been triggered).
+        This must be supported since it could be the case that the user wants to archive only some of the resources.
         
-        \begin{table}[h!]
+        \begin{table}[H]
             \centering
             \begin{tabular}{|p{3cm}|p{12cm}|}
                 \hline
@@ -23,13 +21,13 @@
                      existing files in the system. \\
                 \hline
                      Files & 
-                     This resource correspond to the models and files which describe a simulation (e.g. wolves and sheep model). \\
+                     This resource correspond to the models (e.g. wolves and sheep model) and input files (e.g. GIS, Time series) which describe a simulation. \\
                 \hline
                      Scenario & 
                      This resource defines the parameters for the model which would be simulated (e.g. simulation run time, number of agents). \\
                 \hline
                      Result configurations & 
-                     This resource maps which agents in the simulation are present in the simulation run.\\
+                     This resource defines which parameters of a model and layers are going to be stored in the database that will be used for visualization.\\
                 \hline
                      Simulation plan & 
                      This resource contains the scenario and the result configuration which can be executed. The simulation plan could be configured to
@@ -47,18 +45,21 @@
         \end{table} 
 
         The resources depicted in table (Table \ref{table: archivedMars}) must be archived following the MARS resource hierarchy (Figure \ref{fig:marsDependency}).
-        Following the hierarchy, it is arguable why the project is not being archived, despite it being present. Due to the fact that retrieving the project is also 
-        desired and it is connected to multiple users which may not exist in the future. To avoid complexity of dealing with many users, the project is
-        not archived. 
+        Following the hierarchy, it is arguable why the project is not being archived, despite it being present. The reason behind this is, a project has reference
+        to multiple users as the MARS supports multiple user access to a project. It could be the case that at the time of restoring, the users that are referenced 
+        in the archived project may not exist anymore.
+        This would mean that a system which keeps track of the 
+        existence of the archived users also have to be implemented. To avoid adding more complexity to the service it is decided that the projects will not be archived.
+        
         \subsubsection{Assurance of correct data being persisted}
             MARS being a Distributed System, Data Coherency (Subsection \ref{subsection: distriChallenges}) 
             is one of the big issue which this thesis faces. As a consequence,
-            wrong or unwanted data could be archived. To avoid this the Archive service should include some kind of mechanism that
-            could lock the MARS resources during the archive process.
+            wrong or unwanted data could be archived. Therefore the Archive service must ensure that while an archive is running the data would not be
+            altered.
         
         \subsection{Retrieve project resources}    
-            The designed software should support the retrieval of the archived projects from the Synology into the active system. The
-            system should be able to restore the project given that, the services support the data format which is archived in the Synology.
+            The designed software must support the retrieval of the archived projects from the Synology into the active system. The
+            system must be able to restore the project given that, the services support the data format which is archived in the Synology.
            
             \begin{figure}[H]
                 \centering \includegraphics[scale=0.4]{grafiken/synology.png}
@@ -66,22 +67,19 @@
                 \label{fig:synology}
             \end{figure}
 
-            Figure \ref{fig:synology} illustrates the communication procedure required to be implemented for the archive and retrieval process. 
-            This requirement must be fulfilled to comply with the MARS development standard. As seen, the
-            Archive service can read and write directly only to the archive volume in Synology and its own database. The data which is not owned by the Archive
-            service has to be requested via an API to the relevant service for read/write purposes. The figure generalizes the services it communicates with
-            as "Relevant Services" because this diagram only intends to show an abstraction for the communication between them.
-
+            Figure \ref{fig:synology} illustrates that the Archive service must only use the volume assigned for archiving and nothing more. 
+            This requirement must be fulfilled to comply with the MARS development standard. It has to also be made sure that the retrieved
+            resources can be used before the archive process (e.g. the restored simulation plans should be able to run a simulation again). 
 
         \subsection{Archive and retrieve process status}  
             The archive and retrieve processes are a long running tasks. The designed software must run these processes in the background to avoid 
-            long waiting time for another request. Given this, a API endpoint should be made available which gives the current status of the archive 
+            long waiting time for another request. Given this, a API endpoint must be made available which gives the current status of the archive 
             or retrieve job. Using the status a user can determine whether the job is being executed or is finished.
 
 
         \subsection{Download archived data as a compressed file}
-            It is of great importance for a Domain Expert i.e. ecologist who are not technical experts to have a graphical interface in hand. In this interface
-            it should be possible to navigate to the project of interest and easily download the project as a zip file. There could be cases where the
+            It is of great importance for a domain Expert i.e. ecologist who are not technical experts to have a graphical interface. In this interface,
+            it must be possible to navigate to the project of interest and easily download the project as a zip file. There could be cases where the
             MARS system is out of order and the data is required which could then be accessible by anyone with basic knowledge of the system.
         
         \subsection{Fault tolerant design}   

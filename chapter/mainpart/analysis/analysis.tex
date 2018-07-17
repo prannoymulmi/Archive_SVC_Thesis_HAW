@@ -13,26 +13,5 @@
  API is also integrated in the MARS graphical interface (MARS Teaching User Interface). The MARS Teaching API acts as proxy between the users 
  and the MARS back-end Microservices, as it provides some level of abstraction by hiding unnecessary endpoints for the user in the graphical interface.
 
- Figure \ref{fig:archiveUseCase} presents the use case of the system with its expected behavior. The main intention of the diagram is to show the
- general description of the possible actions using this service. As seen from the diagram, a user is associated with three use cases i.e. archive, restore,
- and getting the job status. 
-
- Following the use case diagram of the system, a step of marking the project is done before archiving the project or else the process fails. This is desired because 
- during the archive, adding new or editing the resources may lead to incomplete/wrong data being copied to the Synology. To clarify, the case of new resources being
- added or being changed is possible due to the fact that, a project is accessible to more than one user at any given time. The current structure of the system
- poses data synchronization issues. Therefore, if the marking fails the archive project will not occur, leading the archiving use case being extended from the marking
- use case. The second action which can be triggered by the user is to retrieve the archived project from the Synology back to active system. Lastly, since archiving 
- and retrieving could take from minutes to hours depending on the size of the project, these processes are visioned to be a background long running job. For the user
- it would be a point of interest to know if the job is completed or not. To fulfill this purpose, the use case get job status is present in the system.
- 
- \begin{figure}[H]
-    \centering \includegraphics[scale=0.6, angle=90, origin=c]{grafiken/archiveUseCase.png}
-    \caption{Use case diagram for Archive service}
-    \label{fig:archiveUseCase}
-\end{figure}
- 
-Different uses cases have been mentioned for the archive service in Figure \ref{fig:archiveUseCase}. Accomplishing them requires several requirements to be met
-which are divided into two different categories; non functional and functional aspects. 
-
-\input{chapter/mainpart/analysis/technical.tex}
 \input{chapter/mainpart/analysis/functional.tex}
+\input{chapter/mainpart/analysis/technical.tex}

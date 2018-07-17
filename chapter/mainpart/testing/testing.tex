@@ -2,6 +2,23 @@
 This chapter presents the methodology used for testing the correct functionality of the application. The validation consist of set of automatic test i.e.
 Unit tests and Integration test including a System test to ensure the proper functionality of the service. The verification is done on both the functional
 aspects of the back end logic and also on the GUI controls for the Archive service.
+
+\begin{figure}[H]
+    \centering \includegraphics[scale=0.5]{grafiken/CIbuild.png}
+    \caption{MARS Continuous Integration Pipeline build}
+    \label{fig:CIbuild}
+\end{figure}
+
+Figure \ref{fig:CIbuild} presents the Continuous Integration system which is being followed by the MARS developer community. This pipeline plays an important role
+for the maintenance of the service because the automatic tests are executed here.
+The CI\footnote{CI: Continuous Integration} pipeline would be triggered as soon as a new commit is being pushed to the remote 
+GitLab\footnote{https://about.gitlab.com} repository. This would then build the docker image of the service with the new changes. The next step would be to
+run the unit tests written for the service, which is a mandatory step. Lastly, if the pipeline passes, the docker image will be pushed
+to the GitLab registry\footnote{https://about.gitlab.com/2016/05/23/gitlab-container-registry/}. If this is successful then the image can be used in one of 
+the MARS kubernetes cluster i.e. MARS beta, MARS production environments. In addition,
+it can be seen that the integration tests are configured to be an optional test because the integration tests could consume considerably more time and may hinder
+important updates. For this reason, the integration tests are ran manually in the pipeline.
+
 \input{chapter/mainpart/testing/unitTesting.tex}
 \input{chapter/mainpart/testing/integrationTest.tex}
 \input{chapter/mainpart/testing/systemTest.tex}
