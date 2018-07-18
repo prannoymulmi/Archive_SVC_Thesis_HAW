@@ -1,7 +1,7 @@
-\section{Performance test}
+\section{Performance Test}
 This test verifies the performance metrics of the Archive service analyzing different numbers of files, file sizes and archive strategies.
 
-\subsection{Archive performance}
+\subsection{Archive Performance}
 For this test, the an archive process is executed and repeated 4 times to get an average general performance overview. Figure \ref{fig:archivePerformance} illustrates a bar diagram for running an archive process (zipped simulation results) with 7 files, 2 scenarios, 2 result configurations, 2 simulation plans
 and 12 simulation runs and results. The results seen in the figure shows that it took about 34.9 s on average to run this process. It is also to be noted that the
 simulation results are zipped making their total size about 86 Mb. Figure \ref{fig:archivePerformanceUn} shows the archive process of ths same project without 
@@ -24,7 +24,7 @@ Unfortunately simulation results with larger file sizes could not be tested as n
 for smaller file sizes it is a better choice to compress the simulation data while archiving it since there is a significant volume save and the time taken for the
 archive does not differ by much.   
 
-\subsection{Retrieve performance}
+\subsection{Retrieve Performance}
 For this test, the same project that was archived is being restored to analyze the performance of the retrieve process. Figure \ref{fig:restorePerformance} illustrates
 the results of the retrieve process with the compressed simulation results which takes 4.3 mins on average. Figure \ref{fig:restorePerformanceUn} illustrates the
 results of the retrieve process using the uncompressed simulation results which took on average of 4 mins. It is seen that the for projects having their total file

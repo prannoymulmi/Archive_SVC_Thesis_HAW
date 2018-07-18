@@ -1,16 +1,15 @@
 \section{Distributed Systems}
 
     The MARS cloud is architectured as a distributed system. Thus, it is of great importance to understand
-    this architecture, so that one can anticipate how the MARS framework is being operated in the background and
+    this architecture, so that one can anticipate how the MARS framework operates in the background and
     the technical challenges that could occur due to its complex structure.
     \par
     A distributed system can be defined as a number of autonomous computing elements which 
-    appear to a user as a single coherent system \cite[p.~2]{DistributedSystems}. This definition describes the two main aspects of a distributed system.
-    Firstly, a complex application can be split up into smaller logical units each capable of functioning independently of each other.
-    Secondly, the system appears 
-    to be a single coherent application. For the system to appear as a single coherent system the individual units must establish some kind of collaboration
+    appear to a user as a single coherent system \cite[p.~2]{DistributedSystems}. This definition implies that the system is split into meaningful domains which behave 
+    independently from each other and that the system supports resource sharing in order to appear as single coherent application to the user. 
+    For the system to appear as a single coherent system the individual units must establish some kind of collaboration
     with each other usually done by exchanging messages over a network. This enables the system to share different resources that are physically separated, 
-    as an element in the system can be controlled by passing messages.
+    as an element in the system that can be controlled by passing messages.
 
 
     %These individual elements mentioned could be either a hardware device or possibly a software process known as nodes. A node can
@@ -20,35 +19,36 @@
 
     \begin{figure}[H]
         \centering \includegraphics[scale=0.5]{grafiken/distributedSystem.png}
-        \caption{A distributed system extended over multiple machine with same application 
+        \caption{A distributed system extended over multiple devices with same application 
         interface \cite[p.~5]{DistributedSystems}}
         \label{fig:distributedSystem}
     \end{figure}
 
     \par
-        Figure \ref{fig:distributedSystem} shows an example of an application being 
-        distributed amongst different computers. It can also be seen that the application
-        is allowed to communicate via a common middleware whose main responsibility is to
-        efficiently manage resources across the distributed applications. This kind of system
-        makes most sense for deployment which require high performance computing with fairly
-        large number of domains\footnote{domain: A subject area to which the user applies the program in a 
-        software \cite{DDD}}.
+    Distributed Systems can be utilized to realize a complex application dispersed across
+    multiple machines which communicates via a network protocols(e.g. HTTP \cite{HTTP}, 
+    GRPC \cite{grpc}). The 
+    components interacts with each other to achieve a common goal. It also provides
+    more reliability than a non-distributed system because there is no single point
+    of failure when a system is designed properly. 
 
     \par
-        Distributed Systems can be utilized to realize a complex application dispersed across
-        multiple machines which communicates via a network protocols(e.g. HTTP \cite{HTTP}, 
-        GRPC \cite{grpc}). The 
-        components interacts with each other to achieve a common goal. It also provides
-        more reliability than a non-distributed system because there is no single point
-        of failure when a system is designed properly. 
+    Figure \ref{fig:distributedSystem} shows an example of an application being 
+    distributed amongst different computers. It can also be seen that the the different parts of the application are allowed
+    to communicate via a common middleware whose main responsibility is to
+    efficiently manage resources across the distributed applications. This kind of system
+    makes most sense for deployment which require high performance computing power as this system can allow an application to share different
+    resources (e.g CPU power, memory and storage) located on another machine.
+
+
 
     
         
     \subsection{Advantages of a Distributed System} 
         \subsubsection{Reliability and Availability}
-        One of the main reasons for building a Distributed system is to make the application free from any single point of failure.
+        One of the main reasons for building a distributed system is to make the application free from single failure events.
         Since the application is generally spread across different nodes connected via a network, failure of a single node will not 
-        crash the system completely. This makes a Distributed system more available, reliable and independent to a user as the availability
+        crash the system completely. This makes a distributed system more available, reliable and independent to a user as the availability
         of the application is not hindered completely.
         
         \subsubsection{Scalability}
@@ -56,30 +56,30 @@
         (e.g. more processing power, more data volume). 
         In contrast to a single system, where the computer 
         has to be replaced completely by a really high end device, there is a possibility to just expand the system but adding another device in the network.
-        Since the application in a distributed system they are able to communicate via network. Therefore, it is easier to scale and add more resources and 
+        Since the application in a distributed system are able to communicate via network it is easier to scale and add more resources and 
         also scale down if required. 
     
     \subsection{Challenges}    
         \label{subsection: distriChallenges}
-        \subsubsection{Data coherency}
+        \subsubsection{Data Coherency}
         The data is said to be coherent when it is uniform across an entire network. In other words, data is coherent when all
         the resources between a server and a client is synchronized. 
-        Since a distributed system is susceptible to network failures, therefore network partition \cite[p.~59]{CAP} cannot be avoided. In presence
+        Since a distributed system is susceptible to network failures, therefore a network partition \cite[p.~59]{CAP} cannot be avoided. In presence
         of a network partition the change in data will not be synchronized to all of its client leading to have inconsistent data. Furthermore, the
         complexity to maintaining this coherency increases drastically when the system has more clients trying to gain access to the data. This phenomena
         must be taken into consideration while designing an application for this kind of system.
 
-        \subsubsection{Network issues}
+        \subsubsection{Network Issues}
         Generally in a distributed system different applications communicate via network protocols i.e. HTTP, GRPC. It is to be noted that
         communication via a network is not always reliable. This is because managing a distributed network is rather complex and due to
         external reasons the communication can break leading to loss of messages which disables some parts of the application. 
-        Also, this phenomena would not be seen in a single system.
+        This phenomena is also not seen in a single system.
 
         \subsubsection{Error Handling}
-        Errors are imminent in any kind of application and to continue to work normally again it is necessary to detect and recover from failures.
-        Detecting errors in a distributed system has a different approach since the application is spread across multiple systems. 
+        Errors are imminent in every application and for it to continue working normally again it has to be able to detect and recover from them.
+        Detecting errors in a distributed system requires a different approach since the application is spread across multiple systems. 
         It is not enough that each service ensures its own correctness because the system is interconnected via some kind of
         network connection. Due to the fact that network is also involved in a distributed system there is additional error detection methods that have
-        to be implemented. This brings up more complications in comparison to a single system where an error is contained only in a single system.
+        to be implemented. This brings up more complications in comparison to a single system where an error is contained within a single system.
 
          

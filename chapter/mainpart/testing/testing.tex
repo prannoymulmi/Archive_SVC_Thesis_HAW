@@ -15,9 +15,7 @@ The CI\footnote{CI: Continuous Integration} pipeline would be triggered as soon 
 GitLab\footnote{https://about.gitlab.com} repository. This would then build the docker image of the service with the new changes. The next step would be to
 run the unit tests written for the service, which is a mandatory step. Lastly, if the pipeline passes, the docker image will be pushed
 to the GitLab registry\footnote{https://about.gitlab.com/2016/05/23/gitlab-container-registry/}. If this is successful then the image can be used in one of 
-the MARS kubernetes cluster i.e. MARS beta, MARS production environments. In addition,
-it can be seen that the integration tests are configured to be an optional test because the integration tests could consume considerably more time and may hinder
-important updates. For this reason, the integration tests are ran manually in the pipeline.
+the MARS kubernetes cluster i.e. MARS beta, MARS production environments. 
 
 \input{chapter/mainpart/testing/unitTesting.tex}
 \input{chapter/mainpart/testing/integrationTest.tex}

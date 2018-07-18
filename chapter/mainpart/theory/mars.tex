@@ -2,7 +2,7 @@
 \section{Multi-Agent Research and Simulation}
         \label{section:MARS}
         The MARS is a simulation framework developed 
-        in HAW Hamburg as a part of the student research project. The project can be classified as a
+        in HAW Hamburg as a part of a student research project. The project can be classified as a
         Distributed System \cite{DistributedSystems} designed to carry out simulations of a given model 
         \cite{HAWHamburgMARS}. 
         A model describes a digital prototype of a physical agents i.e. wolves, sheep, grass 
@@ -27,7 +27,7 @@
                 of writing, the available layers to the MARS\footnote{MARS: Multi Agent Research and Simulation} framework are as follows \cite[p.~8]{{Grundmann2018}} :
                 \begin{itemize}
                     \item GIS\footnote{\label{footnote:GIS}GIS: Geographic Information System} Layer \cite[p.~1]{{GIS}} provides geospatial data to the agents.
-                    \item The Time series Layer enables the agents to get a data point relative to a time point (e.g. Weather data of Hamburg over 50 years)
+                    \item The Time series Layer enables the agents to get a data point relative to a time point (e.g. weather data of Hamburg over a day)
                     \cite{Timeseries}. 
                     \item The Obstacle Layer provides the definition of the geographical/spatial boundaries (e.g. fish agents having a watershed boundaries).
                     \item The Potential Field Layer provides the agents to find and follow a defined potential. This can be used to depict an agents spatial 
@@ -36,15 +36,15 @@
             
             \item
                 \textbf{Upload models and its corresponding layers}:  The model upload is the first step required
-                for a simulation to take place. The model contains information about how the agents behave
+                for a simulation to take place. The model contains information of the behaviour of the agents
                 during a simulation run. The input files containing initialization data of the layers i.e. GIS, Time series, Obstacle, Potential field are also uploaded
                 in this step. 
 
             \item 
                 \textbf{Create a scenario}: A scenario of a project can be described as the initialization of the model.
-                In process of creating a scenario, attributes like number of agents i.e. wolves, sheep are specified. 
-                The uploaded layer initialization data like the GIS, Time series etc, are assigned to the scenario when required. In addition,
-                the global parameters such as start date and end date of a simulation is specified.
+                The process of creating a scenario, attributes like number of agents i.e. wolves, sheep are specified. 
+                The uploaded layer initialization data like the GIS, Time series etc, are assigned to the scenario when required. 
+                The global parameters such as start date and end date of a simulation is also specified.
 
             \item 
                 \textbf{Configure result configuration}: The result configuration represents the settings of a desired simulation result. In this step the desired parameters
@@ -65,8 +65,7 @@
             \label{fig:marsDependency}
         \end{figure}
         
-        Figure \ref{fig:marsDependency} shows how the MARS\footnote{MARS: Multi Agent Research and Simulation} 
-        resources are dependent. It can be observed
+        Figure \ref{fig:marsDependency} shows the dependencies between the MARS. It can be observed
         that the order of existence of the resources has to be from the \textbf{project} to the \textbf{simulation} results 
         (bottom to top) when adding a new simulation. Failure to follow this hierarchy will result in failure to
         successfully run a simulation.
@@ -80,13 +79,13 @@
         Figure \ref{fig:ERMars} shows the data flow of the MARS Resources. From this figure it is obvious 
         how the resources are dependent upon each other. This follows the hierarchal structure seen in Figure \ref{fig:marsDependency},
         where the project data is at the top and no other entity can exist without it. A pattern for the cardinality of the entities can be observed.
-        The lower level entity can only have a reference to one parent entity, where as the parent can have multiple children. An exception to this
+        The lower level entity can only have a reference to one parent entity, whereas the parent can have multiple children. An exception to this
         pattern is between Simulation run and Simulation results. A Simulation run will not have multiple results because it represents a job which will produce
-        the output i.e. Simulation Results. It is also to be mentioned that every entity expect the project is identified as a weak entity because they cease not 
-        to exist without its parent entity. 
+        the output i.e. Simulation Results. It is also to be mentioned that every entity except the project is identified as a weak entity because they do not cease
+        exist without its parent entity. 
 
         \newpage
-        Furthermore, the different data flow mentioned in Figure \ref{fig:ERMars} are handled by various services in the MARS framework. 
+        Furthermore, the different data flows mentioned in Figure \ref{fig:ERMars} are handled by various services in the MARS framework. 
         Table \ref{table:MARS Resource Hierarchy Service Overview} gives an overview of the elementary services which are responsible for 
         creating and running simulations. For simplicity reasons, only the services
         which has direct dependency with Archive service are mentioned.
@@ -105,13 +104,13 @@
                 \hline
                     Metadata Service  & Manages all the meetadata resources.\\
                 \hline
-                    Resultcfg Service  & The Result configurations handles which properties of a model will be stored in the database for a simulation.\\
+                    Result Config Service  & The Result configurations handles which properties of a model will be stored in the database for a simulation.\\
                 \hline
                     Scenario Service  & The Scenario services handles the mapping from the model constructor type to the imported files.\\
                 \hline
-                    Sim-runner Service  & Handles Simulation plans and Simulation run.\\
+                    Sim Runner Service  & Handles Simulation plans and Simulation run.\\
                 \hline
-                    DB-util Service  & Handles all the Simulation results and is responsible to backup the project data.\\
+                    Database Utility Service  & Handles all the Simulation results and is responsible to backup the project data.\\
                 \hline
                     Marking Service  & Handles the Marking of the resources, so that when the resource is marked by one service it cannot be altered.\\
                 \hline

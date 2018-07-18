@@ -14,7 +14,7 @@ Finally, in the process of developing this system a deep understanding of Distri
 such as Kubernetes \cite{kubernetes}, Docker etc has been established. Together with this knowledge an Archive service for the MARS framework has been implemented and integrated 
 that would aid in improving the performance of the MARS system by moving inactive data into the Synology storage.
 
-\section{Further work}
+\section{Further Work}
 It is a point of interest that the Archive service would be further enhanced. Firstly, it is seen that the current UI design of the archive process is not very convenient
 for the users as the archived and unarchived projects are grouped together which may produce some confusion. One proposal would be to design a separate section
 where the archived projects could be shown. To aid this process the implementation of the mark showing if the project is archived or not is already included which is
@@ -23,6 +23,11 @@ changed via the Archive service.
 Secondly, improving the performance of the archive and retrieve would also be a factor to be considered next. The archive and retrieve process are implemented as
 an atomic operation. Therefore, in case of failure the process is repeated from the starting causing big performance loss for larger projects. More research and effort
 has to be put forward to obtain a solution for this issue. 
+
+It can be noticed from the sequence diagram that the resources are being persisted right after they are successfully retrieved rather than a bulk operation
+(e.g. sequence number 1.8 in Figure \ref{fig:sequenceArchive}). This
+is implemented considering a possibility that in the near future the archive service would archive the project as a snapshot. In case of archive failure the process
+could be resumed from the snapshot in contrast to the current atomic implementation of the process.
 
 Lastly, to strengthen the stability when deploying this service the test i.e. Unit, Integration tests must increase the test coverage so that more potential
 errors could be avoided. 

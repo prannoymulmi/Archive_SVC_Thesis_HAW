@@ -1,4 +1,4 @@
-\section{Unit testing}
+\section{Unit Testing}
 These tests are designed to verify the individual components of the software which validates that each unit of the software performs as intended. A White Box
 Testing methodology has been applied for the unit testing. This method is used as the internal structure/requirements are known before hand. In this process,
 the specific inputs and outputs are predetermined and the tests are ran to verify if the expected output is produced by that input. 
@@ -8,7 +8,7 @@ Figure \ref{fig:CIbuild} in the Chapter Requirement Analysis depicts
 Unit Testing as an mandatory step for deployment of the Archive service. Running this test with every build process will boost the confidence 
 in changing and maintaining the code for the Archive service. The .NET platform offers a lot of unit-testing frameworks 
 (e.g. XUnit, Nunit, MSTest/Visual Studio). Nunit is choosen as the preferred the testing framework for this service as it has a good reputation for
-fast testing and it is readily integrated the IDE i.e. Rider (JetBrains) used for this work. 
+fast testing and it is already integrated the IDE i.e. Rider (JetBrains) used for this work. 
 
 \par
 Making stubs, and mocks/fake objects are one of the important steps to do a proper unit testing. This statement can be backed up saying that unit tests are
@@ -62,8 +62,7 @@ but when one sees the attributes that a class is using it will give an good idea
 \subsubsection{Test if an background job is enqueued}
 For this test, after a successful API request for archiving a project the module should create a background job using Hangfire. This test would check if the
 background tasks were created or not. As it is a requirement for the archive process to run a background job so it must be ensured that a background job is created 
-after a successful request. Listing\ref{lst:hangfireCreate} shows how the test was written to verify the creation of the background job. This process to do this unit
-test is mentioned in the Hangfire documentation.
+after a successful request. Listing\ref{lst:hangfireCreate} shows how the test was written to verify the creation of the background job.
 
 \begin{lstlisting}[language={[Sharp]C}, caption={Hangfire Job creation test}, captionpos=b,label={lst:hangfireCreate}]
 [Fact]
@@ -93,11 +92,11 @@ public async Task ArchiveProject_SucessfulRun_ShouldBeEnqueued()
 }
 \end{lstlisting}
 
-\subsubsection{Return conflict message in case a process for the project is running}
+\subsubsection{Return Conflict Message in Case a Process for the Project is Running}
 For this test, it checks the denial of a archive or retrieve job creation when it is in "PROCESSING" state. It is of high priority that this check
 for conflict works as expected otherwise there could be cases of unwanted data loss. 
 
-\subsubsection{Exception catch}
+\subsubsection{Exception Catch}
 For this test, different checks are made in many modules if the expected Exception is caught, in case of an error. Also included is a check for the general
 exception class as well. This test will ensure that some method will not just consume an exception when an unexpected error occurs. It is important because if 
 the exceptions are not caught it would be very hard to fix bugs if some are introduced in the near future.
@@ -121,12 +120,12 @@ public async Task MarkAllResourceAndGetSessionId_MarkingSvcClientReturnEmpty_Thr
 }
 \end{lstlisting}
 
-\subsubsection{Expected value checks}
+\subsubsection{Expected Value Checks}
 For this test, different modules are tested with a mock inputs (e.g. data id, mock models) are made and then the method under test is ran with an 
 expected value. These tests are designed to ensure that the methods deliver correct results when a correct input from other modules are received.
 These tests would aid to discover a faulty implementation according to the requirements mentioned for this work.
 
-\subsubsection{Null or empty checks}
+\subsubsection{Null or Empty Checks}
 For this test, the different modules are tested against the most famous Null pointer exception in the different modules and how it is handled. This is an important
 test case as the archive/retrieve process should still run and terminate accordingly if some resources are null. As an example, during a normal archive run if the result received from
 the scenario service  is empty i.e. no scenarios in the project the archive process should not fail due to a null pointer exception rather finish the archive process
@@ -155,13 +154,13 @@ public async Task Archive_NoScenarios_ScenariosNotAdded()
 }
 \end{lstlisting}
 
-\subsubsection{File read tests}
+\subsubsection{File Read Tests}
 For this test, the module for reading files from the Synology is tested. To do so, dummy files were added (mocking the existence of Synology without 
 a network connection) in the build for the unit tests. This test reads the file
 and then compares it with the expected result. This test is designed to check if the file reading algorithm works as expected. Unfortunately, the module to write the data
 could not be verified because when the tests are built they are packed into a .dll file where a write operation is not allowed.
 
-\subsection{Test coverage}
+\subsection{Test Coverage}
 A total of 174 unit test cases were made on the different modules existing in the Archive service at the time of writing this thesis. The total time for running all 
 the test cases measured on average is 1m50s. For a proper calculation of the Test coverage by available features in the service Table \ref{table:unitTestCov} gives an short
 overview of the type of module and the different features available.

@@ -1,10 +1,11 @@
-\section{Archive process design}
+\section{Archive Process Design}
 This section describes the design and behaviour of archiving. Certain preconditions have to be met before an archive process could start 
 to ensure the correctness of the data.
 
 \begin{enumerate}
+    \label{lst:preconditionsArchive}
     \item \textbf{Mark resources:} The MARS framework is a multi user application meaning a project can be accessed by many users at the same time. 
-    As multiple users can modify the data at the same time it could be possible that someone modifies a resources during an archive. As the 
+    As multiple users can modify the data simultaneously, it could be possible that someone modifies a resources during an archive. As the 
     Archive service has no way to detect this modification. This would lead inconsistent data being archived.
     Therefore, to avoid this situation the resources must be marked before the start of the archive. The marking would ensure that no other process except the Archive
     service would have access to modify the marked contents during the archive process. 
@@ -16,96 +17,68 @@ to ensure the correctness of the data.
 \end{enumerate}
 
 
-\subsection{Data format}
-The first step for archiving is to decide the file format to store the archived data. This is
-considered to be the initial step because it determines how the data can be accessed and whether it meets
-the criteria mentioned in Section \ref{section:functionalReq}.
-
-\par
-The following file systems are analyzed for this thesis:
-\begin{enumerate}
-    \item Web Archive (WARC file format)\footnote{https://www.iso.org/standard/44717.html}
-    \item Hierarchical data format 5 (HDF5)\footnote{https://support.hdfgroup.org/HDF5/whatishdf5.html}
-    \item JavaScript Object Notation (JSON)\footnote{https://www.json.org}
-\end{enumerate}
-
-HDFS\footnote{https://hortonworks.com/apache/hdfs/} is a very popular file system used to store big data in an efficient and fast manner. 
-Although, having its benefits it was not compared because of the complexity to configure a Hadoop server for the MARS system. This is mentioned in this thesis since it would be
-a point of interest in the future to add this file format in the Archive service to utilize the benefits that it provides.
+\subsection{Data Format}
+A suitable file format must be chosen because it determines how the data access will be realized and whether it meets
+the criteria mentioned in Section \ref{section:functionalReq}. The different types of data archived are the metadatas for files, scenarios, 
+result configurations, simulation plans, simulation run including the input files, models and the simulation results. 
+The data format that is being discussed in this section mainly focuses on the metadata and they are received originally as a JSON document.
+The metadata is very important because they give the system vital information that will be used during retrieve process. 
 
 \subsubsection{HDF5}
 HDF5 is a file format for storing and managing data which has support for various data types designed for
-efficient I/O which has the capability to support big data. This file format is portable which helps to speed
-up the application development. An HDF5 file is an abstract data container which includes building blocks for data organization. This file
-system can hold a variety of heterogeneous objects \cite{Savic2007}. 
+efficient I/O which has the capability to support big data \cite{HDF5}. It has been successfully applied to different scientific projects which
+involve simulation (Efficient
+for simulation data \cite[p.~11]{Savic2007}). This file can also be defined as an abstract data container which includes building blocks for data organization. 
+This file system can hold a variety of heterogeneous objects like images, graphs, documents, tables etc. It also has support for a n-dimensional table  \cite[p.~2]{HDF5}. 
+The HDF5 format has two primary objects which define the data storage structure:
+\begin{enumerate}
+    \item \textbf{Groups:}  They are responsible to organize the data objects in the HDF5 file format. A group can be compared to a directory 
+    in Windows or a Unix system \cite{HDF5}. Figure \ref{fig:HDF5} shows an example of a Group in a HDF5 file. Using the API of the HDF5 libraries a Dataset 
+    (e.g. Dataset1) can be accessed via the path name (e.g. /Root/Group1/Dataset1).
+    \item \textbf{Datasets:} A dataset can be defined as a multidimensional array of data. This object contains the raw/actual data which one would like to store (e.g. simulation results).
+    These data are stored in a tabular format 
+    one can specify the different data types for the raw data i.e. integer, float, character, variable length strings \cite{HDF5}. Figure \ref{fig:dataset} shows
+    an example of a Dataset in a HDF5 file which is stored in a an array.
+\end{enumerate}
+%The Groups in the 
 
-\subsubsection{WARC}
-The WARC (Web Archive) file format is used to archive web files by concatenating multiple resource records
-(data objects), each consisting of a set of simple text headers and an arbitrary data block into one long file.
-This file format can be used to store different kinds of web crawl data with its metadata. It is widely used
- to archive data from the World wide web i.e. images, texts, html \cite{WARC}.
+\begin{figure}[H]
+    \centering \includegraphics[scale=0.6]{grafiken/groupsHDF5.png}
+    \caption{HDF5 Groups \cite{HDF5}}
+    \label{fig:HDF5}
+\end{figure}
+
+\begin{figure}[H]
+    \centering \includegraphics[scale=0.45]{grafiken/dataset.png}
+    \caption{Example of a HDF5 dataset}
+    \label{fig:dataset}
+\end{figure}
 
 \subsubsection{JSON} 
-JSON is a lightweight data format which is very easy for humans and machines to read and write. Although, this format is a subset of the JavaScript
-programming language it is completely language independent which follows the conventions used in different programming languages i.e. C\#, Java, Python and more.
-It is built as a collection of key/value pairs which is similar to a hash table and is supported by almost all modern programming languages and databases like
-MongoDB.
+JSON(JavaScript Object Notation) is a data format which is very easy for humans and machines to read and write. This format is
+completely language independent which follows the conventions used in different programming languages i.e. C\#, Java, Python and more. The REST API implemented in the
+MARS framework support this format with ease making this a very suitable candidate. This format is widely 
+accepted and even MongoDB supports it without any problem. Also, MongoDB seems to be a good candidate but the requirement (Section \ref{sec:anaCompress}) states that the archived
+data should be easily accessible to a non expert and using MongoDB requires some amount of technical expertise.
 
-\vspace*{10pt}
- \begin{table}[H]
-    \centering
-    \begin{tabular}{|p{4.6cm}|p{4.6cm}|p{4.6cm}|}
-        \hline
-            \textbf{HDF5}  & \textbf{WARC}&\textbf{JSON}\\
-        \hline
-            It is used mostly for scientific purposes (Efficient
-            for simulation data \cite[p.~11]{Savic2007}. & 
-            Ability to store both the payload content and control information from mainstream Internet application layer protocols, such as
-            HTTP, DNS, and FTP. & A simple file format which can be easily understood by MongoDB.\\
-        \hline
-            It enables efficient data storage on lookup.
-            &  
-            Support for data compression and maintenance of
-             data record integrity. & It is more readable so a user can easily see the contents.\\
-        \hline
-        Can be utilized with different programming languages with fast access (i.e. java, matlab, python etc.) &  
-                Ability to be extended without disruption
-                to existing functionality. & This can be utilized with almost every programming languages\\
-        \hline
-        Separates raw data with its metadata. & Support handling of overly long records by.& The files are easily convertible to a csv format which is used in the MARS
-        for data analysis purposes. \\        
-        \hline
-    \end{tabular}
-    \caption{Comparison between HDF5, WARC and Json}
-    \label{table:Hdf5vsWARC}     
-\end{table} 
 
 \subsubsection{Conclusion}
-    All the mentioned file formats are very powerful in their own domain and it can be utilized to archive a file very effectively. After careful consideration,  
-    it seems so that HDF5 and WARC file formats are not suitable for the archive and retrieve process. 
+   After careful consideration,  
+    it seems so that HDF5 file formats is not suitable for the archive and retrieve process.      
+    To store the data in an HDF5 format the JSON formated metadata must be parsed first and then
+    be stored in the multidimensional array structure of HDF5. Since it is very complicated to parse the metadata of different models this
+    file format will not be used for this thesis. 
 
-    HDF5 file format is not suitable for our use case because this format is highly optimized to work with
-    numeric data with fast access but storing string is inefficient as it creates a large overhead to store them. 
-    Additionally, it also requires additionally 3rd party application for viewing and extracting its data which 
-    adds more complexity for the user if one just wants to download the archive and analyze it. 
-
-    The WARC is found not suitable because the WARC cannot handle file sizes more than 1GB properly \cite[Appendix B]{WARC}. 
-    In contrast to MARS simulation results where a single results could be larger than 1GB. This would results in scalability issues in the future. To 
-    avoid this circumstance this file format was also excluded.
-
-    Lastly, the file format for archive is planned to be JSON for the metadata files i.e. simulation runs, simulation plans, scenarios and, result configuration and 
-    the simulation results would be stored as a gzip file. All the project resources will be packed inside a folder in the Synology (See Figure \ref{fig:synology})
-     which is easily accessible via the MARS network.
-    The folder can be downloaded as a zip file as the synology provides an graphical UI to work with. As the reading and writing this file is very simple which
-    aids in reducing the complexity of the restore process as well.
-
+    Lastly, the file format for archive is planned to be JSON for the metadata files i.e. simulation runs, simulation plans, scenarios and, result configuration. All the project resources will be packed inside a folder in the Synology (See Figure \ref{fig:synology})
+    which is easily accessible via the MARS network. The decision to use JSON is due to the fact that the API in the MARS back end services 
+    use the JSON structure to communicate. Using this structure simplifies the process of archive and also retrieve as the metadata can be easily saved.
 \begin{figure}[H]
     \centering \includegraphics[scale=0.45]{grafiken/archiveActivity.png}
     \caption{Activity Diagram of MARS project Archive process}
     \label{fig:archiveActivity}
 \end{figure}
 
-Figure \ref{fig:archiveActivity} illustrates an activity diagram of archiving an entire archive process. As mentioned in Table \ref{table:preconditionsArchive},
+Figure \ref{fig:archiveActivity} illustrates an activity diagram of archiving an entire archive process. As mentioned in Section \ref{lst:preconditionsArchive},
 marking the resources for the project is the first requirement needed to start the process. If the project resources are marked successfully
 then the archive would be initialized as a background job and the job id would be send to the client. In case the marking would fail the error message will be 
 sent to the client and the archive process will halt. The archiving process is visioned to be a background job due to the fact that a single process could take
@@ -126,4 +99,18 @@ is being executed. Additionally, the state digram also considers
 how the state would change if one of the resources are empty. In the case of an empty resource (e.g. no scenarios available for the project) the archive
 process stops gracefully and transitions to the idle state. 
 
+\begin{figure}[H]
+    \centering \includegraphics[scale=0.5, angle=90, origin=c]{grafiken/sequenceArchive.png}
+    \caption{Sequence Diagram for the Archive process}
+    \label{fig:sequenceArchive}
+\end{figure}
+
+Figure \ref{fig:sequenceArchive} illustrates the Sequence diagram for a complete archive process. The first step after an archive request would be to check
+whether an archive or retrieve process for the current project is under progress. In case the process is in progress the archive request would be denied to the
+user with an conflict message. If no process with the project is running then an archive job (a separate thread) would be created and a message to the client with start of archive process would be
+sent. Following the job creation the project will be marked so that during archive no changes to the project resources could be made. If this step fails the archive 
+process would stop by logging the error. After marking step completes the archive process receives a mark session id and the dependent resources which would allow the process to make
+changes to the resources. Using the dependent resources the process retrieves metadata, files, scenarios, result configurations, simulation plans, simulation runs 
+respectively and persists them in Synology. Lastly, the simulation result dump action will be called which will archive the result data. The process waits until
+all the result data is archived successfully. After a successful archive a request to delete the project data would be made so that the system memory can be freed.
  

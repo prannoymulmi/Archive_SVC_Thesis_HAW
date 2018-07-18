@@ -1,33 +1,37 @@
-\section{Archive process implementation}
+\section{Archive Process Implementation}
 This section gives an overview for the architecture of the archive process that would be responsible
 to move the project data to the Synology. 
 
-\subsection{Components for the archive process}
-An archive in the MARS ecosystem is tedious due to its distributed architecture. The process requires communication between many components for a 
-successful run. Figure \ref{fig:archiveComponent} depicts the high level components and the interfaces that the archive requires. The Archive
-component exposes an API (Section \ref{section:APIDesign}) via an external port to the client. 
+An archive in the MARS ecosystem is complex due to its distributed architecture. The process requires communication between many components for a 
+successful run. %Figure \ref{fig:archiveComponent} depicts the high level components and the interfaces that the archive requires. The Archive
+%component exposes an API (Section \ref{section:APIDesign}) via an external port to the client. 
 
-The marking component includes interfaces to mark a project and unmark the project in case of failure. This component communicates with the marking service which
-is responsible for marking all the resources. Also, the metadata, file, scenario, result configurations, sim plans and sim runs components communicate with 
-their respective services to get the corresponding data which would be stored in the Synology using the provided interface.
+Figure \ref{fig:archiveClassDiagram} illustrates the class diagram for the archive process. This diagram attempts to depict only the top level classes
+which performs actions (e.g. archiving files, archiving simulation result). The archive process is is a complex 
+task, thus involves many operations and communications. The operations include HTTP GET request to an external service, storing of received
+data in to the Synology and forwarding the received data to the next component which requires it. This involves more classes than the number depicted
+and cannot be illustrated in a single diagram. This diagram is shown to point out the order of complexity that the archive process undergoes and how it is being
+implemented. Also, to make the modules of the archive service more reusable the the components are separated into several classes
+like ArchiveMetadata, ArchiveScenarios etc. This separation
+of classes would later easily allow one to extend the archive process with less effort. It could be the a case that in future a new requirement
+that involves the Archive service to be able to only archive
+the input files and no other resources is required. In this case as the components are already separated one can just use the interface of ArchiveFile for a quick implementation. 
+In addition, different design patterns have been used
+in the Archive service like the Repository pattern \cite{Thomson-CSF Corporate Research Laboratory} to help make the software more coherent.
+ 
 
-\subsubsection{Performance optimization for simulation results}
-\label{subsubsec:performanceSim}
-For better performance
-the simulation results are archived running a database dump in the Synology instead of the Archive service processing the data first. Using the provided interface of
-the archive simulation result component, data dump call can be executed. 
-Dumping the result data directly to the Synology increases the throughput of the Archive service by reducing the network calls which decreases the total data processing
-time because as it has to be processed only at one end i.e. Database utility service. For this purpose a dumping API endpoint will be implemented which would trigger the data dump process in the 
-Synology. In addition, it can be argued why other external components (e.g. file service) do not have a direct dependency to the Synology as it would reduce more
-processing times as well. One of the main goals of the Archive service is also to act as an abstraction layer for the archives and in case of future changes the
-connection interface must only be changed in inside the Archive service instead of all the other services.
-
+\subsubsection{Repository Pattern Implementation}
+Many components require access to the Synology storage to archive their respective data, that presents a problem of having data
+persistence logic duplication in many components. To solve this the repository pattern will be implemented where there would be a abstraction layer i.e. repository which
+provides the query interface to the component. This abstraction layer would be injected to the required components and they can just call the 
+method to carry out persistence actions. In addition, this also decouples the component from the type of storage being used i.e. Synology, so it would not
+matter for the component if the type of storage is changed from Synology to something else since it just needs the interface for persistence. Figure 
+\ref{fig:repositoryPattern} illustrates how the repository acts as an abstraction layer for the client aiding the system to be more cohesive. 
 \begin{figure}[H]
-    \centering \includegraphics[scale=0.45]{grafiken/archiveComponent.png}
-    \caption{Component Diagram for the Archive process}
-    \label{fig:archiveComponent}
+    \centering \includegraphics[scale=0.7]{grafiken/repositoryPattern.png}
+    \caption{Repository Pattern overview}
+    \label{fig:repositoryPattern}
 \end{figure}
-
 
 
 \begin{figure}[H]
@@ -36,82 +40,29 @@ connection interface must only be changed in inside the Archive service instead 
     \label{fig:archiveClassDiagram}
 \end{figure}
 
-Figure \ref{fig:archiveClassDiagram} illustrates the class diagram for the archive process. This diagram attempts to depict only the top level classes
-which performs action mentioned in the component diagram (e.g. archiving files, archiving simulation result). The archive process is is a complex 
-task, thus involves many operations and communications. The operations include HTTP GET request to an external service, storing of received
-data in to the Synology and forwarding the received data to the next component which requires it. This involves more classes than the number depicted
-and cannot be illustrated in a single diagram. This diagram is shown to point out the order of complexity that the archive process undergoes and how it is being
-implemented.
-
-\subsubsection{Repository Pattern implementation}
-It is seen that many components require access to the Synology storage to archive their respective data, that presents a problem of having data
-persistence logic duplication in many components. To solve this the repository pattern will be implemented where there would be a abstraction layer i.e. repository which
-provides the query interface to the component. This abstraction layer would be injected to the required components and they can just call the 
-method to carry out persistence actions. In addition, this also decouples the component from the type of storage being used i.e. Synology, so it would not
-matter for the component if the type of storage is changed from Synology to something else since it just needs the interface for persistence. Figure 
-\ref{fig:repositoryPattern} illustrates how the repository acts as an abstraction layer for the client aiding the system to be more cohesive.
- 
-\begin{figure}[H]
-    \centering \includegraphics[scale=0.7]{grafiken/repositoryPattern.png}
-    \caption{Repository Pattern overview}
-    \label{fig:repositoryPattern}
-\end{figure}
-
-
-\newpage
-\begin{figure}[H]
-    \centering \includegraphics[scale=0.5, angle=90, origin=c]{grafiken/sequenceArchive.png}
-    \caption{Sequence Diagram for the Archive process}
-    \label{fig:sequenceArchive}
-\end{figure}
-
-Figure \ref{fig:sequenceArchive} illustrates the Sequence diagram for a complete archive process. The first step after an archive request would be to check
-whether an archive or retrieve process for the current project is under progress. In case the process is in progress the archive request would be denied to the
-user with an conflict message. If no process with the project is running then an archive job (a separate thread) would be created and a message to the client with start of archive process would be
-sent. Following the job creation the project will be marked so that during archive no changes to the project resources could be made. If this step fails the archive 
-process would stop by logging the error. After marking step completes the archive process receives a mark session id and the dependent resources which would allow the process to make
-changes to the resources. Using the dependent resources the process retrieves metadata, files, scenarios, result configurations, simulation plans, simulation runs 
-respectively and persists them in Synology. Lastly, the simulation result dump action will be called which will archive the result data. The process waits until
-all the result data is archived successfully. After a successful archive a request to delete the project data would be made so that the system memory can be freed.
-
-\subsubsection{Future possibility of failure recovery with snapshot}
-It can be noticed from the sequence diagram that the resources are being persisted right after they are successfully retrieved rather than a bulk operation
-(e.g. sequence number 1.8 in Figure \ref{fig:sequenceArchive}). This
-is implemented considering a possibility that in the near future the archive service would archive the project as a snapshot. In case of archive failure the process
-could be resumed from the snapshot in contrast to the current atomic implementation of the process.
-
 \subsection{Challenges}
-There were couple of issues faced during the implementation phase for the archive. The huge size of the simulation results brought a large
-performance drop while getting the data from the MongoDB. In general the data has to be extracted first from the database in order for the archive job
-to save it in the secondary storage. Due to the enormous size of the result data, reading the result data took a long time. The exact duration
-metrics was not taken because the data reading rate was unacceptable. As an approximation, a file with an approx size of 500 Mb took more than one hour 
-for a complete read excluding the data transfer to the Synology. This posed the threat of hindering the performance of the archive process by an unacceptable margin.
-After careful consideration, it was seen that each simulation result was stored as a separate collection in MongoDB. This provided an opportunity to use
-the highly optimized dumping and restore tool provided by MongoDB. With the help of the dumping tool the performance of simulation results became considerably fast i.e.
-500 Mb took around 30 sec with compression.
+%There were couple of issues faced during the implementation phase for the archive. 
+%Firstly, this dump feature has to be integrated in the Database utility service, given that the service could handle multiple requests. It is a mandatory requirement that the Database
+%utility service could process more than one job at once. Therefore, an endpoint was needed which could be called by the archive service for multiple Mongo dump
+%requests. To solve this problem, it is decided that the API requests would be executed as a long running job. 
 
-Secondly, this dump feature has to be integrated in the Database util service, given that the service could handle multiple requests. It is a mandatory requirement that the Database
-utility service could process more than one job at once. Therefore, an endpoint was needed which could be called by the archive service for multiple Mongo dump
-requests. To solve this problem, it is decided that the API requests would be executed as a long running job and persisting the jobs in a very efficient 
-Redis\footnote{https://redis.io} Database to include failure tolerance. In addition, the complexity of the Database utility service also has to be taken into consideration, as it 
-is written in GO lang a different programming language than the Archive service.
-
-Lastly, a major issue to be discussed is when the archive process fails which requires a rollback by unmarking the project. As mentioned earlier the project is
+A major issue to be discussed is when the archive process fails which requires a rollback by unmarking the project. As mentioned earlier the project is
 marked as "TO\_BE\_ARCHIVED" so that no other processes can modify the contents during the archive process. This is a great strategy if everything goes as planned but 
 often enough this is not the case and it is mandatory that an unmarking of the project is done otherwise the project would be unusable. It also happens that since the
 marking service is dependent upon many services it has a very high rate of failure as well. This brings upon the problem how would the archive service behave if the
-unmarking of the project fails. It seems very natural to just repeat the process until the unmarking request would succeed. Translating this in terms of computer 
-language an Infinite loop until success. If this happens only with a single process it does not make a huge difference but thinking of the bigger picture if this 
+unmarking of the project fails. It seems very natural to just repeat the process until the unmarking request would succeed since it is absolutely necessary to unmark
+a project. 
+Translating this in terms of computer 
+language an infinite loop until success. If this happens only with a single process it does not make a huge difference but thinking of the bigger picture if this 
 occurs with 100 different processes at the same time, it would use valuable processing resources as it may be stuck in a deadlock condition until a outside interruption
-is made. To avoid this condition of deadlock the number of retires for unmarking the project is restrained to a fixed number with certain time interval for the request 
-calls. Currently 5400 retires with an interval of 16 seconds is chosen which means it tries to retry for at least a day and if it still fails the process would stop 
+is made. To avoid this condition of deadlock the number of retries for unmarking the project is restrained to a fixed number with certain time interval for the request 
+calls. Currently it retries for at least a day and if it still fails the process would stop 
 (See Listing \ref{lst:unmarkRetry}). 
 Although, this solves the issue of using up resources but the problem that the project is unusable is still there. No other way except a manual unmarking is seen so 
 it is decided that the archive process would also persist the marking session id which can be used to call the unmarking endpoint. With the use of this id a manual 
 trigger is possible as soon as the error is fixed. The marking session id can be easily retrieved also from the GUI as it will be included in the status request of
 the archive job.
 
-\newpage
 \begin{lstlisting}[language={[Sharp]C}, caption={Unmarking retry implementation}, captionpos=b,label={lst:unmarkRetry}]
 private async Task OnArchiveFail(string projectId)
 {

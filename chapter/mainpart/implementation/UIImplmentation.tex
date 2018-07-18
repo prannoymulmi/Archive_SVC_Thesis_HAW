@@ -14,7 +14,7 @@ the functions that the Archive service delivers be part of the graphical system.
 Figure \ref{fig:marsCloudUI} illustrates a high level communication between UI and the back end services. It is to be noted that the backend services
 are running in an self contained environment which is not available to the outside ports and other clients. Therefore, 
 to make the services available the Ingress\footnote{https://kubernetes.io/docs/concepts/services-networking/ingress/} is present. Ingress contains
-a set of rules which allows inbound connections to reach the services that are inside the cluster(encausplated from outside). In the MARS system
+a set of rules which allows inbound connections to reach the services that are inside the cluster(encapsulated from outside). In the MARS system
 the Ingress creates a reverse proxy to the teaching API. The teaching API is the bridge between the different backend services and the GUI. The purpose
 of making the requests via the Teaching API is to have a more secure system as it authenticates if the client which is making the requests is the right owner or 
 is an intruder. This check is done as the teaching API provides an authentication token i.e. Bearer token to the GUI and this token has to be included in the

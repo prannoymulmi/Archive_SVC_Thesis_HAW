@@ -1,7 +1,7 @@
 \newpage
 \section{Microservices}
 
-Microservice is built using the software design Service Oriented Architecture(SOA\footnote{SOA: Service Oriented Architecture}) \cite[chapter ~3]{SOA}. A service 
+Microservice is built using Service Oriented Architecture(SOA) \cite[chapter ~3]{SOA}. A service 
 is the smallest functional unit that performs a specific business action (e.g. user authentication) that can be accessed via a network. 
 The services encapsulates its state and the operations that are performed on the data.  
 Figure \ref{fig:objectBasedDS} illustrates an example of Service Oriented Architecture (SOA) in a distributed system where different services call each others interface
@@ -35,13 +35,13 @@ Each service is encapsulated with their own life cycles, which communicates with
     
 
 \par
-    Comparing Microservices to a single monolithic application \cite[p.~94]{{softwareDesign}} where the
-    system is built as a large single unit and runs in a single process. 
-    This is considered the most natural way to develop a server side 
+    A single monolithic application \cite[p.~94]{{softwareDesign}} is
+    built as a large unit where all the application logic lies within a single system. 
+    This is considered the most natural way to develop a server-side 
     application. It is seen that as the application scales in size, it 
-    gets harder to keep up with the changes. As scaling requires the whole
-    application to be scaled as a whole. This is where microservices come very handy,
-    as the only the required bounded module can be scaled up as needed. 
+    gets harder to keep up with the changes as scaling requires the whole
+    application to be scaled as a whole. This is where microservices can be beneficial,
+    as only the required bounded module can be scaled up as needed. 
     There are different factors to be considered before going for a Microservice
     architecture as improper planning could lead to an unstable system.
 
@@ -70,11 +70,11 @@ Each service is encapsulated with their own life cycles, which communicates with
     \newpage
     \subsection{Data Sovereignty in Microservice}
     \label{subsection:dataSovereignty}
-    It is an important guideline for a Microservice architecture to own its domain data and 
-    logic \cite[p.~29]{Torre2017}. Decentralized data would assist a single Microservice
-    to become solely independent and help them evolve individually. The approach of each Microservice owning its own database is also
+    It is an important guideline for a microservice architecture to own its domain data and 
+    logic \cite[p.~29]{Torre2017}. Decentralized data would assist a individual microservice
+    to become solely independent and help them evolve separately. The approach of each microservice owning its own database is also
     know as \textbf{Polyglot Persistence} \cite{Polyglot}. Applying this pattern would imply that the
-    data belonging to one service is available to the others only via the API of the Microservice.
+    data belonging to one service is available to the others only via the API of the microservice.
 
     \begin{figure}[H]
         \centering \includegraphics[scale=0.4]{grafiken/polyglot.png}
@@ -83,7 +83,7 @@ Each service is encapsulated with their own life cycles, which communicates with
     \end{figure}
     
    In Figure \ref{fig:polyglot}, it can be observed how a Monolithic application owns only a single database for the whole application. Meaning,
-   the application has a centralized database which are shared amongst services. Whereas, in microservices each service owns
+   the application has a centralized database which are shared amongst the services. Whereas, in microservices each service owns
    a single database or few services share databases which is easier to manage. Having said that data sovereignty is very beneficial, it also brings various difficulties
    i.e. coordinations between services, which is very challenging to tackle and creates data coherency issues in the system. 
 

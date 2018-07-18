@@ -1,11 +1,11 @@
-\section{Retrieve process design}
+\section{Retrieve Process Design}
 This section describes the design and behaviour for restoring the archived project from the Synology back to the system
 so that it can be used again using the MARS UI.   
 
-\subsection{Decision of file upload via File-svc}
+\subsection{Decision of File Upload via File-svc}
 
 \begin{figure}[H]
-    \centering \includegraphics[scale=0.6]{grafiken/mars-cloud.png}
+    \centering \includegraphics[scale=0.4]{grafiken/mars-cloud.png}
     \caption{File Upload in MARS Cloud \cite{MARSCLoud}}
     \label{fig:MARSCloud}
 \end{figure}
@@ -17,18 +17,18 @@ Although, it is a requirement for the archive service
 to call the corresponding service to access add or modify the resources (Chapter \ref{chap:ReqAnalysis}). As mentioned in earlier chapters the MARS system
 has different types of files (e.g. models, timeseries, GIS) which are managed by their own service. The files can be uploaded in two different methods.
 \begin{enumerate}
- \item \textbf{Upload files via File-svc} The File-svc is a service which takes in all kind of inputs GIS, models, timeseries and figures out what type of
-    file it is and communicates with respective service for the successful file service. 
- \item \textbf{Upload the respective file via its service} This method requires the Archive service to communicate with each service of the file type. If a file type
- model is to be uploaded a API call to the reflection service has to made and to GIS-Data-svc if a GIS file is to be uploaded.
+ \item \textbf{Upload files via File-svc} The File-svc is a service which takes in all kind of inputs GIS, models, timeseries and it communicates to the
+ concerning service by checking the fle type. This is the only method which is possible in the UI.  
+ \item \textbf{Upload the respective file via its service} This method requires the Archive service to communicate with each service of the file type. 
+The archive service can communicate to any service provided an endpoint. Therefore, it is also possible to upload the different kinds of files using the
+corresponding service instead of the file service. If a file type model is to be uploaded a API call to the reflection service has to made. 
 \end{enumerate} 
-
 The File-svc can be seen as an abstraction layer for uploading different types of files. This layer reduces the number of direct dependencies to the Archive
 service because it does not call the other services directly. Choosing the File-svc also provides an additional advantage if a new file type is added in the future.
 In this case the archive service does not need to modify any code to upload the new file type. Given the reasons to have cohesion and easy maintenance, file uploads
 via File-svc deemed to be a better choice. 
 
-\subsection{Retrieve as a atomic action}
+\subsection{Retrieve as an Atomic Action}
 \begin{figure}[H]
     \centering \includegraphics[scale=0.45]{grafiken/restoreActivity.png}
     \caption{Activity Diagram for retrieving a project}
@@ -42,45 +42,11 @@ the scenarios gets the reference to the file id so that it could uploaded. Follo
 As the simulation plans is dependent upon the scenarios and the result configurations this is the next resource which will be uploaded. Lastly, the simulation runs
 and the simulation results would be uploaded respectively. 
 
-In case an error occurs a Two phase commit protocol strategy is adopted. This strategy is taken into consideration to bring atomicity on decentralized data.
+In case an error occurs a Two-phase commit protocol \cite{atomic} is adopted. This strategy is taken into consideration to bring atomicity on decentralized data
+as it tries to roll back if the distributed transaction fails.
 Due to chances of failure, an incomplete data restore process could occur. In the MARS system one cannot work with having
 incomplete data since the resources are dependent upon each other. Having an atomic transaction for the retrieve process would be a simple mechanism to overcome
 this issue. In case of any failure during retrieval, the partially restored resources would be deleted to make the retrieve process as an atomic action.
-
-\subsection{Addition of functionalities in other services}
-The restoring requires a lot of end points to be called to upload the respective resources. After analyzing the MARS cloud and their available endpoints, it is
-seen that some functionalities are not present in the current system which are required for restoring the complete system. These functionalities have to be
-added to the services in order for a complete restore. Table \ref{table:funcRestore} describes the functionalities that must be
-added in the required services.
-
-%\begin{table}[]
-    %\centering
-    \begin{longtable}{|p{2cm}|p{6cm}|p{6cm}|}
-        \hline
-            \textbf{Service}  & \textbf{Functionality} & \textbf{Description}\\
-        \hline
-            Project service & Add archived and is being archived mark in the project &  The archived mark is necessary because
-            it would provide a user information if the project being queried is already archived or is in the process of archiving. This has to be
-            implemented using a GRPC communication since this is the used protocol in the project service compared to the other services.  \\
-        \hline
-            Scenario service & Return scenario id with the full scenarios & It is the case, that when a full scenarios is requested the scenario id is
-            not returned. The id is required by the archive while retrieval because it needs to map the old scenario id with the new one. If the mapping
-            fails the simulation plans cannot be created since they are dependent upon scenarios.\\
-        \hline
-            Sim-runner service & Upload a simulation run without running a simulation & Currently, the Sim-runner service executes the simulation run producing an
-            output when a simulation run is created. This is not desired by the archive service because an output is already available and which needs to be restored. Therefore, an added 
-            functionality which just uploads the simulation runs without running a simulation is required.\\
-        \hline
-            DB-util service & Dump and restore for result database & The simulation results are normally big and it takes a longer and it is faster to
-            perform a dump for this. The dump and restore functionality must be added, so that the archive service can restore and archive the simulation results.\\
-        \hline
-            DB-util service & Make the dump and restore a background job & It is important that the dumping and resorting process is implemented as a background task
-            because it usually takes longer time.\\
-
-        \hline
-        \caption{Functionality required to be integrated in other services for retrieve process}
-        \label{table:funcRestore} 
-    \end{longtable}
 
     \begin{figure}[H]
         \centering \includegraphics[scale=0.45]{grafiken/stateRestore.png}
@@ -93,5 +59,20 @@ added in the required services.
     Also, marking of the resources is not done before the start process, in contrast to the archive because Data Coherency issues are not present as the archived
     data is store in a centralized storage i.e. Synology accessed only by archive service.   
 
+\newpage
+Figure \ref{fig:sequenceRestore} illustrates the sequence diagram for the retrieve process. The starting step is similar to the archive process where a
+check is made if a process for the project is running or not. If a process is found running then the restore process will be denied. The first after a
+successful job creation is to fetch the metadata from the archives. Using the metadata the corresponding files are uploaded. After the file upload 
+they need some more time to be processed. Therefore, the retrieve
+also waits for the completion for the processing of all files.  This is an important step as it is required for the files to be in the FINISHED state
+in order to create an scenario and result configurations.  As mentioned in
+\ref{subsec:restoreProb} the necessary attributes would be swapped using the new model. Similarly, the simulation plan would be then uploaded followed
+by the simulation runs. Lastly, the restore for the simulation results will be made. The retrieve process will come to halt after a finished
+status of restore is received. 
+
+\begin{figure}[H]
+    \centering \includegraphics[scale=0.5, angle=90, origin=c]{grafiken/sequenceRestore.png}
+    \caption{Sequence Diagram for the restore process}
+    \label{fig:sequenceRestore}
+\end{figure}
     
-%\end{table} 

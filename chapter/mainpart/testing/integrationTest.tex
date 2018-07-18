@@ -1,4 +1,4 @@
-\section{Integration test}
+\section{Integration Test}
 The main aim of this test is to test the communication between the different services that the Archive service is dependent upon. This test is designed in 
 such a way that it calls the endpoints that is used in order to create a simulation run from adding files to running the simulation. As a result of checking
 these endpoints it gives an additional benefit of detecting errors introduced from other services in the area of resource creation. As an example, assuming a service
@@ -66,7 +66,7 @@ form the GET endpoints. This check would aid to verify if the services return a 
 related to the data model is made this test would detect it. 
 
 \subsection{Correctness for uploading data}
-For this test, the POST, PUT and PATCH endpoints were tested. It is designed to verify during the restoring process if the expected data model 
+For this test, the POST and PUT endpoints were tested. It is designed to verify during the restoring process if the expected data model 
 is still compatible with the services or if there is some error introduced after a new change. The process is conducted by uploading the 
 data models using the mentioned endpoints and in return expecting a success status.
 
