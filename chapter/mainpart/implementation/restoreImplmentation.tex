@@ -42,81 +42,8 @@ added in the required services.
         \label{table:funcRestore} 
     \end{longtable}
 
-\subsection{Challenges}
-\label{subsec:restoreProb}
-Restoring the data back to the system is not so simple because it needs some additional work rather than just posting the data back to the system. 
-The problem arises from the fact that the archived data has attributes like the resource id which is changed as a new resource is uploaded. For more clarification, 
-Listing \ref{lst:marsMetadata} presents and example of an archived metadata. This resource is needed so that the restore process can determine the different 
-attributes (e.g. title, project id) to ensure the contents of the resource would be the same as the archived data. During the file restore 
-the file named KNPGIS.zip will 
-be uploaded but the data id of the file would change as a new identifier is automatically assigned by the file service (See Listing \ref{lst:marsNewMetadata}). 
-This is a big problem because the other 
-resources such as scenarios, result configuration would now
-depend on this new data id as the old data id is non existent in the MARS system. Listing \ref{lst:marsScenario} shows the archived scenario which has a reference 
-to the data id from the archived resource. 
-This is only one example as there are many attributes that must be taken care of. In oder to solve this the classes which are responsible
-to post the corresponding data have a method which swaps these attributes. Listing \ref{lst:swapCode} shows an example of a method inside the RetrieveScenarios class.
-The main task of this method is to dynamically get the contents as the scenarios are different for a particular model and then look for the new data id
-that is assigned to a file after upload in the IDictionary map i.e. fileIds and replace the data id in the archived scenario. In conclusion, the mentioned problem
-has been solved making a map of the old attribute and the new attribute and passing it to the child resource manager. The child searches for the new id using the 
-old id as the key. Leading the attributes to be replaced with the correct new one, which allows a successful restore.
-
 \begin{figure}[H]
     \centering \includegraphics[height=6cm, angle=90, origin=c, width=10.5cm]{grafiken/restoreClass.png}
     \caption{Class Diagram for the Restore process (Top level)}
     \label{fig:restoreClass}
 \end{figure}
-
-
-
-
-\newpage
-\begin{lstlisting}[caption={Snippet of archived MARS metadata resource}, language=json,firstnumber=1, captionpos=b, label={lst:marsMetadata}]
-{
-    "DataId":"7cae6055-d7fd-418e-9ba0-bdc2980ffb4c",
-    "Title":"KNPGIS.zip",
-    "Description":null,
-    "ProjectId":"c5deed87-dd03-45c3-a0c4-fdf9f1a307a0",
-    "UserId":"af7e045f-edf4-4df5-a9c8-6327186e6ddb",
-    "Privacy":"PROJECT_PRIVATE",
-    "State":"TO_BE_DELETED"
-}
-\end{lstlisting}
-
-\begin{lstlisting}[caption={Snippet of the uploaded MARS metadata resource}, language=json,firstnumber=1, captionpos=b, label={lst:marsNewMetadata}]
-{
-    "DataId":"27765261-8a65-45ab-bdeb-db8b5b7f8f43",
-    "Title":"KNPGIS.zip",
-    "Description":null,
-    "ProjectId":"c5deed87-dd03-45c3-a0c4-fdf9f1a307a0",
-    "UserId":"af7e045f-edf4-4df5-a9c8-6327186e6ddb",
-    "Privacy":"PROJECT_PRIVATE",
-    "State":"TO_BE_DELETED"
-}
-\end{lstlisting}
-
-\begin{lstlisting}[caption={Snippet of the archived MARS scenario resource}, language=json,firstnumber=1, captionpos=b, label={lst:marsScenario}]
-{
-    "MetaDataId":"7cae6055-d7fd-418e-9ba0-bdc2980ffb4c",
-    "Description":"No description available.",
-    "ClearName":"gis_vector_percipitation.zip",
-    "AllowedTypes":["SHAPEFILE","GEOJSON"],
-    "ParameterMapping":[]
-}
-\end{lstlisting}
-
-\newpage
-\begin{lstlisting}[language={[Sharp]C}, caption={A method in RetrieveScenarios to swap Attributes}, captionpos=b,label={lst:swapCode}]
-private async Task<ScenarioModel> ItereateThroughLayersAndSwapOldFileIdsWithNew(IDictionary<string, string> fileIds, ScenarioModel dataScenarioModel)
-{
-    fileIds.TryGetValue(dataScenarioModel.ModelMetaData, out var newModelId);
-    dataScenarioModel.ModelMetaData = newModelId;
-    dataScenarioModel.ScenarioId = string.Empty;
-    
-    foreach (dynamic initializationDescriptionGeoPotentialFieldLayer in dataScenarioModel.InitializationDescription.GeoPotentialFieldLayers)
-    {
-        fileIds.TryGetValue((string)initializationDescriptionGeoPotentialFieldLayer["MetaDataId"], out var newGeoPotentialId);
-        initializationDescriptionGeoPotentialFieldLayer["MetaDataId"] = newGeoPotentialId;
-    }
-}
-\end{lstlisting}

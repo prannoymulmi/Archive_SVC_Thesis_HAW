@@ -19,12 +19,13 @@ Certain preconditions have to be met before an archive process could start to en
 The resources depicted in table (Table \ref{table: archivedMars}) must be archived following the MARS resource hierarchy (Figure \ref{fig:marsDependency}).
 Following the hierarchy, it is arguable why the project is not being archived, despite it being present. The project lies on the top of the hierarchy 
 meaning no other resources are usable without its existence. Section \ref{ssec:retrieveAnalysis} mentions the requirement that the Archive service must 
-be able to restore all the resources back into the system. Therefore, the problem arises from the fact that during the restore if a specific project archived
-is not available then other resources cannot be brought back into the system as all of them are dependent to the project. To make the restore process possible
-the project data is not archived which now acts as a point of reference to bring back the children resources. If the project were to be archived also a mechanism
-which ensures that the users referenced in the archive exist in the MARS system (active system) during a retrieve because the users in an
-archived project may not exist anymore causing the process to fail. Therefore, this decision also reduces the complexity of the 
-archive and restore as this complex mechanism which is hard to maintain can be avoided.
+be able to restore all the resources back into the system. Therefore, during a restore if, a specific project archived
+is not available then other resources cannot be brought back into the system as all of them are dependent to the project. To make the restore process possible,
+the project data is not archived which now acts as a point of reference to bring back the children resources. 
+If the project was to be archived also a mechanism
+which ensures that the users referenced in the archive exist in the MARS system (active system). It could happen that during a retrieve the users in an
+archived project may not exist anymore as they were removed causing the process to fail. Therefore, this decision also reduces the complexity of the 
+archive and restore as this mechanism which is hard to maintain can be avoided.
 
 
 \subsection{Data Format}
@@ -123,4 +124,17 @@ process would stop by logging the error. After marking step completes the archiv
 changes to the resources. Using the dependent resources the process retrieves metadata, files, scenarios, result configurations, simulation plans, simulation runs 
 respectively and persists them in Synology. Lastly, the simulation result dump action will be called which will archive the result data. The process waits until
 all the result data is archived successfully. After a successful archive a request to delete the project data would be made so that the system memory can be freed.
+
+A major issue to be discussed is when the archive process fails which requires a rollback by unmarking the project. As mentioned earlier the project is
+marked as "TO\_BE\_ARCHIVED" so that no other processes can modify the contents during the archive process. This is a great strategy if everything goes as planned but 
+often enough this is not the case and it is mandatory that an unmarking of the project is done otherwise the project would be unusable. It also happens that since the
+marking service is dependent upon many services it has a very high rate of failure as well. This brings upon the problem how would the archive service behave if the
+unmarking of the project fails. It seems very natural to just repeat the process until the unmarking request would succeed since it is absolutely necessary to unmark
+a project. If this happens only with a single process it does not make a huge difference but thinking of the bigger picture if this 
+occurs with 100 different processes at the same time, it would use valuable processing resources as it may be stuck in a deadlock condition until a outside interruption
+is made. To avoid this a fixed number of retries to unmark the project with certain time interval for the request 
+will be made. Although, this solves the issue of using up resources but the problem that the project is unusable is still there. No other way except a manual unmarking is seen so 
+it is decided that the archive process would also persist the marking session id which can be used to call the unmarking endpoint. With the use of this id a manual 
+trigger is possible as soon as the error is fixed. The marking session id can be easily retrieved also from the GUI as it will be included in the status request of
+the archive job.
  

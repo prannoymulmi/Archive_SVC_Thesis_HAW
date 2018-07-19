@@ -62,18 +62,72 @@ this issue. In case of any failure during retrieval, the partially restored reso
 \newpage
 Figure \ref{fig:sequenceRestore} illustrates the sequence diagram for the retrieve process. The starting step is similar to the archive process where a
 check is made if a process for the project is running or not. If a process is found running then the restore process will be denied. After a
-successful job creation is to fetch the metadata from the archives. Using the metadata the corresponding files are uploaded one after the other and gets the new data
-id. In this process different type of input files such as GIS, Timeseries, models can be uploaded so it need some time to process these different types. It is mandatory
-that all the files uploaded have a "FINISHED" status which can be acknowledged making another request by using the data id received when uploading the file. 
-Using these ids the restoring file process waits until all the files have an "FINISHED" status. The request will be done in a designated time interval to avoid many
-network calls. If the status "FAILED" is received for any of the files the whole restore process will fail. This is necessary because this file cannot be used by the
-children resources. 
+successful job creation the file metadatas are fetched from the archives. Using them the corresponding files are uploaded one after the other. 
+In this process different type of input files such as GIS, Timeseries, and models can be uploaded, which needs some for processing. It is mandatory
+that all the uploaded files have a "FINISHED" status which can be acknowledged by making another request using the data id received when uploading the file. 
+Using these ids the restoring file process waits until all the files have a "FINISHED" status. The request will be done in a designated time interval to avoid many
+network calls. In the case of a status "FAILED", request timeouts, unknown status, and server internal error the whole restore process will halt. 
+This is necessary because the failed files cannot be used by the children resources.
+
+The next step would be to get the scenario metadata. Restoring this data back to the system is not quite simple because it needs some additional 
+work to be done. 
+The problem arises from the fact that the archived data have attributes like the resource id which is changed as a new resource is uploaded. For more clarification, 
+Listing \ref{lst:marsMetadata} presents an example of the archived metadata of a file. This resource is needed so that the restore process can determine the different 
+attributes (e.g. title, project id) while uploading a new resource. During a new file upload 
+its data id  would change, as a new id is assigned by the file service (See Listing \ref{lst:marsNewMetadata}). 
+This is a big problem because the other resources such as a scenario cannot be uploaded until it knows the new data id that was assigned to the model it 
+depends on. Listing \ref{lst:marsScenario} shows the archived scenario which has a reference to the data id from the archived file metadata. 
+This is only one example as there are many attributes that must be taken care of. In order to solve this, a map using the old attribute as the key and the 
+new id as the value will be made (See Listing \ref{lst:marsMap}).
+This way while uploading the scenario resource it gets the new data id by using the old id from the map and replaces it during an upload. 
+
+Following a scenario upload, the other resources i.e. result configuration, simulation plan, simulation run will also use the same mapping strategy to replace 
+the attributes required for restoring. 
+Lastly, the simulation results will be restored from the archives. The restore process also waits until all the simulation runs are finished. Using a job id retrieved from the Database 
+Utility service the status of the simulation restore can be known. Similar precaution for the file uploads are taken into consideration which prevents an infinite running
+of this process.
 
 
-As mentioned in
-\ref{subsec:restoreProb} the necessary attributes would be swapped using the new model. Similarly, the simulation plan would be then uploaded followed
-by the simulation runs. Lastly, the restore for the simulation results will be made. The retrieve process will come to halt after a finished
-status of restore is received. 
+\newpage
+\begin{lstlisting}[caption={Snippet of archived MARS metadata resource}, language=json,firstnumber=1, captionpos=b, label={lst:marsMetadata}]
+{
+    "DataId":"7cae6055-d7fd-418e-9ba0-bdc2980ffb4c",
+    "Title":"KNPGIS.zip",
+    "Description":null,
+    "ProjectId":"c5deed87-dd03-45c3-a0c4-fdf9f1a307a0",
+    "UserId":"af7e045f-edf4-4df5-a9c8-6327186e6ddb",
+    "Privacy":"PROJECT_PRIVATE",
+    "State":"TO_BE_DELETED"
+}
+\end{lstlisting}
+
+\begin{lstlisting}[caption={Snippet of the uploaded MARS metadata resource}, language=json,firstnumber=1, captionpos=b, label={lst:marsNewMetadata}]
+{
+    "DataId":"27765261-8a65-45ab-bdeb-db8b5b7f8f43",
+    "Title":"KNPGIS.zip",
+    "Description":null,
+    "ProjectId":"c5deed87-dd03-45c3-a0c4-fdf9f1a307a0",
+    "UserId":"af7e045f-edf4-4df5-a9c8-6327186e6ddb",
+    "Privacy":"PROJECT_PRIVATE",
+    "State":"TO_BE_DELETED"
+}
+\end{lstlisting}
+
+\begin{lstlisting}[caption={Snippet of the archived MARS scenario resource}, language=json,firstnumber=1, captionpos=b, label={lst:marsScenario}]
+{
+    "MetaDataId":"7cae6055-d7fd-418e-9ba0-bdc2980ffb4c",
+    "Description":"No description available.",
+    "ClearName":"gis_vector_percipitation.zip",
+    "AllowedTypes":["SHAPEFILE","GEOJSON"],
+    "ParameterMapping":[]
+}
+\end{lstlisting}
+
+\begin{lstlisting}[caption={The mapped key value attributes that the scenario metadata would need}, language=json,firstnumber=1, captionpos=b, label={lst:marsMap}]
+    {
+        "7cae6055-d7fd-418e-9ba0-bdc2980ffb4c":"27765261-8a65-45ab-bdeb-db8b5b7f8f4"
+    }
+    \end{lstlisting}
 
 \begin{figure}[H]
     \centering \includegraphics[scale=0.5, angle=90, origin=c]{grafiken/sequenceRestore.png}
