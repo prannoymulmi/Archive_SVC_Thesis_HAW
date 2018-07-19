@@ -43,12 +43,6 @@
             \caption{MARS resources which are to be archived}
             \label{table: archivedMars}     
         \end{table} 
-
-        The resources depicted in table (Table \ref{table: archivedMars}) must be archived following the MARS resource hierarchy (Figure \ref{fig:marsDependency}).
-        Following the hierarchy, it is arguable why the project is not being archived, despite it being present. The reason behind this is, a project has reference
-        to multiple users as the MARS supports multiple user access to a project. It could be the case that at the time of restoring, the users that are referenced 
-        in the archived project may not exist anymore causing failing the process.
-        To prevent this phenomena the project are still kept in the project.
         
         \subsubsection{Assurance of correct data being persisted}
             MARS being a Distributed System, Data Coherency (Subsection \ref{subsection: distriChallenges}) 
@@ -57,6 +51,7 @@
             altered.
         
         \subsection{Retrieve Project Resources}    
+            \label{ssec:retrieveAnalysis}
             The designed software must support the retrieval of the archived projects from the Synology into the active system. The
             system must be able to restore the project given that, the services support the data format which is archived in the Synology.
            

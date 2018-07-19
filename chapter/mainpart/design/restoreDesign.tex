@@ -61,11 +61,16 @@ this issue. In case of any failure during retrieval, the partially restored reso
 
 \newpage
 Figure \ref{fig:sequenceRestore} illustrates the sequence diagram for the retrieve process. The starting step is similar to the archive process where a
-check is made if a process for the project is running or not. If a process is found running then the restore process will be denied. The first after a
-successful job creation is to fetch the metadata from the archives. Using the metadata the corresponding files are uploaded. After the file upload 
-they need some more time to be processed. Therefore, the retrieve
-also waits for the completion for the processing of all files.  This is an important step as it is required for the files to be in the FINISHED state
-in order to create an scenario and result configurations.  As mentioned in
+check is made if a process for the project is running or not. If a process is found running then the restore process will be denied. After a
+successful job creation is to fetch the metadata from the archives. Using the metadata the corresponding files are uploaded one after the other and gets the new data
+id. In this process different type of input files such as GIS, Timeseries, models can be uploaded so it need some time to process these different types. It is mandatory
+that all the files uploaded have a "FINISHED" status which can be acknowledged making another request by using the data id received when uploading the file. 
+Using these ids the restoring file process waits until all the files have an "FINISHED" status. The request will be done in a designated time interval to avoid many
+network calls. If the status "FAILED" is received for any of the files the whole restore process will fail. This is necessary because this file cannot be used by the
+children resources. 
+
+
+As mentioned in
 \ref{subsec:restoreProb} the necessary attributes would be swapped using the new model. Similarly, the simulation plan would be then uploaded followed
 by the simulation runs. Lastly, the restore for the simulation results will be made. The retrieve process will come to halt after a finished
 status of restore is received. 

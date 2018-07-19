@@ -1,12 +1,11 @@
-\newpage
 \section{Microservices}
 
-Microservice is built using Service Oriented Architecture(SOA) \cite[chapter ~3]{SOA}. A service 
-is the smallest functional unit that performs a specific business action (e.g. user authentication) that can be accessed via a network. 
-The services encapsulates its state and the operations that are performed on the data.  
+Microservice is a specialized implementation of Service Oriented Architecture(SOA) \cite[chapter ~3]{SOA}. A service in a SOA
+is a functional unit that performs a specific business action (e.g. user authentication) accessed typically via a network that 
+encapsulates its state and the operations performed on the data.  
 Figure \ref{fig:objectBasedDS} illustrates an example of Service Oriented Architecture (SOA) in a distributed system where different services call each others interface
 to perform a certain action. Although microservices are built using the SOA paradigm they have their differences. In a microservice, a service can be deployed and 
-operated independently unlike SOA.
+operated independently because the services are designed to be more fine grained with a single purpose, unlike SOA. 
 Also they are lightweight and Domain Driven \cite{DDD} that makes the application simple to understand, develop and test. The smaller set of services
 can be developed autonomously by different teams and be deployed quickly as they usually are lightweight in nature. This architecture promises to bring loose coupling 
 by separating a big application into smaller logical units. 
@@ -28,7 +27,7 @@ Each service is encapsulated with their own life cycles, which communicates with
 
 \begin{figure}[H]
     \centering \includegraphics[scale=0.6]{grafiken/microservices.png}
-    \caption{ Illustration of services as independent entities}
+    \caption{ Illustration of services as fine grained independent entities}
     \label{fig:serviceExample}
 \end{figure}
 
@@ -36,13 +35,13 @@ Each service is encapsulated with their own life cycles, which communicates with
 
 \par
     A single monolithic application \cite[p.~94]{{softwareDesign}} is
-    built as a large unit where all the application logic lies within a single system. 
+    built as a large unit where all the logic lies within a single system. 
     This is considered the most natural way to develop a server-side 
     application. It is seen that as the application scales in size, it 
-    gets harder to keep up with the changes as scaling requires the whole
-    application to be scaled as a whole. This is where microservices can be beneficial,
+    gets harder to keep up with the changes as scaling requires an entire
+    system to be scaled. This is where microservices can be beneficial,
     as only the required bounded module can be scaled up as needed. 
-    There are different factors to be considered before going for a Microservice
+    There are different factors to be considered before going for a microservice
     architecture as improper planning could lead to an unstable system.
 
     \begin{table}[h!]
@@ -78,7 +77,7 @@ Each service is encapsulated with their own life cycles, which communicates with
 
     \begin{figure}[H]
         \centering \includegraphics[scale=0.4]{grafiken/polyglot.png}
-        \caption{Data management approach in a Monolithic application vs Microservice \cite{FowlerMartin}}
+        \caption{Data management approach in a Monolithic application vs microservice \cite{FowlerMartin}}
         \label{fig:polyglot}
     \end{figure}
     
