@@ -82,9 +82,9 @@ data should be easily accessible to a non expert and using MongoDB requires some
     Wolves and Sheep \cite{HAWHamburgMARS} model has a different metadata structure than the KNP \cite{HAWHamburgMARS} model as the Agents and Layers involved are 
     different. Due to this reason, the resources
     must be parsed every time into a n-dimensional array and at the time of restore this has to be converted back to a JSON again as the MARS system
-    does not understand the HDF5 structure. In addition, to not parse the data at all, a 1 dimensional array of size 1 was created of type variable string. All the unparsed text data
+    does not understand the HDF5 structure. In addition, to not parse the data at all, a 1 dimensional array of size 1 was created of type variable string and all the unparsed text data
     was stored in this array. The main intention of this experiment was to see how the HDF5 files would react as it easy to get the string from a 1d array.
-    This also turned out to be a very bad idea as it created so much overhead to the file that a JSON file with the size of 2 KB
+    This also turned out to be a very bad idea as it created so much overhead to the file as a JSON file with the size of 2 KB
     had a file size of around 0.5MB for the HDF5 variant. 
     
     Considering the above mentioned factors the file format for the metadata is planned to be JSON. Different advantages such as easy handling, no extra conversion

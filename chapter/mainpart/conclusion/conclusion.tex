@@ -1,14 +1,12 @@
 \chapter{Conclusion}
 This work presents the design and implementation of the Archive service within the MARS framework. The ideas shared
-in this paper concentrates on aspects of archiving and restoring the resources of a project stored in a distributed storage, managing the synchronization
+in Chapter \ref{chap:design} concentrates on aspects of archiving and restoring the MARS resources stored in a distributed storage, managing the synchronization
 -- control of the MARS Resources hierarchy mentioned in Section \ref{subsection:MARSResource} and failure recovery using the Two Phase Commit strategy
 on decentralized data \cite{atomic}.
 Also, a brief overview of the challenges and introduction to MARS system.
 
-As seen, there are different strategies to access the decentralized data for archiving. However, the decision of accessing the data was done via communicating
-with the corresponding service's API which gives more transparency to the system since only one entity is given access to a particular data source at the price of 
-complexity of maintaining the service which includes multiple point failure and data corruption possibilities. The service designed is aimed to handle such situations
-to its best using the mentioned strategies in Chapter \ref{chap:design}.
+All the requirements mentioned in Chapter \ref{chap:ReqAnalysis} were tested thoroughly using different testing strategies (See Chapter \ref{chap:testing}). The
+test done verify the correct functioning of the Archive service which can be used via the MARS teaching UI to archive and restore a project.
 
 Finally, in the process of developing this system a deep understanding of Distributed System, Microservice together with the state-of-the-art technological stacks
 such as Kubernetes \cite{kubernetes}, Docker, etc., has been established. Together with this knowledge, an Archive service for the MARS framework has been implemented and integrated 

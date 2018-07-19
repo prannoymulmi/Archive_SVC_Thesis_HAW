@@ -52,37 +52,12 @@
         \caption{API Endpoints description for Archive service}
         \label{table:archiveEndpoints}     
     \end{table}  
-    \begin{figure}[H]
-        \centering \includegraphics[scale=0.3]{grafiken/archiveSwagger.png}
-        \caption{Archive endpoint shown in a swagger interface}
-        \label{fig:archiveSwagger}
-    \end{figure}
 
-    \begin{figure}[H]
-        \centering \includegraphics[scale=0.3]{grafiken/retrieveSwagger.png}
-        \caption{Retrieve endpoint shown in a swagger interface}
-        \label{fig:retrieveSwagger}
-    \end{figure}
-
-    \begin{figure}[H]
-        \centering \includegraphics[scale=0.3]{grafiken/deleteSwagger.png}
-        \caption{Delete endpoint shown in a swagger interface}
-        \label{fig:deleteSwagger}
-    \end{figure}
-    
-    \begin{figure}[H]
-        \centering \includegraphics[scale=0.3]{grafiken/jobSwagger.png}
-        \caption{Job status acknowledgment endpoint shown in a swagger interface}
-        \label{fig:jobSwagger}
-    \end{figure}
-
-    Figure \ref{fig:archiveSwagger} to \ref{fig:jobSwagger} illustrates the endpoints which are going to be implemented for the Archive service. It also includes the HTTP 
-    status responses the API could return depending upon the current situation i.e. 201 created when an archive process is accepted for processing by the server.
-    Additionally, the API end points are designed considering the fact that more functionality could be added to the archive service without big changes needed in the client. 
+    The API end points are designed considering the fact that more functionality could be added to the archive service without big changes needed in the client. 
     For example, the endpoint \textbf{"archive/archiveProject/{{projectId}}"} is designed thinking an archive could be also extended for other resources except the project. If later,
     the Archive service would like to support, archiving of MARS metadata resource, the endpoint would be \textbf{"archive/archiveMetadata/{{MetadataId}}"}.
     Hence, it would make it more flexible for the client to add the functionality without much effort. Also, to avoid multiple API call and
-    increase the performance of the server, the get status (Figure \ref{fig:jobSwagger}) endpoint combines vital information needed for the client in one 
+    increase the performance of the server, the get status (Table \ref{table:archiveEndpoints}) endpoint combines vital information needed for the client in one 
     request (See Listing \ref{lst:status}). 
     
 \begin{lstlisting}[caption={Sucessful GET request for a archive status}, language=json,firstnumber=1, captionpos=b, label={lst:status}]

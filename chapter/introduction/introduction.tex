@@ -1,6 +1,7 @@
 %---------------------------------------------------------------------------------------------------
 % Introduction
 %---------------------------------------------------------------------------------------------------
+\frenchspacing
 \newpage
 %\part{start}
     \chapter{Introduction}
@@ -57,8 +58,7 @@
             to get and post data into their respective databases creating more risk to failures.
             
             \item 
-            \textbf{Data consistency and coherence:} By design of the MARS system it is necessary for the Archive service to have a distributed transaction. 
-            Therefore, it is extremely difficult to maintain a strong data consistency and coherence as the
+            \textbf{Data consistency and coherence:} By design of the MARS system it is necessary for the Archive service to have a distributed transaction. Therefore, it is extremely difficult to maintain a strong data consistency and coherence as the
             change of data in one database is unknown to the other service since an ACID \cite[p.~290]{{Haerder1983}} transaction between the databases does not exist. Thus, the archiving 
             process can unintentionally be led to a false state in case of failure during communication process.
 
@@ -67,13 +67,12 @@
             this complex hierarchy(Section \ref{subsection:MARSResource}) is vital since restoring or archiving data may lead to corrupted states.
             \item
             \textbf{Additional changes to MARS services:}
-            Also, for the Archive service to operate as intended, additional functionalities have to be added into the other services. The Archive service 
+              Also, for the Archive service to operate as intended, additional functionalities have to be added into the other services. The Archive service 
             is only allowed to communicate via API gate i.e. HTTP or RPC as accessing another service's database directly is considered an Anti-pattern \cite[p.~27]{{Torre2017}}.
             It imposes another challenge in understanding the structure and algorithms of services which are drafted in various technologies.
          
         \end{enumerate}
 
-    \newpage
     \section{Thesis Overview} 
         Here is a brief description of the thesis, providing a short overview on what each
         chapter contains.
