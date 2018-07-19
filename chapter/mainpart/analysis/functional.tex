@@ -47,7 +47,7 @@
         \subsubsection{Assurance of correct data being persisted}
             MARS being a Distributed System, Data Coherency (Subsection \ref{subsection: distriChallenges}) 
             is one of the big issue which this thesis faces. As a consequence,
-            wrong or unwanted data could be archived. Therefore the Archive service must ensure that while an archive is running the data would not be
+            wrong or unwanted data could be archived. Therefore, the Archive service must ensure that while an archive is running the data is not
             altered.
         
         \subsection{Retrieve Project Resources}    
@@ -62,12 +62,12 @@
             \end{figure}
 
             Figure \ref{fig:synology} illustrates that the Archive service must only use the volume assigned for archiving and nothing more. 
-            This requirement must be fulfilled to comply with the MARS development standard. It has to also be made sure that the retrieved
+            This requirement must be fulfilled to comply with the MARS development standard. It also has to be made sure that the retrieved
             resources are usable (e.g. the restored simulation plans should be able to run a simulation again). 
 
         \subsection{Archive and Retrieve Process Status}  
-            The archive and retrieve processes are a long running tasks. The designed software must run these processes in the background to avoid 
-            long waiting time for another request. Given this, a API endpoint must be made available which gives the current status of the archive 
+            The archive and retrieve processes are long running tasks. The designed software must run these processes in the background to avoid 
+            long waiting time for another requests. Given this, a API endpoint must be made available which gives the current status of the archive 
             or retrieve job. Using the status a user can determine whether the job is being executed or is finished.
 
 
@@ -75,11 +75,11 @@
         \label{sec:anaCompress}
             It is of great importance for a domain Expert i.e. ecologist who are not technical experts to have a graphical interface. In this interface,
             it must be possible to navigate to the project of interest and easily download the project as a zip file. There could be cases where the
-            MARS system is out of order and the data is required which could then be accessible by anyone with basic knowledge of the system.
+            MARS system is out of order and the data is required. Then it can be accessible by anyone with basic knowledge of the system.
         
         \subsection{Fault-Tolerant Design}   
         Firstly, the Archive service has to communicate with many services in the system, leading the rate of failure being higher
         in comparison to a system which does not depend on other services. A breakdown 
-        of one service would cause the whole process of archive/retrieve to stop unexpectedly.  Secondly, it is also possible that a running Archive service be terminated
+        of one service would cause the whole process of archive/retrieve to stop unexpectedly. Secondly, it is also possible that a running Archive service be terminated
         due to some unexpected reason. Therefore, fault tolerance mechanism has to be included in the Archive system so that it has a chance of 
         recovery. 

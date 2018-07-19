@@ -44,14 +44,16 @@ This file system can hold a variety of heterogeneous objects like images, graphs
 The HDF5 format has two primary objects which define the data storage structure:
 \begin{enumerate}
     \item \textbf{Groups:}  They are responsible to organize the data objects in the HDF5 file format. A group can be compared to a directory 
-    in Windows or a Unix system \cite{HDF5}. Figure \ref{fig:HDF5} shows an example of a Group in a HDF5 file. Using the API of the HDF5 libraries a Dataset 
-    (e.g. Dataset1) can be accessed via the path name (e.g. /Root/Group1/Dataset1).
+    in Windows or a Unix system \cite{HDF5}. Figure \ref{fig:HDF5} shows an example of a Group (e.g. project1) in a HDF5 file. Using the API of the HDF5 libraries a Dataset 
+    (e.g. scenario Metadata) can be accessed via the path name (e.g. /Root/project1/scenario Metadata).
     \item \textbf{Datasets:} A dataset can be defined as a multidimensional array of data. This object contains the raw/actual data which one would like to store (e.g. simulation results).
     These data are stored in a tabular format 
     one can specify the different data types for the raw data i.e. integer, float, character, variable length strings \cite{HDF5}. Figure \ref{fig:dataset} shows
     an example of a Dataset in a HDF5 file which is stored in a an array.
 \end{enumerate}
-%The Groups in the 
+
+Figure \ref{fig:HDF5} also shows how the groups and datasets can be used to archive the MARS projects. Every new project to be archive will be added as a new Group
+as depicted in the figure and the datasets are the resources i.e. scenario, file, simulation results. 
 
 \begin{figure}[H]
     \centering \includegraphics[scale=0.6]{grafiken/groupsHDF5.png}
@@ -74,15 +76,23 @@ data should be easily accessible to a non expert and using MongoDB requires some
 
 
 \subsubsection{Conclusion}
-   After careful consideration,  
-    it seems so that HDF5 file formats is not suitable for the archive and retrieve process.      
-    To store the data in an HDF5 format the JSON formated metadata must be parsed first and then
-    be stored in the multidimensional array structure of HDF5. Since it is very complicated to parse the metadata of different models this
-    file format will not be used for this thesis. 
-
-    Lastly, the file format for archive is planned to be JSON for the metadata files i.e. simulation runs, simulation plans, scenarios and, result configuration. All the project resources will be packed inside a folder in the Synology (See Figure \ref{fig:synology})
-    which is easily accessible via the MARS network. The decision to use JSON is due to the fact that the API in the MARS back end services 
-    use the JSON structure to communicate. Using this structure simplifies the process of archive and also retrieve as the metadata can be easily saved.
+   %The HDF5 is a very powerful file format providing more efficient data storage and lookup by separating its raw data with its metadata. 
+    To store the data in HDF5 all the attributes of the metadata in JSON must be parsed in a n-dimensional array structure which can be understood by the HDF5. 
+    It is important to understand that MARS supports different kind of models which makes it impossible to predict the structure of a resource. To elaborate, the
+    Wolves and Sheep \cite{HAWHamburgMARS} model has a different metadata structure than the KNP \cite{HAWHamburgMARS} model as the Agents and Layers involved are 
+    different. Due to this reason, the resources
+    must be parsed every time into a n-dimensional array and at the time of restore this has to be converted back to a JSON again as the MARS system
+    does not understand the HDF5 structure. In addition, to not parse the data at all, a 1 dimensional array of size 1 was created of type variable string. All the unparsed text data
+    was stored in this array. The main intention of this experiment was to see how the HDF5 files would react as it easy to get the string from a 1d array.
+    This also turned out to be a very bad idea as it created so much overhead to the file that a JSON file with the size of 2 KB
+    had a file size of around 0.5MB for the HDF5 variant. 
+    
+    Considering the above mentioned factors the file format for the metadata is planned to be JSON. Different advantages such as easy handling, no extra conversion
+    required, easy conversion to different types of file format i.e. CSV used often in the MARS for analysis makes it more suitable for this purpose. 
+    In comparison to the simulation results (can range up to TB of data) the metadatas are not large and the meta files for each kind of resources
+    are going to be stored separately (e.g. scenario.json, resultConfiguration.json). Splitting the JSON files like this would aid in faster serialization and 
+    deserialization. As the input files and the simulation results do not need to be read they are just chosen to be zipped.
+ 
 \begin{figure}[H]
     \centering \includegraphics[scale=0.45]{grafiken/archiveActivity.png}
     \caption{Activity Diagram of MARS project Archive process}

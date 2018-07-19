@@ -59,7 +59,6 @@ this issue. In case of any failure during retrieval, the partially restored reso
     Also, marking of the resources is not done before the start process, in contrast to the archive because Data Coherency issues are not present as the archived
     data is store in a centralized storage i.e. Synology accessed only by archive service.   
 
-\newpage
 Figure \ref{fig:sequenceRestore} illustrates the sequence diagram for the retrieve process. The starting step is similar to the archive process where a
 check is made if a process for the project is running or not. If a process is found running then the restore process will be denied. After a
 successful job creation the file metadatas are fetched from the archives. Using them the corresponding files are uploaded one after the other. 

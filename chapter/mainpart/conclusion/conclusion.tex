@@ -3,26 +3,26 @@ This work presents the design and implementation of the Archive service within t
 in this paper concentrates on aspects of archiving and restoring the resources of a project stored in a distributed storage, managing the synchronization
 -- control of the MARS Resources hierarchy mentioned in Section \ref{subsection:MARSResource} and failure recovery using the Two Phase Commit strategy
 on decentralized data \cite{atomic}.
-Also, a brief overview of the challenges and introduction to MARS system is included.
+Also, a brief overview of the challenges and introduction to MARS system.
 
-As seen, there are different strategies to access the decentralized data for archiving, but decision of accessing the data was done via communicating
+As seen, there are different strategies to access the decentralized data for archiving. However, the decision of accessing the data was done via communicating
 with the corresponding service's API which gives more transparency to the system since only one entity is given access to a particular data source at the price of 
 complexity of maintaining the service which includes multiple point failure and data corruption possibilities. The service designed is aimed to handle such situations
 to its best using the mentioned strategies in Chapter \ref{chap:design}.
 
 Finally, in the process of developing this system a deep understanding of Distributed System, Microservice together with the state-of-the-art technological stacks
-such as Kubernetes \cite{kubernetes}, Docker etc has been established. Together with this knowledge an Archive service for the MARS framework has been implemented and integrated 
-that would aid in improving the performance of the MARS system by moving inactive data into the Synology storage.
+such as Kubernetes \cite{kubernetes}, Docker, etc., has been established. Together with this knowledge, an Archive service for the MARS framework has been implemented and integrated 
+which aids in improving the performance of the MARS system by moving inactive data into the Synology storage.
 
 \section{Further Work}
 It is a point of interest that the Archive service would be further enhanced. Firstly, it is seen that the current UI design of the archive process is not very convenient
-for the users as the archived and unarchived projects are grouped together which may produce some confusion. One proposal would be to design a separate section
-where the archived projects could be shown. To aid this process the implementation of the mark showing if the project is archived or not is already included which is
+for the users as the archived and unarchived projects are grouped together which may produce some confusion. One proposal could be to design a separate section
+where the archived projects could be shown. To aid this process the implementation of the mark showing if the project is archived or not is already included, which is
 changed via the Archive service. 
 
 Secondly, improving the performance of the archive and retrieve would also be a factor to be considered next. The archive and retrieve process are implemented as
-an atomic operation. Therefore, in case of failure the process is repeated from the starting causing big performance loss for larger projects. More research and effort
-has to be put forward to obtain a solution for this issue. 
+an atomic operation. Therefore, in case of failure the process is repeated from the beginning, causing big performance loss for larger projects. More research and effort
+have to be put forward to obtain a solution for this issue. 
 
 It can be noticed from the sequence diagram that the resources are being persisted right after they are successfully retrieved rather than a bulk operation
 (e.g. sequence number 1.8 in Figure \ref{fig:sequenceArchive}). This

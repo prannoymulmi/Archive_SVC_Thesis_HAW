@@ -4,7 +4,7 @@
 \newpage
 %\part{start}
     \chapter{Introduction}
-    Nowadays consumers and businesses are continuously growing aware of the value of archives. As the archived data has also proven
+    Nowadays consumers and businesses are continuously getting aware of the value of archives, as the archived data has also proven
     to be valuable asset in the field of scientific research where an expert could archive their data for future reference. Having said that, the 
     MARS\footnote{MARS: Multi Agent Research and Simulation} framework offers an easy interactive platform for a domain expert i.e. ecologist, biologist, 
     chemist to simulate complex real life scenarios (e.g. reproduction of bacteria in a body) based on the concept of Agent-based modeling and simulation 
@@ -16,7 +16,9 @@
         an Archive service would provide an opportunity for the MARS system to improve their
         performance because this service would move some part of data from the primary storage (Ceph cluster \cite{Ceph}) to the secondary storage (NAS synology \cite{Synology}). 
 
-        The MARS system design is based on a Microservice architecture \cite{MicroserviceNewMan} having a decentralized data \cite{atomic} access structure. 
+        However, the underlying structure of the MARS system is also quite
+        challenging to archive a given simulation with its resources.
+        The system design is based on a Microservice architecture \cite{MicroserviceNewMan} having a decentralized data \cite{atomic} access structure. 
         The MARS Resources have a hierarchal
         structure (Section \ref{subsection:MARSResource}) which has to be followed so a successful simulation can occur. As per the design of MARS these resources
         are stored separately in different storages/databases which should be accessed only by a certain API. Due to this underlying structure of the system it is quite 
@@ -26,19 +28,19 @@
         
         
         \section{Goals}
-        The primary goal of this thesis is to design and implement an Archive service which would be able to deal with the decentralized
+        The primary goal of this thesis is to design and implement an Archive service which would deal with the decentralized
         structure of the MARS framework and provide an easy interface for users to archive and restore the projects and simulations back into the system.
        
         \par
         At the time of writing this thesis, the project resources are stored in a
         Ceph distributed file system \cite{Ceph}. It provides more efficiency, reliability, and
-        scalability by separating data and metadata using a pseudo-random data distribution function\cite[p.~307]{{Ceph}} to store data in 
+        scalability by separating data and metadata using a pseudo-random data distribution function\cite[p.~307]{{Ceph}} inorder to store data in 
         a distributed system \cite{DistributedSystems}. Although
         efficiency and scalability comes at a price, it is financially more expensive to possess such a system in larger volumes.
         In contrast to its continuous data production, the primary storage volume available to the system is very limited.
         Additionally, a high level of correlation has been observed between the operating cost of a software system and its data volume. 
          Therefore, the Archive service would move the requested data from the Ceph storage to the slower NAS\footnote{NAS: Network Attached Storage} Synology
-        \cite{Synology}. This cloud storage is owned by the MARS for backup and archive purpose.
+        \cite{Synology}. This cloud storage is owned by the MARS for backup and archive purposes.
            
 
      
@@ -55,18 +57,17 @@
             to get and post data into their respective databases creating more risk to failures.
             
             \item 
-            \textbf{Data consistency and coherence:} By design the communication within the MARS system is executed via remote network call like HTTP\footnote{HTTP: Hyper Text Transfer Protocol} 
-            or RPC\footnote{RPC: Remote Procedure Calls} making the transactions span over multiple systems. 
-            Therefore it is extremely difficult to maintain a strong data consistency and coherence as the
+            \textbf{Data consistency and coherence:} By design of the MARS system it is necessary for the Archive service to have a distributed transaction. 
+            Therefore, it is extremely difficult to maintain a strong data consistency and coherence as the
             change of data in one database is unknown to the other service since an ACID \cite[p.~290]{{Haerder1983}} transaction between the databases does not exist. Thus, the archiving 
-            process can unintentionally be led into a false state in case of failure during communication.
+            process can unintentionally be led to a false state in case of failure during communication process.
 
             \item 
             \textbf{Understanding MARS resource hierarchy:} The MARS Resource Hierarchy is the order in which the assets in the system have to be created. Understanding
-            this complex hierarchy(Section \ref{subsection:MARSResource}) is vital sincerestoring or archiving data may lead to corrupted states.
+            this complex hierarchy(Section \ref{subsection:MARSResource}) is vital since restoring or archiving data may lead to corrupted states.
             \item
             \textbf{Additional changes to MARS services:}
-            Also, for the Archive service to behave as intended, additional functionalities have to be added into the other services. The Archive service 
+            Also, for the Archive service to operate as intended, additional functionalities have to be added into the other services. The Archive service 
             is only allowed to communicate via API gate i.e. HTTP or RPC as accessing another service's database directly is considered an Anti-pattern \cite[p.~27]{{Torre2017}}.
             It imposes another challenge in understanding the structure and algorithms of services which are drafted in various technologies.
          

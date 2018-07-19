@@ -37,13 +37,13 @@
             \item
                 \textbf{Upload models and its corresponding layers}:  The model upload is the first step required
                 for a simulation to take place. The model contains information of the behaviour of the agents
-                during a simulation run. The input files containing initialization data of the layers i.e. GIS, Time series, Obstacle, Potential field are also uploaded
+                for a simulation run. The input files containing initialization data of the layers i.e. GIS, Time series, Obstacle, Potential field are also uploaded
                 in this step. 
 
             \item 
                 \textbf{Create a scenario}: A scenario of a project can be described as the initialization of the model.
-                The process of creating a scenario, attributes like number of agents i.e. wolves, sheep are specified. 
-                The uploaded layer initialization data like the GIS, Time series etc, are assigned to the scenario when required. 
+                In the process of creating a scenario, attributes like number of agents i.e. wolves, sheep are specified. 
+                The initialization data files like the GIS, Time series etc., are assigned to the scenario when required. 
                 The global parameters such as start date and end date of a simulation is also specified.
 
             \item 
@@ -65,7 +65,7 @@
             \label{fig:marsDependency}
         \end{figure}
         
-        Figure \ref{fig:marsDependency} shows the dependencies between the MARS. It can be observed
+        Figure \ref{fig:marsDependency} shows the dependencies between MARS resources. It can be observed
         that the order of existence of the resources has to be from the \textbf{project} to the \textbf{simulation} results 
         (bottom to top) when adding a new simulation. Failure to follow this hierarchy will result in failure to
         successfully run a simulation.

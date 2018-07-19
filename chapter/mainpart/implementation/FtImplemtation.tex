@@ -4,17 +4,17 @@ The MARS system is very susceptible to different kinds of errors due to the arch
 system is needed which would try to recover in case of any transient errors. For the Archive service an open source framework
 named Hangfire is used for implementing the design in Section \ref{sec:ftDesign}. This framework is used because it provides
 the functionality mentioned in the design section including many additional features i.e. reliability, easy maintainability and simplicity. It can be called
-reliable because when a background process is created using this framework would persist the input parameters, method call in a database. 
-This is also know as the forget and fire feature. It would
+reliable because when a background process is created, the usage of this framework would persist the input parameters, retry times, method name etc., in a database. 
+This is also known as the Forget and Fire feature \cite{Hangfire}. It would
 ensure that the jobs triggered once will always be executed and retried. As an example, if the
-Archive service restarts during a running process in the general case the job cannot be recovered but this framework will check if 
-there are any incomplete jobs and will start them automatically. This forget and fire 
+Archive service restarts during a running process, in the general case the job cannot be recovered. However, this framework will check if 
+there are any incomplete jobs and will start them automatically. This Forget and Fire 
 feature ensures that the triggered processes would always run compared to the native threading offered by ASP .NET Core.
 Listing \ref{lst:hangfire}
 shows the simplicity of how a job retry can be configured in case of an exception. One of the biggest disadvantages of this framework is that it is 
 tightly coupled
-with a database. If there is a connection issue present between the Archive service and the database the whole service will be facing a downtime.  Although, the 
-benefits this framework provides outweighs its disadvantage.
+with a database. If there is a connection issue present between the Archive service and the database the whole service will be facing a downtime. However, the 
+benefits this framework provides outweighs its disadvantages.
 
 \begin{lstlisting}[language={[Sharp]C}, caption={Hangfire retry attempt configuration}, captionpos=b,label={lst:hangfire}]
 private IServiceCollection BuildServices(IServiceCollection services)
