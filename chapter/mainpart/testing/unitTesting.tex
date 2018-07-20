@@ -4,8 +4,8 @@ Testing methodology has been applied for the unit testing. This method is used a
 the specific inputs and outputs are predetermined and the tests are ran to verify if the expected output is produced by that input. 
 
 \par
-Figure \ref{fig:CIbuild} in the Chapter Requirement Analysis depicts
-Unit Testing as an mandatory step for deployment of the Archive service. Running this test with every build process will boost the confidence 
+Figure \ref{fig:CIbuild} above depicts
+unit testing as an mandatory step for deployment of the Archive service. Running this test with every build process will boost the confidence 
 in changing and maintaining the code for the Archive service. The ASP .NET platform offers a lot of unit-testing frameworks 
 (e.g. XUnit, Nunit, MSTest/Visual Studio). Nunit is choosen as the preferred the testing framework for this service as it has a good reputation for
 fast testing and it is already integrated the IDE i.e. Rider (JetBrains) used for this work. 
@@ -13,7 +13,7 @@ fast testing and it is already integrated the IDE i.e. Rider (JetBrains) used fo
 \par
 Making stubs, and mocks/fake objects are one of the important steps to do a proper unit testing. This statement can be backed up saying that unit tests are
 used to analyze only one module/method. To check only one module the other dependent objects have to faked. The Archive service is designed following the
-SOLID \cite{Hotop2015} where the D stands for \textbf{Dependency Inversion Principle} where classes depend upon abstractions i.e. Interfaces not concrete
+SOLID \cite{Hotop2015} principle where the D stands for \textbf{Dependency Inversion Principle} where classes depend upon abstractions i.e. Interfaces not concrete
 implementation. The application of this principle has allowed an easy method to fake objects as the depending classes are just abstractions and the concrete 
 implementations are injected by the ASP .NET Dependency Injection framework. A framework name as Moq \footnote{https://github.com/Moq/moq4/wiki/Quickstart} is used
 which can be used to fake objects i.e.Interfaces and return the desired output from them. 
@@ -62,7 +62,7 @@ but when one sees the attributes that a class is using it will give an good idea
 \subsubsection{Test if an background job is enqueued}
 For this test, after a successful API request for archiving a project the module should create a background job using Hangfire. This test would check if the
 background tasks were created or not. As it is a requirement for the archive process to run a background job so it must be ensured that a background job is created 
-after a successful request. Listing\ref{lst:hangfireCreate} shows how the test was written to verify the creation of the background job.
+after a successful request. Listing \ref{lst:hangfireCreate} shows how the test was written to verify the creation of the background job.
 
 \begin{lstlisting}[language={[Sharp]C}, caption={Hangfire Job creation test}, captionpos=b,label={lst:hangfireCreate}]
 [Fact]

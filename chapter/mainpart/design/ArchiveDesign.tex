@@ -142,7 +142,7 @@ A major issue to be discussed is when the archive process fails which requires a
 marked as "TO\_BE\_ARCHIVED" so that no other processes can modify the contents during the archive process. This is a great strategy if everything goes as planned but 
 often this is not the case, and it is mandatory that an unmarking of the project is done otherwise the project would be unusable. It also happens that since the
 marking service is dependent upon many services, it has a very high rate of failure as well. This brings upon the problem how would the archive service behave if the
-unmarking of the project fails. It seems very natural to just repeat the process until the unmarking request would succeed since it is absolutely necessary to unmark
+unmarking of the project fails. It seems very natural to just repeat the process until the unmarking request would succeed, since it is absolutely necessary to unmark
 a project. If this happens only with a single process, it does not make a huge difference. However when thinking of the bigger picture if this 
 occurs with 100 different processes at the same time, it would use valuable processing resources as it may be stuck in a deadlock condition until a outside interruption
 is made. To avoid this, a fixed number of retries to unmark the project with certain time interval for the request 

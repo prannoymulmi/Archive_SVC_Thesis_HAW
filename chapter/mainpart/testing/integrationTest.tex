@@ -1,5 +1,5 @@
 \section{Integration Test}
-The main aim of this test is to test the communication between the different services that the Archive service is dependent upon. This test is designed in 
+The main aim of this test is to verify the communication between the different services that the Archive service is dependent upon. This test is designed in 
 such a way that it calls the endpoints that is used in order to create a simulation run from adding files to running the simulation. As a result of checking
 these endpoints it gives an additional benefit of detecting errors introduced from other services in the area of resource creation. As an example, assuming a service
 (excluding the Project, User, Marking, and Deletion service)
@@ -72,18 +72,18 @@ data models using the mentioned endpoints and in return expecting a success stat
 
 \subsection{Correctness of response}
 This test is designed to check the interface of the API provided by the other services. This check would aid to validate if the API of the
-service returns a correct status as described by their Swagger interface. As an example, while posting a scenario in the scenario service if the
+service returns a correct status as described by their swagger interface. As an example, while posting a scenario in the scenario service if the
 name and the data id of the model is already existing an conflict status code will be returned by the request. Therefore, for this example an existing
 model would be uploaded and the test would verify if an conflict status is returned. Likewise, the other responses are verified by this test. 
 
 \subsection{Integration with the Database}
 This test is designed to test if a proper integration between the MongoDB and Archive service is maintained. The Archive service stores vital metadata
 which gives the client information about the status of the job and many other data that it needs. This check verifies the correctness of the read and write 
-operations is done with the Database. 
+operations done with the database. 
 
 \subsection{Test coverage}
 A total of 81 tests were made which would aid in verifying the integration of the Archive service with the dependent services and the database. The 
 total time for running the test measured at the time of writing the thesis is on average 7m38s at the time of writing. Table \ref{table:MARS Resource Hierarchy Service Overview}
 mentions the services that the Archive service has dependency towards. 6 out of 9 services are successfully tested. Among the total services 
 which were supposed to be tested only 67\%  were carried out. It is also a point of interest in the future to complete these requirements which would boost the
-reliability of the Archive service by investigating the issue.   
+reliability of the Archive service by investigating the issue.  

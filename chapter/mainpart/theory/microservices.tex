@@ -7,7 +7,7 @@ Figure \ref{fig:objectBasedDS} illustrates an example of Service Oriented Archit
 to perform a certain action. Although microservices are built using the SOA paradigm, they have their differences. In a microservice, a service can be deployed and 
 operated independently because the services are designed to be more fine grained with a single purpose, unlike SOA. 
 Also they are lightweight and Domain Driven \cite{DDD} that makes the application simple to understand, develop, and test. The smaller set of services
-can be developed autonomously by different teams and be deployed quickly as they usually are lightweight in nature. This architecture promises to bring loose coupling 
+can be developed autonomously by different teams and be deployed quickly as they are usually lightweight in nature. This architecture promises to bring loose coupling 
 by separating a big application into smaller logical units. 
 
 
@@ -70,7 +70,7 @@ Each service is encapsulated with their own life cycles, which communicates with
     \subsection{Data Sovereignty in Microservice}
     \label{subsection:dataSovereignty}
     It is an important guideline for a microservice architecture to own its domain data and 
-    logic \cite[p.~29]{Torre2017}. Decentralized data would assist a individual microservice
+    logic \cite[p.~29]{Torre2017}. Decentralized data would assist a microservice
     to become solely independent and help them evolve separately. The approach of each microservice owning its own database is also
     know as \textbf{Polyglot Persistence} \cite{Polyglot}. Applying this pattern would imply that the
     data belonging to one service is available to the others only via the API of the microservice.

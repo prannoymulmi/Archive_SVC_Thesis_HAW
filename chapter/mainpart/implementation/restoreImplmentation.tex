@@ -23,11 +23,11 @@ added in the required services.
             it would provide a user information if the project being queried, is already archived, or is in the process of archiving. This has to be
             implemented using a GRPC communication, since this is the protocol in the project service, compared to the other services.  \\
         \hline
-            Scenario service & Return scenario id with the full scenarios & It is the case, when a full scenarios is requested the scenario id is
-            not returned. The id is required by the archive while retrieval because it needs to map the old scenario id with the new one. If the mapping
+            Scenario service & Return scenario id with the full scenarios & It is the case, when a full scenario is requested the scenario id is
+            not returned. The id is required while retrieval because it needs to map the old scenario id with the new one. If the mapping
             fails the simulation plans cannot be created since they are dependent upon scenarios.\\
         \hline
-            Sim runner service & Upload a simulation run without running a simulation & Currently, the Sim-runner service executes the simulation run producing an
+            Sim runner service & Upload a simulation run without running a simulation & The Sim-runner service executes the simulation run producing an
             output (simulation result) when it is created. This is not desired by the Archive service because an simulation result is already available that needs to be restored.
             Therefore, an added 
             functionality which just uploads the simulation runs without running a simulation is implemented.\\
@@ -36,7 +36,7 @@ added in the required services.
             perform a dump for this. The dump and restore functionality must be added, so that the archive service can restore and archive the simulation results.\\
         \hline
             Database utility service & Make the dump and restore a background job & It is important that the dumping and restoring process is implemented as a background task
-            because it usually takes longer time.\\
+            because this process is time consuming in comparison to the other resources i.e. scenario.\\
 
         \hline
         \caption{Functionality implemented to the other services for retrieve process}

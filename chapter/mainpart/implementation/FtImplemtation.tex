@@ -8,7 +8,7 @@ reliable because when a background process is created, this framework would pers
 This is also known as the Forget and Fire feature \cite{Hangfire}. It would
 ensure that the jobs triggered once will always be executed and retried. As an example, if the
 Archive service restarts during a running process, in the general case the job cannot be recovered. However, this framework will check if 
-there are any incomplete jobs and will start them automatically. This Forget and Fire 
+there are any incomplete jobs and will start them automatically, fetching the stored job information from the database. This Forget and Fire 
 feature ensures that the triggered processes would always run compared to the native threading offered by ASP .NET Core.
 Listing \ref{lst:hangfire}
 shows the simplicity of how a job retry can be configured in case of an exception. One of the biggest disadvantages of this framework is that it is 
