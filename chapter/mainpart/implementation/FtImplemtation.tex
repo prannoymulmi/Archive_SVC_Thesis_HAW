@@ -1,10 +1,10 @@
 \newpage
 \section{Fault-Tolerance and Maintenance Implementation}
 The MARS system is very susceptible to different kinds of errors due to the architectural factors mentioned in the previous chapters. Therefore, a fault tolerant
-system is needed which would try to recover in case of any transient errors. For the Archive service an open source framework
+system is needed which would try to recover in case of any transient error. For the Archive service an open source framework
 named Hangfire is used for implementing the design in Section \ref{sec:ftDesign}. This framework is used because it provides
 the functionality mentioned in the design section including many additional features i.e. reliability, easy maintainability and simplicity. It can be called
-reliable because when a background process is created, the usage of this framework would persist the input parameters, retry times, method name etc., in a database. 
+reliable because when a background process is created, this framework would persist the input parameters, retry times, method name etc., in a database. 
 This is also known as the Forget and Fire feature \cite{Hangfire}. It would
 ensure that the jobs triggered once will always be executed and retried. As an example, if the
 Archive service restarts during a running process, in the general case the job cannot be recovered. However, this framework will check if 
@@ -27,13 +27,12 @@ private IServiceCollection BuildServices(IServiceCollection services)
 \subsubsection{AOP Logging}
 Logging is very important part of the service as it gives the maintainers key information of what has happened to the system. This makes logging important
 in each part of the system which leads to copying of the logging logic to the different components in the archive service violating the SOLID \cite{Hotop2015} principles. 
-To solve this issue the interceptor pattern is used. Using this pattern a decorator would be added in the class which wants to include the common
+To solve this issue, the interceptor pattern is used. Using this pattern a decorator would be added in the class which wants to include the common
 logging logic. Listing \ref{lst:interceptor} shows the implementation of the decorator "Intercept("logger")" which is injected in the class. The 
 classes decorated with attribute would have a logging logic triggered. Listing \ref{lst:interceptor} shows the main logic for the logging where a success message
 with all the method arguments, time elapsed would be printed in case of a successful run and will log the exception in case of failure. This aids in the maintenance
-of the system as new feature are added only the decorator must be added to log the start, success or exception of the method.
+of the system as new feature are added only the decorator must be added to log the start, success, or exception of the method.
 
-\newpage
 \begin{lstlisting}[language={[Sharp]C}, caption={Interceptor decorator example}, captionpos=b,label={lst:interceptor}]
 [Intercept("logger")]
 public class ArchiveFile: IArchiveFile

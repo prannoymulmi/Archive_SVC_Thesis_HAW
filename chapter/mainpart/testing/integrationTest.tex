@@ -53,7 +53,7 @@ archive_svc_tests:
       - marking-svc
 \end{lstlisting}      
 
-Listing~\ref{code:integCompose} shows a snippet of the docker compose file for running the Integration Test. The depends\_on attribute for the archive service
+Listing~\ref{code:integCompose} shows a snippet of the docker compose file for running the Integration test. The depends\_on attribute for the Archive service
 has many services in it. This means the archive\_svc\_test is waiting for the other services to load and the MongoDB to be seeded with mock data. Unfortunately,
 since the Project service does not use MongoDB but instead Postgres Sql as a database for some unknown reason the synchronization of the seeding of the data
 did not succeed and therefore the tests could not be executed. The
@@ -84,6 +84,6 @@ operations is done with the Database.
 \subsection{Test coverage}
 A total of 81 tests were made which would aid in verifying the integration of the Archive service with the dependent services and the database. The 
 total time for running the test measured at the time of writing the thesis is on average 7m38s at the time of writing. Table \ref{table:MARS Resource Hierarchy Service Overview}
-mentions the services that the archive service has dependency towards and 6 out of 9 services are successfully tested. Among the total services 
+mentions the services that the Archive service has dependency towards. 6 out of 9 services are successfully tested. Among the total services 
 which were supposed to be tested only 67\%  were carried out. It is also a point of interest in the future to complete these requirements which would boost the
-reliability of the Archive service by investigating the issue. 
+reliability of the Archive service by investigating the issue.   

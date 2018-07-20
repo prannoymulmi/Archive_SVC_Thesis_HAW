@@ -6,7 +6,7 @@ the specific inputs and outputs are predetermined and the tests are ran to verif
 \par
 Figure \ref{fig:CIbuild} in the Chapter Requirement Analysis depicts
 Unit Testing as an mandatory step for deployment of the Archive service. Running this test with every build process will boost the confidence 
-in changing and maintaining the code for the Archive service. The .NET platform offers a lot of unit-testing frameworks 
+in changing and maintaining the code for the Archive service. The ASP .NET platform offers a lot of unit-testing frameworks 
 (e.g. XUnit, Nunit, MSTest/Visual Studio). Nunit is choosen as the preferred the testing framework for this service as it has a good reputation for
 fast testing and it is already integrated the IDE i.e. Rider (JetBrains) used for this work. 
 
@@ -15,7 +15,7 @@ Making stubs, and mocks/fake objects are one of the important steps to do a prop
 used to analyze only one module/method. To check only one module the other dependent objects have to faked. The Archive service is designed following the
 SOLID \cite{Hotop2015} where the D stands for \textbf{Dependency Inversion Principle} where classes depend upon abstractions i.e. Interfaces not concrete
 implementation. The application of this principle has allowed an easy method to fake objects as the depending classes are just abstractions and the concrete 
-implementations are injected by the .NET Dependency Injection framework. A framework name as Moq \footnote{https://github.com/Moq/moq4/wiki/Quickstart} is used
+implementations are injected by the ASP .NET Dependency Injection framework. A framework name as Moq \footnote{https://github.com/Moq/moq4/wiki/Quickstart} is used
 which can be used to fake objects i.e.Interfaces and return the desired output from them. 
 
 \begin{lstlisting}[language={[Sharp]C}, caption={Example of faking objects using Moq framework}, captionpos=b,label={lst:moqEg}]
@@ -50,14 +50,14 @@ public async Task Archive_CorrectDataId_NoExceptions()
 }
 \end{lstlisting}
 
-Listing~\ref{lst:moqEg} illustrates an example of unit test done on the Archive method for a file. The Moq framework injects the dependencies and in the setup method
+Listing~\ref{lst:moqEg} illustrates an example of an unit test which is done on the Archive method for a file. The Moq framework injects the dependencies and in the setup method
 one can return the desired output from the methods. This unit tests verifies if all the dependent methods work as expected.
 Following the functional requirements mentioned in Section \ref{section:functionalReq} the unit tests are designed to test if the core logic functions as expected which includes error handling as well.
 
 \subsection{Archive and Retrieve process test}
 The unit test designed for these processes are aimed to test the components responsible for each type of resource (See Table \ref{table: archivedMars}) and its 
 dependent module. The class overview can be seen from Figure \ref{fig:archiveClassDiagram} and \ref{fig:restoreClass}. Although, the figure does not show all the classes that the archive process is using
-but when one sees the attributes that a class is using it will give an good idea of the remaining class under use.
+but when one sees the attributes that a class is using it will give an good idea of the remaining classes under use.
 
 \subsubsection{Test if an background job is enqueued}
 For this test, after a successful API request for archiving a project the module should create a background job using Hangfire. This test would check if the
@@ -93,11 +93,11 @@ public async Task ArchiveProject_SucessfulRun_ShouldBeEnqueued()
 \end{lstlisting}
 
 \subsubsection{Return Conflict Message in Case a Process for the Project is Running}
-For this test, it checks the denial of a archive or retrieve job creation when it is in "PROCESSING" state. It is of high priority that this check
+For this test, it checks the denial of an archive or retrieve job creation when it is in "PROCESSING" state. It is of high priority that this check
 for conflict works as expected otherwise there could be cases of unwanted data loss. 
 
 \subsubsection{Exception Catch}
-For this test, different checks are made in many modules if the expected Exception is caught, in case of an error. Also included is a check for the general
+For this test, different checks are made in many modules if the expected exception is caught in case of an error. Also included is a check for the general
 exception class as well. This test will ensure that some method will not just consume an exception when an unexpected error occurs. It is important because if 
 the exceptions are not caught it would be very hard to fix bugs if some are introduced in the near future.
 
@@ -121,14 +121,14 @@ public async Task MarkAllResourceAndGetSessionId_MarkingSvcClientReturnEmpty_Thr
 \end{lstlisting}
 
 \subsubsection{Expected Value Checks}
-For this test, different modules are tested with a mock inputs (e.g. data id, mock models) are made and then the method under test is ran with an 
+For this test, different modules are tested with a mock inputs (e.g. data id, mock models) and then the method under test is executed with an 
 expected value. These tests are designed to ensure that the methods deliver correct results when a correct input from other modules are received.
 These tests would aid to discover a faulty implementation according to the requirements mentioned for this work.
 
 \subsubsection{Null or Empty Checks}
 For this test, the different modules are tested against the most famous Null pointer exception in the different modules and how it is handled. This is an important
 test case as the archive/retrieve process should still run and terminate accordingly if some resources are null. As an example, during a normal archive run if the result received from
-the scenario service  is empty i.e. no scenarios in the project the archive process should not fail due to a null pointer exception rather finish the archive process
+the scenario service  is empty i.e. no scenarios in the project, the archive process should not fail due to a null pointer exception rather finish the archive process
 as there are no children resources (See Figure \ref{fig:marsDependency}). Listing \ref{lst:scenarisEmpty} shows an example if the scenario client returns a null 
 the process does not break but instead the method for archiving scenarios is not triggered. 
 

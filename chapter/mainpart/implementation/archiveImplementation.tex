@@ -2,13 +2,13 @@
 This section gives an overview for the architecture of the archive process that would be responsible
 to move the project data to the Synology. 
 
-An archive in the MARS ecosystem is complex due to its distributed architecture. The process requires communication between many components for a 
+An archive in the MARS ecosystem is complex due to its distributed architecture and the distributed transactions involved. The process requires communication between many components for a 
 successful run. %Figure \ref{fig:archiveComponent} depicts the high level components and the interfaces that the archive requires. The Archive
 %component exposes an API (Section \ref{section:APIDesign}) via an external port to the client. 
 
 Figure \ref{fig:archiveClassDiagram} illustrates the class diagram for the archive process. This diagram attempts to depict only the top level classes
 which performs actions (e.g. archiving files, archiving simulation result). The archive process is is a complex 
-task, thus involves many operations and communications. The operations include HTTP GET request to an external service, storing of received
+task, thus involves many operations and communications. The operations include HTTP GET request to an external service, storing of received,
 data in to the Synology and forwarding the received data to the next component which requires it. This involves more classes than the number depicted
 and cannot be illustrated in a single diagram. This diagram is shown to point out the order of complexity that the archive process undergoes and how it is being
 implemented. Also, to make the modules of the archive service more reusable the the components are separated into several classes
@@ -22,9 +22,9 @@ in the Archive service like the Repository pattern \cite{repo} to help make the 
 
 \subsubsection{Repository Pattern Implementation}
 Many components require access to the Synology storage to archive their respective data, that presents a problem of having data
-persistence logic duplication in many components. To solve this the repository pattern will be implemented where there would be a abstraction layer i.e. repository which
+persistence logic duplication in many components. To solve this the repository pattern will be implemented where there would be an abstraction layer i.e. repository which
 provides the query interface to the component. This abstraction layer would be injected to the required components and they can just call the 
-method to carry out persistence actions. In addition, this also decouples the component from the type of storage being used i.e. Synology, so it would not
+method to carry out persistence actions (CRUD). In addition, this also decouples the component from the type of storage being used i.e. Synology, so it would not
 matter for the component if the type of storage is changed from Synology to something else since it just needs the interface for persistence. Figure 
 \ref{fig:repositoryPattern} illustrates how the repository acts as an abstraction layer for the client aiding the system to be more cohesive. 
 \begin{figure}[H]
