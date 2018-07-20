@@ -9,5 +9,5 @@ This section describes the design and behaviour for querying the status of a arc
 
 Figure \ref{fig:activityStatus} illustrates the activity diagram for the status acknowledgement of a project (Listing \ref{lst:status}). Firstly,
 the status for the project id is searched and if any error is caught (e.g. unable to connect to database) a message is returned to the client. If the 
-status is not found a message stating the project not found is sent. Lastly, if the status is found it will be sent to the client.
+status is not found a message stating the "project not found" is sent. Lastly, if the status is found it will be sent to the client.
 
