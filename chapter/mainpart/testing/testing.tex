@@ -1,6 +1,6 @@
 \chapter{Testing}
 \label{chap:testing}
-This chapter presents the methodology used for testing the correct functionality of the application. The validation consist of set of automatic test i.e.
+This chapter presents the methodology used for testing the correct functionality of the application. The validation consists a set of automatic test i.e.
 unit test, and integration test, including a manual system test to ensure the proper functionality of the service. The verification is done on both the functional
 aspects of the back end logic and also on the GUI controls for the Archive service.
 
@@ -15,8 +15,8 @@ for the maintenance of the service because the automatic tests are executed here
 The CI\footnote{CI: Continuous Integration} pipeline would be triggered as soon as a new commit is being pushed to the remote 
 GitLab\footnote{https://about.gitlab.com} repository. This would then build the docker image of the service with the new changes. The next step would be to
 run the unit tests written for the service, which is a mandatory step. Lastly, if the pipeline passes, the docker image will be pushed
-to the GitLab registry\footnote{https://about.gitlab.com/2016/05/23/gitlab-container-registry/}. If this is successful then the image can be used in one of 
-the MARS kubernetes cluster i.e. MARS beta, MARS production environments. 
+to the GitLab registry\footnote{https://about.gitlab.com/2016/05/23/gitlab-container-registry/}. If this is successful, then the image can be used in one of 
+the MARS Kubernetes cluster i.e. MARS beta, MARS production environments. 
 
 \input{chapter/mainpart/testing/unitTesting.tex}
 \input{chapter/mainpart/testing/integrationTest.tex}

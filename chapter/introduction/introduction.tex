@@ -5,23 +5,22 @@
 \newpage
 %\part{start}
     \chapter{Introduction}
-    Nowadays consumers and businesses are continuously getting aware of the value of archives, as the archived data has also proven
+    Nowadays consumers and businesses are increasingly aware  of the value of archives, as the archived data has also proven
     to be valuable asset in the field of scientific research where an expert could archive their data for future reference. Having said that, the 
     MARS\footnote{MARS: Multi Agent Research and Simulation} framework offers an easy interactive platform for a domain expert i.e. ecologist, biologist, 
     chemist to simulate complex real life scenarios (e.g. reproduction of bacteria in a body) based on the concept of Agent-based modeling and simulation 
     (MAMS\footnote{MAMS: Multi Agent Management System}) \cite{agentModeling}.
 
         \section{Motivation}
-        The inspiration for this work comes from the fact that an archive adds great value to the existing system by allowing the experts to be
-        able to store their results and projects and use them in future. Additionally, the MARS system requires a large number of computational resources and
+        The inspiration for this work comes from the fact that an archive adds excellent value to the existing system by allowing the experts to store 
+        their results and projects and use them in future. Additionally, the MARS system requires a large number of computational resources and
         an Archive service would provide an opportunity for the MARS system to improve their
         performance because this service would move some part of data from the primary storage (Ceph cluster \cite{Ceph}) to the secondary storage (NAS synology \cite{Synology}). 
 
-        However, the underlying structure of the MARS system is also quite
-        challenging to archive a given simulation with its resources.
-        The system design is based on a Microservice architecture \cite{MicroserviceNewMan} having a decentralized data \cite{atomic} access structure. 
+        However, the underlying structure of the MARS system is also quite challenging to archive 
+        a given simulation with its resources. The system design is based on a Microservice architecture \cite{MicroserviceNewMan} having a decentralized data \cite{atomic} access structure. 
         The MARS Resources have a hierarchal
-        structure (Section \ref{subsection:MARSResource}) which has to be followed so a successful simulation can occur. As per the design of MARS these resources
+        structure (Section \ref{subsection:MARSResource}) which has to be followed so a successful simulation can occur. As per the design of MARS, these resources
         are stored separately in different storages/databases which should be accessed only by a certain API. Section
         \ref{sec:problemStatement} describes those difficulties.  
 
@@ -34,7 +33,7 @@
         \par
         At the time of writing this thesis, the project resources are stored in a
         Ceph distributed file system \cite{Ceph}. It provides more efficiency, reliability, and
-        scalability by separating data and metadata using a pseudo-random data distribution function\cite[p.~307]{{Ceph}} inorder to store data in 
+        scalability by separating data and metadata using a pseudo-random data distribution function \cite[p.~307]{{Ceph}} inorder to store data in 
         a distributed system \cite{DistributedSystems}. Although
         efficiency and scalability comes at a price, it is financially more expensive to possess such a system in larger volumes.
         In contrast to its continuous data production, the primary storage volume available to the system is very limited.
@@ -51,7 +50,7 @@
         \begin{enumerate}
             \item
             \textbf{Data distribution:} In contrast to a monolithic application \cite[p.~94]{{softwareDesign}} where there is only one database for the whole system, 
-            every Microservice in the MARS System owns a separate database which should be accessed only by itself in order to be scaled independently
+            every microservice in the MARS System owns a separate database which should be accessed only by itself in order to be scaled independently
             \cite[p.~27]{{Torre2017}}.
             As a result, the archive service is coupled with the other services 
             to get and post data into their respective databases creating more risk to failures.
@@ -66,8 +65,8 @@
             this complex hierarchy(Section \ref{subsection:MARSResource}) is vital since restoring or archiving data may lead to corrupted states.
             \item
             \textbf{Additional changes to MARS services:}
-              Also, for the Archive service to operate as intended, additional functionalities have to be added into the other services. The Archive service 
-            is only allowed to communicate via API gate i.e. HTTP or RPC as accessing another service's database directly is considered an Anti-pattern \cite[p.~27]{{Torre2017}}.
+            Also, for the Archive service to operate as intended, additional functionalities have to be added into the other services. The Archive service 
+            is only allowed to communicate via an API gate i.e. HTTP or RPC as accessing another service's database directly is considered an Anti-pattern \cite[p.~27]{{Torre2017}}.
             It imposes another challenge in understanding the structure and algorithms of services which are drafted in various technologies.
          
         \end{enumerate}
@@ -87,7 +86,7 @@
 
         \par
         \textbf{Chapter 4: "Planning and Software Design:"} this chapter explains, the 
-        methodologies for data storage, archive process and the software design.
+        methodologies for data storage, the archive process, and the software design.
 
         \par
         \textbf{Chapter 5: "Implementation:"} this chapter is where the details of the 

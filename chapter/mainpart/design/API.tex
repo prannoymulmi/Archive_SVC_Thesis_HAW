@@ -4,9 +4,9 @@
     The Representational State Transfer (REST) \cite[Chapter.~5]{REST} architectural approach is chosen to design its API. This approach is a 
     common approach to build a distributed system as it is technology independent. Therefore using this architecture, the system can later 
     evolve for any kind of system used for providing a broader layer of flexibility to the Archive service. 
-    Also, the standardized aspect of RESTful service enables a software to create reusable elements \cite{RESTThesis}. A combination of HTTP with REST 
+    Also, the standardized aspect of a RESTful service enables a software to create reusable elements \cite{RESTThesis}. A combination of HTTP with REST 
     to do a CRUD (Create, Read, Update, Delete) operation is preferred because HTTP is widely supported by most clients and programming languages (e.g. web browsers).
-    The CRUD over HTTP consists of few uniform noun based interaction that can be executed by the client \cite[p.~13]{RESTThesis}. The
+    The CRUD over HTTP consists of few uniform noun based interactions that can be executed by the client \cite[p.~13]{RESTThesis}. The
     Table \ref{table:archiveEndpoints} describes the API endpoint for archive, retrieve, and job status with a brief description.
     HTTP CRUD operations which are going to be implemented are described in Table \ref{table:curdHttp}. 
 
@@ -22,7 +22,7 @@
             \hline
                 GET & Reads the resource. & The GET request will be used to check the status of the archive and retrieve process. \\
             \hline
-            PUT & Updates the resource. & The PUT request will be used to check the status of the archive and retrieve process. \\
+            PUT & Updates the resource. & The PUT request will be used to update the status of the archive and retrieve process. \\
             \hline
                 DELETE & Deletes the resource. & The DELETE request will be used to delete a running archive or retrieve process. \\                
             \hline

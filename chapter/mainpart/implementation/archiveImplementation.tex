@@ -11,7 +11,7 @@ which performs actions (e.g. archiving files, archiving simulation result). The 
 task, thus involves many operations and communications. The operations include HTTP GET request to an external service, storing of received,
 data in to the Synology and forwarding the received data to the next component which requires it. This involves more classes than the number depicted
 and cannot be illustrated in a single diagram. This diagram is shown to point out the order of complexity that the archive process undergoes and how it is being
-implemented. Also, to make the modules of the archive service more reusable the the components are separated into several classes
+implemented. Also, to make the modules of the archive service more reusable the components are separated into several classes
 like ArchiveMetadata, ArchiveScenarios etc. This separation
 of classes would later easily allow one to extend the archive process with less effort. It could be the a case that in future a new requirement
 that involves the Archive service to be able to only archive

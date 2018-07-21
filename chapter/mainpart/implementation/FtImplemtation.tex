@@ -13,7 +13,7 @@ feature ensures that the triggered processes would always run compared to the na
 Listing \ref{lst:hangfire}
 shows the simplicity of how a job retry can be configured in case of an exception. One of the biggest disadvantages of this framework is that it is 
 tightly coupled
-with a database. If there is a connection issue present between the Archive service and the database the whole service will be facing a downtime. However, the 
+with a database. If there is a connection issue present between the Archive service and the database, the whole service will be facing a downtime. However, the 
 benefits this framework provides outweighs its disadvantages.
 
 \begin{lstlisting}[language={[Sharp]C}, caption={Hangfire retry attempt configuration}, captionpos=b,label={lst:hangfire}]
@@ -29,7 +29,7 @@ Logging is very important part of the service as it gives the maintainers key in
 in each part of the system which leads to copying of the logging logic to the different components in the archive service violating the SOLID \cite{Hotop2015} principles. 
 To solve this issue, the interceptor pattern is used. Using this pattern a decorator would be added in the class which wants to include the common
 logging logic. Listing \ref{lst:interceptor} shows the implementation of the decorator "Intercept("logger")" which is injected in the class. The 
-classes decorated with attribute would have a logging logic triggered. Listing \ref{lst:interceptor} shows the main logic for the logging where a success message
+classes decorated with attribute would have a logging logic triggered. Listing \ref{lst:interceptor} shows the main logic for the logging. In this logic, a success message
 with all the method arguments, time elapsed would be printed in case of a successful run and will log the exception in case of failure. This aids in the maintenance
 of the system as new feature are added only the decorator must be added to log the start, success, or exception of the method.
 
