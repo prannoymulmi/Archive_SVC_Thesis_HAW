@@ -43,7 +43,7 @@ via File-svc deemed to be a better choice.
 Figure \ref{fig:activityRestore} depicts the activity diagram for restoring a project. The retrieving process is also a background job due to the same reason
 as for the archive i.e. long running times. The first step after creating the retrieve job is to get the metadata from the Synology and then upload all the files.
 All the files have to be finished uploading and processed, otherwise the sequential steps would not have the references of the files. After all the uploads are complete,
-the scenarios gets the reference to the file id so that it could uploaded. Following the scenarios, the result configurations are also uploaded for the corresponding models.
+the scenarios get the reference to the file id so that it could be uploaded. Following the scenarios, the result configurations are also uploaded for the corresponding models.
 As the simulation plan is dependent upon the scenario and the result configuration, this is the next resource which will be uploaded. Lastly, the simulation runs
 and the simulation results would be uploaded respectively. 
 
@@ -130,9 +130,9 @@ of this process.
 \end{lstlisting}
 
 \begin{lstlisting}[caption={The mapped key value attributes that the scenario metadata would need}, language=json,firstnumber=1, captionpos=b, label={lst:marsMap}]
-    {
-        "7cae6055-d7fd-418e-9ba0-bdc2980ffb4c":"27765261-8a65-45ab-bdeb-db8b5b7f8f4"
-    }
+{
+    "7cae6055-d7fd-418e-9ba0-bdc2980ffb4c":"27765261-8a65-45ab-bdeb-db8b5b7f8f4"
+}
     \end{lstlisting}
 
 \begin{figure}[H]

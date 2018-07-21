@@ -1,9 +1,9 @@
 \section{API Design}
 \label{section:APIDesign}
-    The Archive service must expose its web API, so that an interaction between the its clients and the application can occur.
+    The Archive service must expose its web API, so that an interaction between its clients and the application can occur.
     The Representational State Transfer (REST) \cite[Chapter.~5]{REST} architectural approach is chosen to design its API. This approach is a 
     common approach to build a distributed system as it is technology independent. Therefore using this architecture, the system can later 
-    evolve for any kind of system used for providing a broader layer of flexibility to the Archive service. 
+    support any kind of system, providing a broader layer of flexibility to the Archive service. 
     Also, the standardized aspect of a RESTful service enables a software to create reusable elements \cite{RESTThesis}. A combination of HTTP with REST 
     to do a CRUD (Create, Read, Update, Delete) operation is preferred because HTTP is widely supported by most clients and programming languages (e.g. web browsers).
     The CRUD over HTTP consists of few uniform noun based interactions that can be executed by the client \cite[p.~13]{RESTThesis}. The
@@ -53,9 +53,9 @@
     \end{table}  
 
     The API end points are designed considering the fact that more functionality could be added to the archive service without big changes needed in the client. 
-    For example, the endpoint \textbf{"archive/archiveProject/{{projectId}}"} is designed thinking an archive could be also extended for other resources except the project. When
+    For example, the endpoint \textbf{"archive/archiveProject/{{projectId}}"} is designed thinking an archive could be also extended for other resources besides this project. When
     the Archive service would like to support, archiving of only the simulation results, the endpoint for it would be \textbf{"archive/archiveSimulationResult/{{SimulationId}}"}.
-    Hence, it would make it more flexible for the client to add the functionality without much effort. Also, to avoid multiple API call and
+    Hence, it would make it more flexible for the client to add the functionality without much effort. Also, to avoid multiple API calls and
     increase the performance of the server, the get status (Table \ref{table:archiveEndpoints}) endpoint combines vital information needed for the client in one 
     request (See Listing \ref{lst:status}). 
     

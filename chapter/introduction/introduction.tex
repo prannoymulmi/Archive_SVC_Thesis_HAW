@@ -32,10 +32,9 @@
        
         \par
         At the time of writing this thesis, the project resources are stored in a
-        Ceph distributed file system \cite{Ceph}. It provides more efficiency, reliability, and
-        scalability by separating data and metadata using a pseudo-random data distribution function \cite[p.~307]{{Ceph}} inorder to store data in 
-        a distributed system \cite{DistributedSystems}. Although
-        efficiency and scalability comes at a price, it is financially more expensive to possess such a system in larger volumes.
+        Ceph distributed file system \cite{Ceph}. It provides more efficiency, reliability, and scalability by separating data and metadata using a pseudo-random data 
+        distribution function \cite[p.~307]{{Ceph}} to store data in 
+        a distributed system \cite{DistributedSystems}. It is financially more expensive to possess such a system in larger volumes although it is efficient and scalable.
         In contrast to its continuous data production, the primary storage volume available to the system is very limited.
         Additionally, a high level of correlation has been observed between the operating cost of a software system and its data volume. 
          Therefore, the Archive service would move the requested data from the Ceph storage to the slower NAS\footnote{NAS: Network Attached Storage} Synology
