@@ -79,8 +79,8 @@
             MARS system is out of order and the data is required. Then it can be accessible by anyone with basic knowledge of the system.
         
         \subsection{Fault-Tolerant Design}   
-        Firstly, the Archive service has to communicate with many services in the system, leading the rate of failure being higher
+        One on hand, the Archive service has to communicate with many services in the system. This could lead to a higher rate of failure being higher
         in comparison to a system which does not depend on other services. A breakdown 
-        of one service would cause the whole process of archive/retrieve to stop unexpectedly. Secondly, it is also possible that a running Archive service can be terminated
+        of one service would cause the whole process of archive/retrieve to stop unexpectedly. On the other hand, it is also possible that a running Archive service can be terminated
         due to some unexpected reason. Therefore, fault tolerance mechanism has to be included in the archive system, so that it has a chance of 
         recovery. 
