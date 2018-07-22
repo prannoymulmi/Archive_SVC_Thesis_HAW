@@ -1,14 +1,14 @@
 \section{API Design}
 \label{section:APIDesign}
-    The Archive service must expose its web API, so that an interaction between its clients and the application can occur.
-    The Representational State Transfer (REST) \cite[Chapter.~5]{REST} architectural approach is chosen to design its API. This approach is a 
-    common approach to build a distributed system as it is technology independent. Therefore using this architecture, the system can later 
-    support any kind of system, providing a broader layer of flexibility to the Archive service. 
+    The Archive service must expose its web API so that an interaction between its clients and the application can occur.
+    The Representational State Transfer (REST) \cite[Chapter.~5]{REST} architectural approach is chosen to design its API. This is a 
+    conventional approach to build a distributed system as it is technology independent. Therefore using this architecture, the system can later 
+    support any system, providing a broader layer of flexibility to the Archive service. 
     Also, the standardized aspect of a RESTful service enables a software to create reusable elements \cite{RESTThesis}. A combination of HTTP with REST 
-    to do a CRUD (Create, Read, Update, Delete) operation is preferred because HTTP is widely supported by most clients and programming languages (e.g. web browsers).
-    The CRUD over HTTP consists of few uniform noun based interactions that can be executed by the client \cite[p.~13]{RESTThesis}. The
-    Table \ref{table:archiveEndpoints} describes the API endpoint for archive, retrieve, and job status with a brief description.
-    HTTP CRUD operations which are going to be implemented are described in Table \ref{table:curdHttp}. 
+    to do a CRUD (Create, Read, Update, Delete) operation is preferred because most clients and programming languages (e.g., web browsers) readily support it.
+    The CRUD over HTTP consists of few uniform noun based interactions that a client can execute \cite[p.~13]{RESTThesis}.
+    Table \ref{table:archiveEndpoints} describes the API endpoint for archive, retrieve, and job status with a brief description and 
+    Table \ref{table:curdHttp} mentions the HTTP CRUD noun based operations used for the Archive service.
 
     \begin{table}[H]
         \centering
@@ -27,7 +27,7 @@
                 DELETE & Deletes the resource. & The DELETE request will be used to delete a running archive or retrieve process. \\                
             \hline
         \end{tabular}
-        \caption{CRUD interaction over HTTP in Archive service}
+        \caption{CRUD interaction over an HTTP in the Archive service}
         \label{table:curdHttp}     
     \end{table}   
     
@@ -37,29 +37,29 @@
             \hline
                 \textbf{API Endpoint}&\textbf{Description}\\
             \hline
-                archive/archiveProject/{{projectId}} & Archives a project given an id. This is a HTTP POST method.\\
+                archive/archiveProject/{{projectId}} & Archives a project given an id. This is an HTTP POST method.\\
             \hline
-                retrieve/retrieveProject/{{projectId}} & Restores a project given an id. This is a HTTP POST method.\\
+                retrieve/retrieveProject/{{projectId}} & Restores a project given an id. This is an HTTP POST method.\\
             \hline
-                job/status/{{projectId}} & Gets the status of the archive or retrieve process, given an project id. This is a HTTP GET method.\\
+                job/status/{{projectId}} & Gets the status of the archive or retrieve process, given a project id. This is an HTTP GET method.\\
             \hline
-                job/status/{{jobId}} & Gets the status of the archive or retrieve process, given a job id. This is a HTTP GET method.\\
+                job/status/{{jobId}} & Gets the status of the archive or retrieve process, given a job id. This is an HTTP GET method.\\
             \hline
-                delete/project/{{projectId}} & Deletes the archived project from the synology drive, given a job id. This is a HTTP DELETE method.\\
+                delete/project/{{projectId}} & Deletes the archived project from the Synology drive, given a job id. This is an HTTP DELETE method.\\
             \hline
         \end{tabular}
         \caption{API Endpoints description for Archive service}
         \label{table:archiveEndpoints}     
     \end{table}  
 
-    The API end points are designed considering the fact that more functionality could be added to the archive service without big changes needed in the client. 
-    For example, the endpoint \textbf{"archive/archiveProject/{{projectId}}"} is designed thinking an archive could be also extended for other resources besides this project. When
-    the Archive service would like to support, archiving of only the simulation results, the endpoint for it would be \textbf{"archive/archiveSimulationResult/{{SimulationId}}"}.
+    The API endpoints are designed considering the fact that more functionality could be added to the archive service without significant changes needed in the client. 
+    For example, the endpoint \textbf{"archive/archiveProject/{{projectId}}"} is designed thinking an archive could be also extended for other resources besides the whole project. When
+    the Archive service would like to support, archiving only the simulation results, the endpoint for it would be \textbf{"archive/archiveSimulationResult/{{SimulationId}}"}.
     Hence, it would make it more flexible for the client to add the functionality without much effort. Also, to avoid multiple API calls and
-    increase the performance of the server, the get status (Table \ref{table:archiveEndpoints}) endpoint combines vital information needed for the client in one 
+    increase the performance of the server, the get status (Table \ref{table:archiveEndpoints}) endpoint combines vital information in one 
     request (See Listing \ref{lst:status}). 
     
-\begin{lstlisting}[caption={Sucessful GET request for a archive status}, language=json,firstnumber=1, captionpos=b, label={lst:status}]
+\begin{lstlisting}[caption={Successful GET request for an archive status}, language=json,firstnumber=1, captionpos=b, label={lst:status}]
 {
     "status": "PROCESSING",
     "projectId": "70C961b7-89bf-4bd5-bf61-31b6a17a15d9",

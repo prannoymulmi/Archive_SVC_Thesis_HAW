@@ -1,59 +1,58 @@
 \section{Archive Process Design}
 \subsection{Preconditions Required for an Archive}
-Certain preconditions have to be met before an archive process could start to ensure the correctness of the data which are mentioned below:
+The archive process requires certain preconditions to be fulfilled to ensure the correctness of the data which are mentioned below:
 \begin{enumerate}
     \label{lst:preconditionsArchive}
-    \item \textbf{Mark resources:} The MARS framework is a multi user application meaning a project can be accessed by many users at the same time. 
+    \item \textbf{Mark resources:} The MARS framework is a multi-user application meaning many users can access a project at the same time. 
     As multiple users can modify the data simultaneously, it could be possible that someone changes a resource during an archive and the 
-    Archive service has no way to detect this modification. This would lead to inconsistent data being archived.
+    Archive service has no way to detect this modification. It would lead to inconsistent data being archived.
     Therefore, to avoid this situation the resources must be marked before the start of an archive. The marking would ensure that no other process except the Archive
-    service would have access to modify the marked contents during the archive process. The marking process would be handled using the Marking service.
+    service would have access to modify the marked contents during archiving. The marking process would be handled using the Marking service.
     \item \textbf{Get Metadata for the project:} The metadata contains all necessary information about
-    the different resources. The scenarios, files and the result configuration depend on these metadata
+    the different resources. The scenarios, files, and the result configuration depend on these metadata
     to retrieve their respective data. If the metadata cannot be obtained the archive process cannot continue.
-    \item \textbf{Get Simulation runs:} The simulation run contains the simulation id which is required to archive the correct simulation. This dependency
-    with simulation run makes it necessary that they are obtained before archiving the simulation results.
+    \item \textbf{Get Simulation runs:} The simulation run contains the simulation id which is required to archive the correct simulation.
 \end{enumerate}
 
 \subsection{Decision for Not Archiving the Project}
-The resources depicted in table (Table \ref{table: archivedMars}) must be archived following the MARS resource hierarchy (Figure \ref{fig:marsDependency}).
-Following the hierarchy, it is arguable why the project is not being archived, despite it being present. The project lies on the top of the hierarchy 
+The resources depicted in Table (Table \ref{table: archivedMars}) must be archived following the MARS resource hierarchy (Figure \ref{fig:marsDependency}).
+Following the hierarchy, it is arguable why the project is not being archived, despite it being present. The project lies at the top of the hierarchy 
 meaning no other resources are usable without its existence. Section \ref{ssec:retrieveAnalysis} mentions the requirement that the Archive service must 
 restore all the archived resources back into the system. Therefore, during a restore, if a specific archived project
-is not available, then other resources cannot be brought back into the system as all of them are dependent to the project. To make the restore process possible,
+is not available, then other resources cannot be brought back into the system as all of them are dependent on the project. For a successful restore process,
 the project data is not archived which now acts as a point of reference to bring back the children resources. 
-If the project was to be archived then additionally a mechanism is needed that ensures the users referenced in the archive also exist in the Mars system (active system).
+If the project was to be archived then an additional mechanism is needed to ensure the users referenced in the archive also existed in the Mars system (active system).
 It could be possible that during a retrieve the users in an
 archived project may not exist anymore as they were removed causing the process to fail. Therefore, this decision also reduces the complexity of the 
 archive and restore as this mechanism can be avoided.
 
 
 \subsection{Data Format}
-A suitable file format for archiving must be chosen because it determines how the data access will be realized and whether it meets
-the criteria mentioned in Section \ref{section:functionalReq}. The different types of data archived are the metadatas for files, scenarios, 
+A suitable file format for archiving must be chosen because it determines how the data access would be realized and whether it meets
+the functional requirements outlined in Section \ref{section:functionalReq}. The different types of data archived are the metadata for files, scenarios, 
 result configurations, simulation plans, simulation run including the input files, models, and the simulation results. 
-The data format that is being discussed in this section mainly focuses on the metadata and they are received originally as a JSON document.
-The metadata is very important because they give the system vital information that will be used during retrieve process. 
+The data format being discussed in this section focus on the metadata, and they are received initially as a JSON document.
+The metadata is crucial because they give the system vital information that the retrieve process requires. 
 
 \subsubsection{HDF5}
 HDF5 is a file format for storing and managing data which has support for various data types designed for
-efficient I/O, compression, portability and, supports big data \cite{HDF5}. It has been successfully applied to different scientific projects which
-involve simulation (Efficient
+efficient I/O, compression, portability and, supports big data \cite{HDF5}. Many scientific projects involving simulations have successfully applied this 
+file format (Efficient
 for simulation data \cite[p.~11]{Savic2007}). This file can also be defined as an abstract data container which includes building blocks for data organization. 
-This file system can hold a variety of heterogeneous objects like images, graphs, documents, tables etc. It also has support for a n-dimensional table  \cite[p.~2]{HDF5}. 
+This file system can hold a variety of heterogeneous objects like images, graphs, documents, tables. It also has support for an n-dimensional Table \cite[p.~2]{HDF5}. 
 The HDF5 format has two primary objects which define the data storage structure:
 \begin{enumerate}
-    \item \textbf{Groups:}  They are responsible to organize the data objects in the HDF5 file format. A Group can be compared to a directory 
-    in Windows or Unix system \cite{HDF5}. Figure \ref{fig:HDF5} shows an example of a Group (e.g. project1) in a HDF5 file. Using the API of the HDF5 libraries a Dataset 
-    (e.g. scenario Metadata) can be accessed via the path name (e.g. /Root/project1/scenario Metadata).
-    \item \textbf{Datasets:} A Dataset can be defined as a multidimensional array of data. This object contains the raw/actual data (e.g. simulation results).
+    \item \textbf{Groups:}  They are responsible for organizing the data objects in the HDF5 file format. A Group is comparable to a directory 
+    in Windows or Unix system \cite{HDF5}. Figure \ref{fig:HDF5} shows an example of a Group (e.g., project1) in a HDF5 file. Using the API of the HDF5 library a Dataset 
+    (e.g., scenario Metadata) can be accessed via the pathname (e.g., /Root/project1/scenario Metadata).
+    \item \textbf{Datasets:} A Dataset can be defined as a multidimensional array of data. This object contains the raw/actual data (e.g., simulation results).
     These data are stored in a n-dimensional array format, where 
-    one can specify the different data types for the raw data i.e. integer, float, character, variable length strings \cite{HDF5}. Figure \ref{fig:dataset} shows
-    an example of a Dataset in a HDF5 file which is stored in an array.
+    one can specify the different data types for the raw data, i.e., integer, float, character, variable length strings \cite{HDF5}. Figure \ref{fig:dataset} shows
+    an example of a Dataset in an HDF5 file stored in an array.
 \end{enumerate}
 
 Figure \ref{fig:HDF5} also shows how the Groups and Datasets can be used to archive the MARS projects. Every new project to be archived will be added as a new Group
-as depicted in the figure and the datasets are the resources i.e. scenario, file, simulation results. 
+as depicted in the figure and the datasets are the resources, i.e., scenario, file, simulation results. 
 
 \begin{figure}[H]
     \centering \includegraphics[scale=0.6]{grafiken/groupsHDF5.png}
@@ -63,40 +62,40 @@ as depicted in the figure and the datasets are the resources i.e. scenario, file
 
 \begin{figure}[H]
     \centering \includegraphics[scale=0.45]{grafiken/dataset.png}
-    \caption{Example of a HDF5 dataset}
+    \caption{Example of an HDF5 dataset}
     \label{fig:dataset}
 \end{figure}
 
 \subsubsection{JSON} 
 JSON(JavaScript Object Notation) is a data format which is very easy for humans and machines to read and write. This format is
-completely language independent which follows the conventions used in different programming languages i.e. C\#, Java, Python and more. The REST API implemented in the
+entirely language independent which follows the conventions used in different programming languages, i.e., C\#, Java, Python and more. The REST API implemented in the
 MARS framework supports this format with ease making this a very suitable candidate. This format is widely 
-accepted and even MongoDB supports it without any problem. Also, MongoDB seems to be a good candidate but the requirement (Section \ref{sec:anaCompress}) states that the archived
-data should be easily accessible to a non expert and using MongoDB requires some amount of technical expertise.
+accepted and MongoDB supports it without any problem. Also, MongoDB seems to be a good candidate, but the requirement (Section \ref{sec:anaCompress}) states that the archived
+data should be readily accessible to a non-expert and using MongoDB requires some amount of technical expertise.
 
 
 \subsubsection{Conclusion}
    %The HDF5 is a very powerful file format providing more efficient data storage and lookup by separating its raw data with its metadata. 
-    To store the data in HDF5 all the attributes of the metadata in JSON must be parsed in a n-dimensional array structure which can be understood by the HDF5. 
-    It is important to understand that MARS supports different kind of models which makes it impossible to predict the structure of a resource. To elaborate, the
+    All the attributes of the metadata in JSON must be parsed in an n-dimensional array structure which can be understood by the HDF5. 
+    It is important to understand that MARS supports numerous models which makes it impossible to predict the structure of a resource. To elaborate, the
     Wolves and Sheep \cite{HAWHamburgMARS} model has a different metadata structure than the KNP \cite{HAWHamburgMARS} model as the Agents and Layers involved are 
     different. Due to this reason, the resources
-    must be parsed every time into a n-dimensional array by writing each field. Also, at the time of restore this has to be converted back 
+    must be parsed every time into an n-dimensional array by writing each field. Also, at the time of restore, this has to be converted back 
     to a JSON as the MARS system does not understand the HDF5 structure. In addition, to avoid parsing the data, 
-    a one dimensional array of size 1 was created (type variable string) and all the unparsed JSON data
+    a one-dimensional array of size one was created (type variable string), and all the unparsed JSON data
     was stored in this array. The main intention of this experiment was to see how the HDF5 files would react as it is easy to get the string from a 1d array 
-    (e.g. exprimentArray[0]). This also did not bring any positive result, instead it created so much overhead to the file as a JSON file with the size of 2 KB
-    had a file size of around 0.5MB for the HDF5 variant. This made the HDF5 file system very inconvenient to use.
-    Despite the HDF5 file providing different benefits i.e. fast I/O, portability, support for big data and,
+    (e.g., exprimentArray[0]). This also did not bring any positive result; instead, it created so much overhead to the file as a JSON file with the size of 2 KB
+    had a file size of around 512KB for the HDF5 variant. This made the HDF5 file system very inconvenient to use.
+    Despite the HDF5 file providing different benefits, i.e., fast I/O, portability, support for big data and,
     compression on a dataset it does not seem suitable in the MARS system due to the amount of complexity that needs to be dealt with for the archive and restore process.
     
 
-    Considering the above mentioned factors the file format for the metadata is planned to be JSON instead of the HDF5 file. Different advantages such as easy 
+    Considering the factors mentioned above the file format for the metadata is planned to be JSON instead of the HDF5 file. Different advantages such as easy 
     handling, no extra parsing
-    required for the MARS system and, easy conversion to different types of file format i.e. CSV used often in the MARS for analysis, makes it more suitable for this purpose. 
-    To aid the performance, the meta files for each kind of resources
-    are going to be stored separately (e.g. scenario.json, resultConfiguration.json). Splitting the JSON files like this would aid in faster serialization and 
-    deserialization as only the required resource can be loaded into the memory. As the input files and the simulation results do not need to be read they are just chosen to be zipped.
+    required for the MARS system and, easy conversion to different types of file format, i.e., CSV used often in the MARS for analysis, makes it more suitable for this purpose. 
+    To aid the performance, the meta files for each type of resources
+    are going to be stored separately (e.g., scenario.json, resultConfiguration.json). Splitting the JSON files like this would improve the faster serialization and 
+    deserialization as only the required resource can be loaded into the memory. As the input files and the simulation results do not need to be read they are just zipped.
 
 \subsection{Archive Workflow}
 \begin{figure}[H]
@@ -106,13 +105,13 @@ data should be easily accessible to a non expert and using MongoDB requires some
 \end{figure}
 
 Figure \ref{fig:archiveActivity} illustrates an activity diagram of archiving an entire project in the MARS system. As mentioned in Section \ref{lst:preconditionsArchive},
-marking the resources for the project is the first requirement needed to start the process. If the project resources are marked successfully
-then the archive would be initialized as a background job and the job id would be sent to the client. In case the marking would fail, the error message will be 
-sent to the client and the archive process will halt. The archiving process is visioned to be a background job due to the fact that a single process could take
+marking the resources for the project is the first requirement needed to start the process. If the project resources are marked successfully,
+then the archive would be initialized as a background job, and the job id would be sent to the client. In case the marking would fail, the error message will be 
+sent to the client, and the archive process will halt. The archiving process is visioned to be a background job because a single process could take
 a long period of time and would block the server for additional requests. Following the successful job creation, the process checks if an archive already
 exists. After
 the archive folder creation, the metadata, files, scenarios, result configurations, simulation plans, simulation runs, and the simulation results are retrieved respectively.
-After a successful archive process the  resources are deleted from the Ceph cluster. Lastly, in case of some failures during archiving the exception will be logged 
+After a successful archive process, the resources are deleted from the Ceph cluster. Lastly, in case of some failures while archiving the exception will be logged 
 which can be later analyzed for maintenance.
 
 \begin{figure}[H]
@@ -122,8 +121,8 @@ which can be later analyzed for maintenance.
 \end{figure}
 
 Figure \ref{fig:stateArchive} illustrates the transitions that can occur during the archive process. The idle state is when no archive process
-is being executed. Additionally, the state digram also considers
-how the state would change if one of the resources is empty. In the case of an empty resource (e.g. no scenarios available for the project) the archive
+is being executed. Additionally, the state diagram also considers
+how the state would change if one of the resources is empty. In the case of an empty resource (e.g., no scenarios available for the project), the archive
 process stops gracefully by logging the error and transitions to the idle state. 
 
 \begin{figure}[H]
@@ -134,28 +133,29 @@ process stops gracefully by logging the error and transitions to the idle state.
 
 Figure \ref{fig:sequenceArchive} illustrates the Sequence diagram for a complete archive process. The first step after an archive request would be to check
 whether an archive or retrieve process for the current project is under progress. In case the process is in progress, the archive request would be denied to the
-user with a conflict message. If no process with the project is running then an archive job (a separate thread) would be created and a message to the client with start of archive process would be
-sent. Following the job creation, the project will be marked so that during archive no changes to the project resources could be made. If this step fails the archive 
-process would stop by logging the error. After the marking step completes, the archive process receives a mark session id and the dependent resources which would allow the process to make
-changes to the resources. Using the dependent resources the process retrieves metadata, files, scenarios, result configurations, simulation plans and, simulation runs 
-respectively and persists them in Synology. Lastly, the simulation result dump action will be called which will archive the result data. The process waits until
-all the result data is archived successfully. After a successful archive, a request to delete the project data would be made so that the system memory can be freed.
+user with a conflict message. If no process with the project is running, then an archive job (a separate thread) would be created, and a message to the client with "start of archive process" would be
+sent. 
 
-A major issue to be discussed is when the archive process fails which requires a rollback by unmarking the project. As mentioned earlier the project is
-marked as "TO\_BE\_ARCHIVED" so that no other processes can modify the contents during the archive process. This is a great strategy if everything goes as planned but 
-often this is not the case, and it is mandatory that an unmarking of the project is done otherwise the project would be unusable. 
+Following the job creation, the project will be marked so that during archive no changes to the project resources could be made. If this step fails the archive 
+process would stop by logging the error. After the marking step completes, the archive process receives a mark session id and the dependent resources. This allows the archive to make
+changes to the resources. Using the dependent resources, the process retrieves metadata, files, scenarios, result configurations, simulation plans and, simulation runs 
+respectively and persists them in Synology. Lastly, the simulation result dump action will be called which will archive the result data. The process waits until
+all the result data is archived. After a successful archive, a request to delete the project data would be made so that the system memory can be freed.
+
+A significant issue to be discussed is when the archive process fails, which requires a rollback by unmarking the project. As mentioned earlier the project is
+marked as "TO\_BE\_ARCHIVED" so that no other processes can modify the contents during the archive process. This is an excellent strategy if everything goes as planned but 
+often this is not the case, and it is mandatory that an unmarking of the project be done otherwise the project is unusable. 
 
 It also happens that since the
-marking service is dependent upon many services, it has a high possibility of failure as well. This brings upon the problem how would the archive service behave if the
-unmarking of the project fails. It seems very natural to just repeat the process until the unmarking request would succeed, since it is absolutely necessary to unmark
+marking service is dependent upon many services, it has a high possibility of failure as well. This brings upon the problem, how would the archive service behave if the
+unmarking of the project fails. It seems very natural to repeat the process until the unmarking request would succeed since it is necessary to unmark
 a project. If this happens only with a single process, it does not make a huge difference. However when thinking of the bigger picture if this 
-occurs with 100 different processes at the same time, it would use valuable processing resources as it may be stuck in a deadlock condition until a outside interruption
-is made. To avoid this, a fixed number of retries to unmark the project with certain time interval for the request 
-will be made. 
+occurs with 100 different processes at the same time, it would use valuable processing resources as it may be stuck in a deadlock condition until an outside interruption occurs. 
+To avoid this, a fixed number of retries to unmark the project at the specified time interval for the request is made. 
 
-Although, this solves the issue of using up resources but the problem that the project is unusable is still there. Except a manual unmarking, no other solution 
+Although, this solves the issue of using up resources, the problem that the project is unusable is still there. Except a manual unmarking, no other solution 
 can be seen, so 
-it is decided that the archive process would also persist the marking session id which can be used to call the unmarking endpoint. With the use of this id a manual 
+it is decided that the archive process would also persist the marking session id which can be used to call the unmarking endpoint. With the use of this id, a manual 
 trigger is possible as soon as the error is fixed. The marking session id can be easily retrieved also from the GUI as it will be included in the status request of
 the archive job.
  

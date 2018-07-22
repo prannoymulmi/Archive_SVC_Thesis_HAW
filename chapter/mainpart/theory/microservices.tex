@@ -1,14 +1,14 @@
 \section{Microservices}
 
-Microservice is a specialized implementation of Service Oriented Architecture(SOA) \cite[chapter ~3]{SOA}. A service in a SOA
-is a functional unit that performs a specific business action (e.g. user authentication) accessed typically via a network that 
+Microservice is a specialized implementation of Service Oriented Architecture(SOA) \cite[chapter ~3]{SOA}. Service in an SOA
+is a functional unit that performs a specific business action (e.g., user authentication) accessed typically via a network that 
 encapsulates its state and the operations performed on the data.  
 Figure \ref{fig:objectBasedDS} illustrates an example of Service Oriented Architecture (SOA) in a distributed system where different services call each others interface
-to perform a certain action. Although microservices are built using the SOA paradigm, they have their differences. In a microservice, a service can be deployed and 
-operated independently because the services are designed to be more fine grained with a single purpose, unlike SOA. 
-Also they are lightweight and Domain Driven \cite{DDD} that makes the application simple to understand, develop, and test. The smaller set of services
+to perform a particular action. Although microservices are built using the SOA paradigm, they have their differences. In a microservice, a service can be deployed and 
+operated independently because the services are designed to be more fine-grained with a single purpose, unlike SOA. 
+Also, they are lightweight and Domain Driven \cite{DDD} that makes the application simple to understand, develop, and test. The smaller set of services
 can be developed autonomously by different teams and be deployed quickly as they are usually lightweight in nature. This architecture promises to bring loose coupling 
-by separating a big application into smaller logical units. 
+by separating an application into smaller logical units. 
 
 
 \begin{figure}[H]
@@ -20,7 +20,7 @@ by separating a big application into smaller logical units.
 
 
 Figure \ref{fig:serviceExample} shows an example of how 
-a service is domain bounded and there is a flexibility of choosing different
+a service is domain bounded, and there is flexibility in choosing different
 technologies for the isolated services \cite{MicroserviceNewMan}. 
 Each service is encapsulated with their own life cycles, which communicates with each other using protocols 
 (e.g. HTTP \cite{HTTP}, websockets \cite{WebSockets}, GRPC \cite{grpc}). 
@@ -37,7 +37,7 @@ Each service is encapsulated with their own life cycles, which communicates with
     A single monolithic application \cite[p.~94]{{softwareDesign}} is
     built as a large unit where all the logic lies within a single system. 
     This is considered the most natural way to develop a server-side 
-    application. It is seen that as the application scales in size, it 
+    application. When the application scales in size, it 
     gets harder to keep up with the changes as an entire
     system scaling is required. This is where microservices can be beneficial,
     as only the required bounded module can be scaled up as needed. 
@@ -69,7 +69,7 @@ Each service is encapsulated with their own life cycles, which communicates with
     \newpage
     \subsection{Data Sovereignty in Microservice}
     \label{subsection:dataSovereignty}
-    It is an important guideline for a microservice architecture to own its domain data and 
+    It is an essential guideline for a microservice architecture to own its domain data and 
     logic \cite[p.~29]{Torre2017}. Decentralized data would assist a microservice
     to become solely independent and help them evolve separately. The approach of each microservice owning its own database is also
     know as \textbf{Polyglot Persistence} \cite{Polyglot}. Applying this pattern would imply that the
@@ -82,9 +82,9 @@ Each service is encapsulated with their own life cycles, which communicates with
     \end{figure}
     
    In Figure \ref{fig:polyglot}, it can be observed how a Monolithic application owns only a single database for the whole application. Meaning,
-   the application has a centralized database which are shared amongst the services. Whereas, in microservices each service owns
-   a single database or few services share databases which is easier to manage. Having said that data sovereignty is very beneficial, it also brings various difficulties
-   i.e. coordinations between services, which is very challenging to tackle and creates data coherency issues in the system. 
+   the application has a centralized database which are shared amongst the services. Whereas, in microservices, each service owns
+   a single database or few services share databases which are easier to manage. Having said that data sovereignty is very beneficial, it also brings various difficulties,
+   i.e., coordination between services, which is very challenging to tackle and creates data coherency issues in the system. 
 
 
 

@@ -1,22 +1,22 @@
 \section{Unit Testing}
 These tests are designed to verify the individual components of the software which validates that each unit of the software performs as intended. A White Box
-Testing methodology has been applied for the unit testing. This method is used as the internal structure/requirements are known before hand. In this process,
-the specific inputs and outputs are predetermined and the tests are ran to verify if the expected output is produced by that input. 
+Testing methodology has been applied for the unit testing. This method is used as the internal structure/requirements are known beforehand. In this process,
+the specific inputs and outputs are predetermined, and the tests are run to verify if that input produces the expected output.
 
 \par
 Figure \ref{fig:CIbuild} above depicts
-unit testing as an mandatory step for deployment of the Archive service. Running this test with every build process will boost the confidence 
+unit testing as a mandatory step for deployment of the Archive service. Running this test with every build process will boost the confidence 
 in changing and maintaining the code for the Archive service. The ASP .NET platform offers a lot of unit-testing frameworks 
-(e.g. XUnit, Nunit, MSTest/Visual Studio). Nunit is choosen as the preferred the testing framework for this service as it has a good reputation for
-fast testing and it is already integrated the IDE i.e. Rider (JetBrains) used for this work. 
+(e.g., XUnit, Nunit, MSTest/Visual Studio). NUnit is chosen as the preferred the testing framework for this service as it has an excellent reputation for
+fast testing and it is already integrated the IDE, i.e., Rider (JetBrains) used for this work. 
 
 \par
-Making stubs, and mocks/fake objects are one of the important steps to do a proper unit testing. This statement can be backed up saying that unit tests are
-used to analyze only one module/method. To check only one module the other dependent objects have to be faked. The Archive service is designed following the
+Making mocks/fake objects is one of the important steps to do a proper unit testing. This statement can be backed up saying that unit tests are
+used to analyze only one module/method. To check only one module, the other dependent objects have to be faked. The Archive service is designed following the
 SOLID \cite{Hotop2015} principle, the D stands for \textbf{Dependency Inversion Principle} where classes depend upon abstractions i.e. Interfaces not concrete
-implementation. The application of this principle has allowed an easy method to fake objects as the depending classes are just abstractions and the concrete 
-implementations are injected by the ASP .NET Dependency Injection framework. A framework name as Moq \footnote{https://github.com/Moq/moq4/wiki/Quickstart} is used
-which can be used to fake objects i.e.Interfaces and return the desired output from them. 
+implementation. The application of this principle has allowed an easy method to fake objects as the depending classes are just abstractions and 
+the ASP .NET Dependency Injection framework injects the concrete implementations. A framework named Moq \footnote{https://github.com/Moq/moq4/wiki/Quickstart} is used
+to fake objects i.e.Interfaces and return the desired output from them. 
 
 \begin{lstlisting}[language={[Sharp]C}, caption={Example of faking objects using Moq framework}, captionpos=b,label={lst:moqEg}]
 [Fact]
@@ -50,14 +50,13 @@ public async Task Archive_CorrectDataId_NoExceptions()
 }
 \end{lstlisting}
 
-Listing~\ref{lst:moqEg} illustrates an example of an unit test which is done on the Archive method for a file. The Moq framework injects the dependencies and in the setup method
-one can return the desired output from the methods. This unit tests verifies if all the dependent methods work as expected.
-Following the functional requirements mentioned in Section \ref{section:functionalReq} the unit tests are designed to test if the core logic functions as expected which includes error handling as well.
+Listing~\ref{lst:moqEg} illustrates an example of a unit test which is done on the Archive method for a file. The Moq framework injects the dependencies, and in the setup method,
+one can return the desired output from the methods. This unit test verifies if all the dependent methods work as expected.
 
 \subsection{Archive and Retrieve process test}
-The unit test designed for these processes are aimed to test the components responsible for each type of resource (See Table \ref{table: archivedMars}) and its 
+The unit test designed for these processes are aimed to test the components responsible for each type of resource (See Table \ref{table: archivedMars}) and it's 
 dependent module. The class overview can be seen from Figure \ref{fig:archiveClassDiagram} and \ref{fig:restoreClass}. Although, the figure does not show all the classes that the archive process is using
-but when one sees the attributes that a class is using it will give an good idea of the remaining classes under use.
+but when one sees the attributes that a class is using it gives a good idea of the remaining classes under use.
 
 \subsubsection{Test if an background job is enqueued}
 For this test, after a successful API request for archiving a project, the module should create a background job using Hangfire. This test would check if the
@@ -98,8 +97,8 @@ for conflict works as expected otherwise there could be cases of unwanted data l
 
 \subsubsection{Exception Catch}
 For this test, different checks are made in many modules whether the expected exception is caught in case of an error. It also includes as well a check for the general
-exception class. This test will ensure that some method will not just consume an exception when an unexpected error occurs. This is important because if 
-the exceptions are not caught, it would be very hard to fix bugs if some are introduced in the near future.
+exception class. This test ensures that some method will not just consume an exception when an unexpected error occurs. This is important because if 
+the exceptions are not caught, it would be tough to fix bugs if some are introduced shortly.
 
 \newpage
 \begin{lstlisting}[language={[Sharp]C}, caption={Exception catch test example}, captionpos=b,label={lst:exceptionCatch}]
@@ -121,16 +120,16 @@ public async Task MarkAllResourceAndGetSessionId_MarkingSvcClientReturnEmpty_Thr
 \end{lstlisting}
 
 \subsubsection{Expected Value Checks}
-For this test, different modules are tested with a mock inputs (e.g. data id, mock models) and then the method under test is executed with an 
+For this test, different modules are tested with mock inputs (e.g., data id, mock models) and then the method under test is executed with an 
 expected value. These tests are designed to ensure that the methods deliver correct results when a correct input from other modules are received.
 These tests would aid to discover a faulty implementation according to the requirements mentioned for this work.
 
 \subsubsection{Null or Empty Checks}
 For this test, the different modules are tested against the most famous Null pointer exception in the different modules and how it is handled. This is an important
 test case as the archive/retrieve process should still run and terminate accordingly if some resources are null. As an example, during a normal archive run if the result received from
-the scenario service  is empty i.e. no scenarios in the project, the archive process should not fail due to a null pointer exception, rather finish the archive process
-as there are no children resources (See Figure \ref{fig:marsDependency}). Listing \ref{lst:scenarisEmpty} shows an example that, if the scenario client returns a null 
-the process does not break but instead the method for archiving scenarios is not triggered. 
+the scenario service is empty, i.e., no scenarios in the project, the archive process should not fail due to a null pointer exception, instead, finish the archive process
+as there are no children resources (See Figure \ref{fig:marsDependency}). Listing \ref{lst:scenarisEmpty} shows an example that, if the scenario client returns null 
+the process does not break, but instead the method for archiving scenarios is not triggered. 
 
 \begin{lstlisting}[language={[Sharp]C}, caption={No scenarios added if resource empty}, captionpos=b,label={lst:scenarisEmpty}]
 [Fact]
@@ -157,12 +156,12 @@ public async Task Archive_NoScenarios_ScenariosNotAdded()
 \subsubsection{File Read Tests}
 For this test, the module for reading files from the Synology is tested. To do so, dummy files were added (mocking the existence of Synology without 
 a network connection) in the build for the unit tests. This test reads the file
-and then compares it with the expected result. This test is designed to check if the file reading algorithm works as expected. Unfortunately, the module to write the data
-could not be verified because when the tests are built they are packed into a .dll file where a write operation is not allowed.
+and then compares it with the expected result. This test is designed to check if the file reading algorithm. Unfortunately, the module to write the data
+could not be verified because when the test builds they are packed into a .dll file where a write operation is not allowed.
 
 \subsection{Test Coverage}
 A total of 174 unit test cases were made on the different modules existing in the Archive service at the time of writing this thesis. The total time for running all 
-the test cases measured on average is 1m50s. For a proper calculation of the Test coverage by available features in the service, Table \ref{table:unitTestCov} gives an short
+the test cases measured on average is 1m50s. For a proper calculation of the Test coverage by available features in the service, Table \ref{table:unitTestCov} gives a short
 overview of the type of modules and the different features available.
 
 \begin{longtable}{|p{3cm}|p{10cm}|}
@@ -187,4 +186,4 @@ overview of the type of modules and the different features available.
 \end{longtable}
 
 Out of the 28 different features of the given modules, the unit tests were made for 26 of them. This gives a testing coverage of about
-92\%. Some Test cases could not be carried out due to the complexity of making the tests i.e. AOP\footnote{AOP: Aspect Oriented Programming} loggers, HTTP helpers, File Writers.
+92\%. Some Test cases could not be carried out due to the complexity of making the tests ,i.e., AOP\footnote{AOP: Aspect Oriented Programming} loggers, HTTP helpers, File Writers.

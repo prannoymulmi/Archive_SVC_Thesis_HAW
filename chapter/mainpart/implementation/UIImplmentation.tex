@@ -1,7 +1,7 @@
 \section{UI Integration}
-The MARS system is already equipped with a User Interface where one can create a project, manage the different resources, run the simulation, and
-analyze the results. The different back end services (See \ref{table:MARS Resource Hierarchy Service Overview}) are integrated in a Graphical
-User Interface so that a domain expert i.e. ecologists who are not computer experts could utilize the powerful tools that the framework offers.
+The MARS system has a User Interface (UI) where one can create a project, manage the different resources, run the simulation, and
+analyze the results. The different backend services (See Section \ref{table:MARS Resource Hierarchy Service Overview}) are integrated into a Graphical
+User Interface (GUI) so that domain expert, i.e., ecologists who are not computer experts could utilize the powerful tools that the framework offers.
 The aspect that this framework is intended to be used by users with less technical expertise makes it an absolute necessity that
 the functions which the Archive service delivers be part of the graphical system.
 
@@ -11,18 +11,18 @@ the functions which the Archive service delivers be part of the graphical system
     \label{fig:marsCloudUI}
 \end{figure}
 
-Figure \ref{fig:marsCloudUI} illustrates a high level communication between UI and the back end services. It is to be noted that the backend services
-are running in an self contained environment which is not available to the outside ports and other clients. Therefore, 
+Figure \ref{fig:marsCloudUI} illustrates a high-level communication between the UI and the backend services. It is to be noted that the backend services
+are running in a self-contained environment which is not available to the external ports and other clients. Therefore, 
 to make the services available the Ingress\footnote{https://kubernetes.io/docs/concepts/services-networking/ingress/} is present. Ingress contains
 a set of rules which allow inbound connections to reach the services that are inside the cluster (encapsulated from outside). In the MARS system,
-the Ingress creates a reverse proxy to the teaching API. The teaching API is the bridge between the different backend services and the GUI. The purpose
-of making the requests via the Teaching API is to have a more secure system as it authenticates whether the client which is making the requests is the right owner or 
-is an intruder. This check is done as the teaching API provides an authentication token i.e. Bearer token to the GUI and this token has to be included in the
-header of every request making it more secure as only the clients having the tokens can make a successful request. After a successful request to the Teaching API,
-it forwards the request to the concerning web service.
+the Ingress creates a reverse proxy for the teaching API. The teaching API is the bridge between the different backend services and the GUI. The purpose
+of making the requests via the Teaching API is to have a secure system as it authenticates whether the client making the requests is the rightful owner or 
+is an intruder. This check is done as the teaching API provides an authentication token, i.e., Bearer token to the GUI and this token has to be included in the
+header of every request, making it more secure as only the clients having the tokens can make a successful request. After a successful request to the Teaching API,
+the request is forwarded to the concerning web service.
 
 
-The first step needed for a complete integration of the Archive service in the UI is to determine which endpoints are going to be exposed to the outside ports i.e web browser.
+The first step needed for a complete integration of the Archive service in the UI is to determine which endpoints are going to be exposed to the outside ports, i.e., web browser.
 The endpoints decided to be exposed for the thesis are archive project, retrieve project, and get status. These endpoints are also programmatically added
 in the Teaching API written in GO Lang. Lastly, after the endpoints are made available to the UI components, the functions are implemented in the Teaching GUI service
 using the Angular 4 framework. 

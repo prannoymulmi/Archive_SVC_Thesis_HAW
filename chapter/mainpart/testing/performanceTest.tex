@@ -1,11 +1,11 @@
 \section{Performance Test}
-This test verifies the performance metrics of the Archive service by analyzing different numbers of files, file sizes and archive strategies.
+This test verifies the performance metrics of the Archive service by analyzing different numbers of files, file sizes, and archive strategies.
 
 \subsection{Archive Performance}
 For this test, an archive process is executed and repeated 4 times to get an average general performance overview. Figure \ref{fig:archivePerformance} illustrates a bar diagram for running an archive process (zipped simulation results) with 7 files, 2 scenarios, 2 result configurations, 2 simulation plans,
 12 simulation runs, and results. The results seen in the figure shows that it took about 34.9s on average to run this process. It is also to be noted that the
 simulation results are zipped making their total size about 86 Mb. Figure \ref{fig:archivePerformanceUn} shows the archive process of the same project without 
-compressing the simulation results. It can be seen that the file sizes for the uncompressed process is significantly higher in contrast to the compressed
+compressing the simulation results. It can be seen that the file sizes for the uncompressed process are significantly higher in contrast to the compressed
 process with file size on avg about 683 Mb and 43s of processing time.
 
 \begin{figure}[H]
@@ -20,8 +20,8 @@ process with file size on avg about 683 Mb and 43s of processing time.
     \label{fig:archivePerformanceUn}
 \end{figure}
 
-Unfortunately simulation results with larger file sizes could not be tested as no such simulation results was available at the moment. However, with this metrics it can be said that
-for smaller file sizes, it is a better to compress the simulation data while archiving it since there is a significant volume save and the time taken for the
+Unfortunately, simulation results with larger file sizes could not be tested as no such simulation results were available at the moment. However, with this metrics, it can be said that
+for smaller file sizes, it is better to compress the simulation data while archiving it since there is a significant volume save and the time taken for the
 archive does not differ by much. It is also seen that the I/O is a bottleneck because the larger file (uncompressed) needs more time to archive than the smaller (compressed) file. 
 
 \subsection{Retrieve Performance}
@@ -41,5 +41,5 @@ results of the retrieve process using the uncompressed simulation results which 
     \label{fig:restorePerformanceUn}
 \end{figure}
 
-Also, to verify the complexity of the processes, the number of simulations were doubled i.e. 24 simulation and the performance was recorded
+Also, to verify the complexity of the processes, the number of simulations were doubled, i.e., 24 simulation and the performance was recorded
 and an average of 55 sec for archive and 8.2 mins for retrieve was observed. As a result, the processing time was doubled as expected.
