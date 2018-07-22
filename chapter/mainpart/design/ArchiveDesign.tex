@@ -7,7 +7,7 @@ The archive process requires certain preconditions to be fulfilled to ensure the
     As multiple users can modify the data simultaneously, it could be possible that someone changes a resource during an archive and the 
     Archive service has no way to detect this modification. It would lead to inconsistent data being archived.
     Therefore, to avoid this situation the resources must be marked before the start of an archive. The marking would ensure that no other process except the Archive
-    service would have access to modify the marked contents during archiving. The marking process would be handled using the Marking service.
+    service has access to modify the marked contents during archiving. The marking process would be handled using the Marking service.
     \item \textbf{Get Metadata for the project:} The metadata contains all necessary information about
     the different resources. The scenarios, files, and the result configuration depend on these metadata
     to retrieve their respective data. If the metadata cannot be obtained the archive process cannot continue.
@@ -106,9 +106,9 @@ data should be readily accessible to a non-expert and using MongoDB requires som
 
 Figure \ref{fig:archiveActivity} illustrates an activity diagram of archiving an entire project in the MARS system. As mentioned in Section \ref{lst:preconditionsArchive},
 marking the resources for the project is the first requirement needed to start the process. If the project resources are marked successfully,
-then the archive would be initialized as a background job, and the job id would be sent to the client. In case the marking would fail, the error message will be 
+then the archive process is initialized as a background job, and the job id is sent to the client. In case the marking fails, the error message will be 
 sent to the client, and the archive process will halt. The archiving process is visioned to be a background job because a single process could take
-a long period of time and would block the server for additional requests. Following the successful job creation, the process checks if an archive already
+a long period of time and block the server for additional requests. Following the successful job creation, the process checks if an archive already
 exists. After
 the archive folder creation, the metadata, files, scenarios, result configurations, simulation plans, simulation runs, and the simulation results are retrieved respectively.
 After a successful archive process, the resources are deleted from the Ceph cluster. Lastly, in case of some failures while archiving the exception will be logged 
@@ -122,7 +122,7 @@ which can be later analyzed for maintenance.
 
 Figure \ref{fig:stateArchive} illustrates the transitions that can occur during the archive process. The idle state is when no archive process
 is being executed. Additionally, the state diagram also considers
-how the state would change if one of the resources is empty. In the case of an empty resource (e.g., no scenarios available for the project), the archive
+how the state changes if one of the resources is empty. In the case of an empty resource (e.g., no scenarios available for the project), the archive
 process stops gracefully by logging the error and transitions to the idle state. 
 
 \begin{figure}[H]
@@ -131,31 +131,31 @@ process stops gracefully by logging the error and transitions to the idle state.
     \label{fig:sequenceArchive}
 \end{figure}
 
-Figure \ref{fig:sequenceArchive} illustrates the Sequence diagram for a complete archive process. The first step after an archive request would be to check
-whether an archive or retrieve process for the current project is under progress. In case the process is in progress, the archive request would be denied to the
-user with a conflict message. If no process with the project is running, then an archive job (a separate thread) would be created, and a message to the client with "start of archive process" would be
+Figure \ref{fig:sequenceArchive} illustrates the Sequence diagram for a complete archive process. The first step after an archive request is to check
+whether an archive or retrieve process for the current project is under progress. In case the process is in progress, the archive request is denied to the
+user with a conflict message. If no process with the project is running, then an archive job (a separate thread) is created, and a message to the client with "start of archive process" is
 sent. 
 
 Following the job creation, the project will be marked so that during archive no changes to the project resources could be made. If this step fails the archive 
-process would stop by logging the error. After the marking step completes, the archive process receives a mark session id and the dependent resources. This allows the archive to make
+process stops by logging the error. After the marking step completes, the archive process receives a mark session id and the dependent resources. This allows the archive to make
 changes to the resources. Using the dependent resources, the process retrieves metadata, files, scenarios, result configurations, simulation plans and, simulation runs 
 respectively and persists them in Synology. Lastly, the simulation result dump action will be called which will archive the result data. The process waits until
-all the result data is archived. After a successful archive, a request to delete the project data would be made so that the system memory can be freed.
+all the result data is archived. After a successful archive, a request to delete the project data is made so that the system memory can be freed.
 
 A significant issue to be discussed is when the archive process fails, which requires a rollback by unmarking the project. As mentioned earlier the project is
 marked as "TO\_BE\_ARCHIVED" so that no other processes can modify the contents during the archive process. This is an excellent strategy if everything goes as planned but 
 often this is not the case, and it is mandatory that an unmarking of the project be done otherwise the project is unusable. 
 
-It also happens that since the
+It also happens since the
 marking service is dependent upon many services, it has a high possibility of failure as well. This brings upon the problem, how would the archive service behave if the
-unmarking of the project fails. It seems very natural to repeat the process until the unmarking request would succeed since it is necessary to unmark
+unmarking of the project fails. It seems very natural to repeat the process until the unmarking request succeeds since it is necessary to unmark
 a project. If this happens only with a single process, it does not make a huge difference. However when thinking of the bigger picture if this 
-occurs with 100 different processes at the same time, it would use valuable processing resources as it may be stuck in a deadlock condition until an outside interruption occurs. 
+occurs with 100 different processes at the same time, it uses valuable processing resources as it may be stuck in a deadlock condition until an outside interruption occurs. 
 To avoid this, a fixed number of retries to unmark the project at the specified time interval for the request is made. 
 
 Although, this solves the issue of using up resources, the problem that the project is unusable is still there. Except a manual unmarking, no other solution 
 can be seen, so 
-it is decided that the archive process would also persist the marking session id which can be used to call the unmarking endpoint. With the use of this id, a manual 
+it is decided that the archive process would persist the marking session id which can be used to call the unmarking endpoint. With the use of this id, a manual 
 trigger is possible as soon as the error is fixed. The marking session id can be easily retrieved also from the GUI as it will be included in the status request of
 the archive job.
  

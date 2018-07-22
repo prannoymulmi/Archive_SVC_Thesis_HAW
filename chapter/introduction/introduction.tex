@@ -18,7 +18,7 @@
         performance because this service would move some part of data from the primary storage (Ceph cluster \cite{Ceph}) to the secondary storage (NAS Synology \cite{Synology}). 
 
         However, the underlying structure of the MARS system is also quite challenging to archive 
-        a given simulation with its resources. The system design is based on a Microservice architecture \cite{MicroserviceNewMan} having a decentralized data \cite{atomic} access structure. 
+        a given simulation with its resources. The system design is based on a microservice architecture \cite{MicroserviceNewMan} having a decentralized data-access \cite{atomic} structure. 
         The MARS Resources have a hierarchical
         structure (Section \ref{subsection:MARSResource}) which has to be followed so a successful simulation can occur. As per the design of MARS, these resources
         are stored separately in different storages/databases which should be accessed only by a certain API. Section
@@ -38,7 +38,7 @@
         In contrast to its continuous data production, the primary storage volume available to the system is very limited.
         Additionally, a high level of correlation has been observed between the operating cost of a software system and its data volume. 
          Therefore, the Archive service would move the requested data from the Ceph storage to the slower NAS\footnote{NAS: Network Attached Storage} Synology
-        \cite{Synology}. This cloud storage is owned by the MARS for backup and archive purposes.
+        \cite{Synology}. MARS owns the cloud storage, which is used for backup and archive purposes.
            
 
      

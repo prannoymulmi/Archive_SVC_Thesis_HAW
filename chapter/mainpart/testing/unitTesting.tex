@@ -59,7 +59,7 @@ dependent module. The class overview can be seen from Figure \ref{fig:archiveCla
 but when one sees the attributes that a class is using it gives a good idea of the remaining classes under use.
 
 \subsubsection{Test if an background job is enqueued}
-For this test, after a successful API request for archiving a project, the module should create a background job using Hangfire. This test would check if the
+For this test, after a successful API request for archiving a project, the module should create a background job using Hangfire. This test checks if the
 background tasks were created or not. As it is a requirement for the archive process to run a background job, so it must be ensured that a background job is created 
 after a successful request. Listing \ref{lst:hangfireCreate} shows how the test was written to verify the creation of the background job.
 
@@ -122,7 +122,7 @@ public async Task MarkAllResourceAndGetSessionId_MarkingSvcClientReturnEmpty_Thr
 \subsubsection{Expected Value Checks}
 For this test, different modules are tested with mock inputs (e.g., data id, mock models) and then the method under test is executed with an 
 expected value. These tests are designed to ensure that the methods deliver correct results when a correct input from other modules are received.
-These tests would aid to discover a faulty implementation according to the requirements mentioned for this work.
+These tests help to discover a faulty implementation according to the requirements mentioned for this work.
 
 \subsubsection{Null or Empty Checks}
 For this test, the different modules are tested against the most famous Null pointer exception in the different modules and how it is handled. This is an important
@@ -156,7 +156,7 @@ public async Task Archive_NoScenarios_ScenariosNotAdded()
 \subsubsection{File Read Tests}
 For this test, the module for reading files from the Synology is tested. To do so, dummy files were added (mocking the existence of Synology without 
 a network connection) in the build for the unit tests. This test reads the file
-and then compares it with the expected result. This test is designed to check if the file reading algorithm. Unfortunately, the module to write the data
+and then compares it with the expected result. This test is designed to check the file reading algorithm. Unfortunately, the module to write the data
 could not be verified because when the test builds they are packed into a .dll file where a write operation is not allowed.
 
 \subsection{Test Coverage}

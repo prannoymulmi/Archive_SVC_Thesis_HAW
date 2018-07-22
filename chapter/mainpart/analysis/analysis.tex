@@ -6,11 +6,8 @@
 \label{chap:ReqAnalysis}
  The primary requirement of this thesis is to design and implement an Archive service, i.e., backend web service for the MARS framework. The service's role is to
  archive the MARS resources mentioned in Subsection \ref{subsection:MARSResource} from the Ceph cluster \cite{Ceph} to the 
- Network Attached Storage (NAS) Synology drive \cite{Synology}.
-
- This service targets any user who desires to archive the MARS resources. The Archive service would expose its API, calling it, one can archive and restore the resources. The exposed
- API is also integrated into the MARS graphical interface (MARS Teaching User Interface). The MARS Teaching API acts as a proxy between the users 
- and the MARS backend services, as it provides some level of abstraction by hiding unnecessary endpoints for the user in the graphical interface (UI).
+ Network Attached Storage (NAS) Synology drive \cite{Synology}. This service targets any user who desires to archive the MARS resources. The Archive service would expose its API, calling it, one can archive and restore the resources. 
 
 \input{chapter/mainpart/analysis/functional.tex}
+\newpage
 \input{chapter/mainpart/analysis/technical.tex}

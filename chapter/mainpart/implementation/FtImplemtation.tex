@@ -1,12 +1,12 @@
 \newpage
 \section{Fault-Tolerance and Maintenance Implementation}
 The MARS system is very susceptible to different kinds of errors due to the structural factors mentioned in the previous chapters. Therefore, a fault tolerant
-system is needed which would try to recover in case of any transient error. For the Archive service, an open source framework
+system is needed which tries to recover in case of any transient error. For the Archive service, an open source framework
 named Hangfire is used for implementing the design in Section \ref{sec:ftDesign}. This framework is used because it provides
 the functionality mentioned in the design section including many additional features, i.e., reliability, easy maintainability, and simplicity. It is called
-reliable because when a background process is created, this framework would persist the input parameters, retry times, method name, in a database. 
-This is also known as the Forget and Fire \cite{Hangfire}. It would
-ensure that the jobs triggered once will always be executed and re-tried. As an example, if the
+reliable because when a background process is created, this framework persists the input parameters, retry times, method name, in a database. 
+This is also known as the Forget and Fire \cite{Hangfire}. It ensures that the jobs triggered once are always executed and re-tried.
+As an example, if the
 Archive service restarts during a running process, in the general case the job cannot be recovered. However, this framework will check if 
 there are any incomplete jobs and will start them automatically, fetching the stored job information from the database. The Forget and Fire 
 feature ensures that the triggered processes would always run compared to the native threading offered by ASP .NET Core.
@@ -26,11 +26,11 @@ private IServiceCollection BuildServices(IServiceCollection services)
 
 \subsubsection{AOP Logging}
 Logging is a very important part of the service as it gives the maintainers essential information on the status of the service. This makes logging necessary
-in each part of the system which leads to the copying of the logging logic to the different components of the archive service violating the SOLID \cite{Hotop2015} principles. 
-To solve this issue, the interceptor pattern is used. Using this pattern a decorator would be added in the class which wants to include the common
+in each part of the system which leads to the copying of the logging logic to the different components of the archive service, violating the SOLID \cite{Hotop2015} principles. 
+To solve this issue, the interceptor pattern is used. Using this pattern, a decorator is added to the class which wants to include the common
 logging logic. Listing \ref{lst:interceptor} shows the implementation of the decorator "Intercept("logger")" which is injected in the class. The 
 classes decorated with this attribute would have a logging logic triggered. Listing \ref{lst:interceptor} shows the main logic for the logging. In this logic, a success message
-with all the method arguments, time elapsed would be printed in case of a successful run, and an exception would be logged in case of failure. This aids in the maintenance
+with all the method arguments, time elapsed are printed in case of a successful run, and an exception would be logged in case of failure. This aids in the maintenance
 of the system as a new feature is added only the decorator must be added to log the start, success, or exception of the method.
 
 \begin{lstlisting}[language={[Sharp]C}, caption={Interceptor decorator example}, captionpos=b,label={lst:interceptor}]

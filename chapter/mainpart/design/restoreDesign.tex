@@ -13,11 +13,11 @@ so that it can be used again using the MARS UI.
 
 Figure \ref{fig:MARSCloud} illustrates a file upload in the MARS cloud done at the time of writing this thesis. 
 The MARS cloud consists of many 
-microservices and databases at its disposal. It is a point of interest how the project would be restored back as there are different possibilities for it. 
+microservices and databases at its disposal. It is a point of interest how the project is restored back as there are different possibilities for it. 
 However, it is a requirement for the Archive service
 to call the corresponding service to access, add, or modify the resources (Chapter \ref{chap:ReqAnalysis}). As mentioned in earlier chapters, the MARS system
 has different types of files (e.g., models, timeseries, GIS) which are managed by their respective services. There are two different methods to upload a file 
-ant they are mentioned below :
+and they are mentioned below :
 \begin{enumerate}
  \item \textbf{Upload files via File-svc} The File-svc is a service which accepts all kind of inputs, i.e., GIS, models, timeseries. It communicates to the
  concerning service by checking the file type. This methodology is the only way possible through the UI for a file upload.   
@@ -46,7 +46,7 @@ as for the archive, i.e., long running times. The first step after creating the 
 All the files have to be finished uploading and processing; otherwise, the sequential steps would not have the references of the files. After all the uploads are complete,
 the scenarios get the reference to the file id so that it could be uploaded. Following the scenarios, the result configurations are also uploaded for the corresponding models.
 As the simulation plan is dependent on the scenario and the result configuration, this is the next resource which will be uploaded. Lastly, the simulation runs
-and the simulation results would be uploaded respectively. 
+and the simulation results are uploaded respectively. 
 
 In case an error occurs, a Two-phase commit protocol \cite{atomic} is adopted. This strategy is taken into consideration to bring atomicity on decentralized data
 as it tries to roll back if the distributed transaction fails.
@@ -76,19 +76,19 @@ Then, the restore file process waits until all the files have a "FINISHED" statu
 network calls. In the case of a status "FAILED," request timeouts, unknown status, and internal server error the whole restore process will halt. 
 This step is necessary because the children resources cannot use the failed/incomplete files.
 
-The next step would be to get the scenario metadata. Restoring this data back to the system is not entirely straightforward because it needs some additional 
+The next step is to get the scenario metadata. Restoring this data back to the system is not entirely straightforward because it needs some additional 
 work to be done. 
 The problem arises from the fact that the archived data have attributes like the resource id which changes as a new resource is uploaded. For more clarification, 
 Listing \ref{lst:marsMetadata} presents an example of the archived metadata of a file. This resource is needed so that the restore process can determine the different 
 attributes (e.g., title, project id) while uploading a new resource. During a new file upload 
-its data id would change, as a new id is assigned by the File-svc (See Listing \ref{lst:marsNewMetadata}). 
+its data id changes, as a new id is assigned by the File-svc (See Listing \ref{lst:marsNewMetadata}). 
 This is a big problem because the other resources such as a scenario cannot be uploaded until it knows the new data id that was assigned to the model it 
 depends on. Listing \ref{lst:marsScenario} shows the archived scenario which has a reference to the data id from the archived file metadata. 
 This is only one example as many attributes must be considered. 
 
 To solve this, a map using the old attribute as the key and the 
-new id as the value will be made (See Listing \ref{lst:marsMap}).
-This way, while uploading the scenario resource gets the new data id by searching the key, i.e., old id, from the map and replacing it during upload. 
+new id as the value is made (See Listing \ref{lst:marsMap}).
+This way, while uploading, the scenario resource gets the new data id by searching the key, i.e., old id, from the map and replacing it during upload. 
 
 Following a scenario upload, the other resources, i.e., result configuration, simulation plan, simulation run uses the same mapping strategy to replace 
 the attributes required for restoring. 
@@ -132,7 +132,7 @@ of this process.
 }
 \end{lstlisting}
 
-\begin{lstlisting}[caption={The mapped key value attributes that the scenario metadata would need}, language=json,firstnumber=1, captionpos=b, label={lst:marsMap}]
+\begin{lstlisting}[caption={The mapped key value attributes that the scenario metadata needs}, language=json,firstnumber=1, captionpos=b, label={lst:marsMap}]
 {
     "7cae6055-d7fd-418e-9ba0-bdc2980ffb4c":"27765261-8a65-45ab-bdeb-db8b5b7f8f4"
 }

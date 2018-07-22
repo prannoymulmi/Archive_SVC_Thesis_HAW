@@ -1,6 +1,6 @@
 \section{Retrieve Process Implementation}
-This section gives an overview of the architecture of the retrieve process which would restore the data back to the active
-system from the Synology, so that it can be used for running more simulations and analyze the results. 
+This section gives an overview of the architecture of the retrieve process which restores the data back to the active
+system from the Synology, so that it can be used for running simulations and analyze the results. 
 
 Figure \ref{fig:restoreClass} illustrates the class diagram for the retrieve process. The structure for the order of retrieve is very similar to the archive process
 since it has to follow the MARS resource hierarchy (Section \ref{subsection:MARSResource}). All the dependencies for the retrieve project class are injected
@@ -20,7 +20,7 @@ added to the required services.
             \textbf{Service}  & \textbf{Functionality} & \textbf{Description}\\
         \hline
             Project service & Add archived and is being archived mark in the project &  The archived mark is necessary because
-            it would provide the user information if the queried project, is already archived, or is in the process of archiving. This has to be
+            it provides the user information if the queried project, is already archived, or is in the process of archiving. This has to be
             implemented using a GRPC communication, since this is the protocol in the project service, compared to the other services.  \\
         \hline
             Scenario service & Return scenario id with the full scenarios & It is the case when a full scenario is requested the scenario id is
