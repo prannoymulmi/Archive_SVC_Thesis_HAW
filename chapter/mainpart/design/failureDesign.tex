@@ -25,7 +25,7 @@ dependent service, sudden termination of the archive service.
 
 Figure \ref{fig:activityFailure} illustrates the activity diagram which describes the Archive service's design that recovers from errors mentioned in
 Table \ref{table:probServices}. The main strategy for the failure mitigation is to re-run the process again from the beginning once an error occurs. 
-A programmer can configure the number of restarts and cumulative wait time for the restart. It is designed in such a way so that the service avoids a deadlock situation with infinite restarts.
+A programmer can configure the number of restarts and its cumulative wait time. It is designed in such a way so that the service avoids a deadlock situation with infinite restarts.
 
 
 \begin{figure}[H]

@@ -6,11 +6,12 @@
 
     \subsection{Archive Project Resources}
         The designed system must be able to archive the MARS resources from the active system (Ceph cluster at the time of writing) 
-        into the Synology \cite{Synology}. The application must
-        be able to archive a project which does not have all the resources mentioned in Table \ref{table: archivedMars} (e.g., no simulation runs have been triggered).
-        This must be supported since it could be the case that the user wants to archive only some of the resources.
+        into the Synology \cite{Synology}. The application must also
+        archive a partial project (e.g., no simulation runs have been triggered).
+        This must be supported since it could be the case that the user wants to archive only some of the resources. Table \ref{table: archivedMars} mentions
+        the resources which need to be archived.
 
-        \subsubsection{Assurance of correct data being persisted}
+        \subsubsection{Assurance of Correct Data}
             MARS being a distributed system, data coherency (Subsection \ref{subsection: distriChallenges}) 
             is one of the big issues which this thesis faces. As a consequence,
             wrong or unwanted data could be archived. Therefore, the Archive service must ensure that while an archive is running the data is not
@@ -47,7 +48,7 @@
                      This resource is the output and contains the results for a single simulation run.\\
                 \hline
             \end{tabular}
-            \caption{MARS resources which are to be archived}
+            \caption{MARS resources}
             \label{table: archivedMars}     
         \end{table} 
         
@@ -71,14 +72,14 @@
         \subsection{Archive and Retrieve Process Status}  
             The archive and retrieve processes are long running tasks. The designed software must run these processes in the background to avoid 
             long waiting time for other requests. Given this, an API endpoint must be made available which gives the current status of the archive 
-            or retrieve job. Using the status a user can determine whether the job is executed or is finished.
+            or retrieve job. Using the status a user can determine whether the job is running or is finished.
 
 
         \subsection{Download Archived Data as a Compressed File}
         \label{sec:anaCompress}
             It is of great importance for a domain expert, i.e., an ecologist who are not technical experts to have a graphical interface. In this interface,
             it must be possible to navigate to the project of interest and easily download the project as a zip file. There could be cases where the
-            MARS system is out of order, and the data is required. Then it can be accessible by anyone with basic knowledge of the system.
+            MARS system is out of order. Then it must be accessible by anyone with basic knowledge of the system.
         
         \subsection{Fault-Tolerant Design}   
         One on hand, the Archive service has to communicate with many services in the system. This could lead to a higher rate of failure 

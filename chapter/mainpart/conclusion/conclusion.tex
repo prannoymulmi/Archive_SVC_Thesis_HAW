@@ -13,14 +13,14 @@ such as Kubernetes \cite{kubernetes}, Docker, etc., has been established. Togeth
 which aids in improving the performance of the MARS system by moving inactive data into the Synology storage.
 
 \section{Further Work}
-It is a point of interest that the Archive service would be further enhanced. Firstly, it is seen that the current UI design of the archive process is not very convenient
-for the users as the archived and unarchived projects are grouped together which may produce some confusion. One proposal could be to design a separate section
-where the archived projects could be shown. To aid this process the implementation of the mark showing if the project is archived or not is already included, which is
-changed via the Archive service. 
+It is a point of interest that the Archive service would be further enhanced. Firstly, it is seen that the current UI design of the archive process is 
+not very convenient for the users as the archived and unarchived projects are grouped which may produce some confusion. One proposal could be to design a 
+separate section where the archived projects could be shown. 
+To aid this process, the implementation of the mark showing if the project is archived or not is already included, which is changed via the Archive service.
 
-Secondly, improving the performance of the archive and retrieve would also be a factor to be considered next. The archive and retrieve process are implemented as
-an atomic operation. Therefore, in case of failure the process is repeated from the beginning, causing big performance loss for larger projects. More research and effort
-have to be put forward to obtain a solution for this issue. 
+Secondly, improving the performance of the archive and retrieve would also be a factor to be considered next. The archive and retrieve process are implemented 
+as an atomic operation. Therefore, in case of failure, the process is repeated 
+from the beginning, causing significant performance loss for larger projects. More research and effort have to be put forward to obtain a solution for this issue.
 
 It can be noticed from the sequence diagram that the resources are being persisted right after they are successfully retrieved rather than a bulk operation
 (e.g. sequence number 1.8 in Figure \ref{fig:sequenceArchive}). This

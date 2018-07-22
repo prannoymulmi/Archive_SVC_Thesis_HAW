@@ -14,7 +14,7 @@ Figure \ref{fig:CIbuild} presents the Continuous Integration system which is fol
 for the maintenance of the service because the automatic tests are executed here.
 The CI\footnote{CI: Continuous Integration} pipeline is triggered as soon as a new commit is pushed to the remote 
 GitLab\footnote{https://about.gitlab.com} repository. This builds the Docker image of the service with the new changes. The next step is to
-run the unit tests written for the service, which is a mandatory step. Lastly, if the pipeline passes, the docker image will be pushed
+run the unit tests written for the service, which is a mandatory step. Lastly, if the pipeline passes, the docker image is pushed
 to the GitLab registry\footnote{https://about.gitlab.com/2016/05/23/gitlab-container-registry/}. If this is successful, then the image can be used in one of 
 the MARS Kubernetes clusters, i.e., MARS beta, MARS production environments. 
 

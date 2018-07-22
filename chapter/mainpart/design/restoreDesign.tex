@@ -23,11 +23,9 @@ and they are mentioned below :
  concerning service by checking the file type. This methodology is the only way possible through the UI for a file upload.   
  \item \textbf{Upload the respective file via its service} This method requires the Archive service to communicate with each service of the file type. 
 The archive service can communicate to any service provided an endpoint (interface). Therefore, it is also possible to upload the different kinds of files using the
-corresponding service instead of the File-svc. 
-\end{enumerate} 
-
-If a file type model is to be uploaded, an API call to the reflection service has to be made. Similarly, a GIS
+corresponding service instead of the File-svc. If a file type model is to be uploaded, an API call to the reflection service has to be made. Similarly, a GIS
 file needs the GIS Data service.
+\end{enumerate} 
 
 The File-svc is an abstraction layer for uploading different types of files. This layer reduces the number of direct dependencies to the Archive
 service because it does not call the other services directly. Choosing the File-svc also provides an additional advantage if a new file type is added in the future.

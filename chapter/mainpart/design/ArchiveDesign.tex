@@ -18,12 +18,14 @@ The archive process requires certain preconditions to be fulfilled to ensure the
 The resources depicted in Table (Table \ref{table: archivedMars}) must be archived following the MARS resource hierarchy (Figure \ref{fig:marsDependency}).
 Following the hierarchy, it is arguable why the project is not being archived, despite it being present. The project lies at the top of the hierarchy 
 meaning no other resources are usable without its existence. Section \ref{ssec:retrieveAnalysis} mentions the requirement that the Archive service must 
-restore all the archived resources back into the system. Therefore, during a restore, if a specific archived project
-is not available, then other resources cannot be brought back into the system as all of them are dependent on the project. For a successful restore process,
+restore all the archived resources back into the system. 
+
+During a restore, if a project
+is unavailable, then other resources cannot be brought back into the system. Therefore, for a successful restore process,
 the project data is not archived which now acts as a point of reference to bring back the children resources. 
 If the project was to be archived then an additional mechanism is needed to ensure the users referenced in the archive also existed in the Mars system (active system).
 It could be possible that during a retrieve the users in an
-archived project may not exist anymore as they were removed causing the process to fail. Therefore, this decision also reduces the complexity of the 
+archived project may not exist anymore as they were removed causing the process to fail. Additionally, this decision also reduces the complexity of the 
 archive and restore as this mechanism can be avoided.
 
 
@@ -36,7 +38,7 @@ The metadata is crucial because they give the system vital information that the 
 
 \subsubsection{HDF5}
 HDF5 is a file format for storing and managing data which has support for various data types designed for
-efficient I/O, compression, portability and, supports big data \cite{HDF5}. Many scientific projects involving simulations have successfully applied this 
+efficient I/O, compression, portability and, big data \cite{HDF5}. Many scientific projects involving simulations have successfully applied this 
 file format (Efficient
 for simulation data \cite[p.~11]{Savic2007}). This file can also be defined as an abstract data container which includes building blocks for data organization. 
 This file system can hold a variety of heterogeneous objects like images, graphs, documents, tables. It also has support for an n-dimensional Table \cite[p.~2]{HDF5}. 
@@ -151,7 +153,7 @@ marking service is dependent upon many services, it has a high possibility of fa
 unmarking of the project fails. It seems very natural to repeat the process until the unmarking request succeeds since it is necessary to unmark
 a project. If this happens only with a single process, it does not make a huge difference. However when thinking of the bigger picture if this 
 occurs with 100 different processes at the same time, it uses valuable processing resources as it may be stuck in a deadlock condition until an outside interruption occurs. 
-To avoid this, a fixed number of retries to unmark the project at the specified time interval for the request is made. 
+To avoid this, a fixed number of retries to unmark the project at the specified time interval is made. 
 
 Although, this solves the issue of using up resources, the problem that the project is unusable is still there. Except a manual unmarking, no other solution 
 can be seen, so 
