@@ -33,7 +33,7 @@ archive and restore as this mechanism can be avoided.
 A suitable file format for archiving must be chosen because it determines how the data access would be realized and whether it meets
 the functional requirements outlined in Section \ref{section:functionalReq}. The different types of data archived are the metadata for files, scenarios, 
 result configurations, simulation plans, simulation run including the input files, models, and the simulation results. 
-The data format being discussed in this section focus on the metadata, and they are received initially as a JSON document.
+The data formats being discussed in this section focus on the metadata, and they are received initially as a JSON document.
 The metadata is crucial because they give the system vital information that the retrieve process requires. 
 
 \subsubsection{HDF5}
@@ -70,7 +70,7 @@ as depicted in the figure and the datasets are the resources, i.e., scenario, fi
 
 \subsubsection{JSON} 
 JSON(JavaScript Object Notation) is a data format which is very easy for humans and machines to read and write. This format is
-entirely language independent which follows the conventions used in different programming languages, i.e., C\#, Java, Python and more. The REST API implemented in the
+entirely language independent which follows the conventions used in different programming languages, i.e., C\#, Java, Python, and more. The REST API implemented in the
 MARS framework supports this format with ease making this a very suitable candidate. This format is widely 
 accepted and MongoDB supports it without any problem. Also, MongoDB seems to be a good candidate, but the requirement (Section \ref{sec:anaCompress}) states that the archived
 data should be readily accessible to a non-expert and using MongoDB requires some amount of technical expertise.
